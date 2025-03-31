@@ -1,0 +1,56 @@
+.nav {
+  background-color: #fff;
+  border-top: 1px solid #000;
+  width: 100%; /* Make it stretch across the screen */
+  height: 65px;
+  display: flex;
+  justify-content: space-around; /* Spread nav items evenly */
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 4px 4px #00000040;
+}
+
+  @media (width<=640px) {
+    .nav {
+      width: 100%;
+    }
+  }
+  .div37 {
+    color: #49454f;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    font-family: Roboto, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+  }
+  .div38 {
+    background-color: #65558f;
+    border-radius: 100px 100px 0 0;
+    width: 34px;
+    height: 3px;
+    display: block;
+    position: absolute;
+    bottom: 0;
+  }
+  .div39,
+  .div40,
+  .div41,
+  .div42 {
+    color: #49454f;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    font-family: Roboto, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+  }
