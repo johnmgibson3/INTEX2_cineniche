@@ -72,7 +72,7 @@ const Recommender: React.FC<RecommenderProps> = ({
 
   return (
     <div className="recommender-container">
-      <h2>Select a Content ID</h2>
+      <h2>Select a Content ID </h2>
       <div className="selectors">
         <label>
           Content ID:
