@@ -1,0 +1,48 @@
+.recommender-container {
+  font-family: 'Arial', sans-serif;
+  padding: 2rem;
+  text-align: center;
+}
+
+.selectors {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+label {
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+select {
+  margin-top: 0.5rem;
+  padding: 0.3rem;
+  font-size: 1rem;
+}
+
+.table-container {
+  margin-top: 2rem;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
