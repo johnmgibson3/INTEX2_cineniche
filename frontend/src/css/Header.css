@@ -120,6 +120,3 @@
 }
 
 /* Add padding to body to prevent content from hiding behind fixed header */
-body {
-  padding-top: 70px; /* Adjust based on your header height */
-}
