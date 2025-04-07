@@ -32,20 +32,8 @@ const HomePage: React.FC = () => {
         <div className="container section-title" data-aos="fade-up">
           <h2>About</h2>
           <p>
-            CineNiche connects film enthusiasts with hidden cinematic gems
-            tailored to their unique tastes. Founded by passionate movie lovers
-            in 2023, we've built a platform that goes beyond mainstream
-            recommendations, using advanced algorithms that understand the
-            nuances of film preferences. Our curated streaming service offers
-            everything from forgotten classics to independent treasures,
-            international masterpieces, and genre-defining works that might
-            otherwise go undiscovered. At CineNiche, we believe every film
-            deserves its audience and every viewer deserves to find films that
-            truly resonate with them. With our personalized recommendation
-            engine and seamless streaming experience, we're redefining how
-            people discover and enjoy movies that speak to their individual
-            sensibilities.RetryClaude can make mistakes. Please double-check
-            responses.
+            Rerum debitis facere soluta tenetur. Iure molestiae assumenda sunt
+            qui inventore eligendi voluptates nisi
           </p>
         </div>
 
@@ -205,6 +193,35 @@ const HomePage: React.FC = () => {
                     magni quaerat nemo et.
                   </p>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Call To Action Section */}
+      <section
+        id="call-to-action"
+        className="call-to-action section accent-background"
+      >
+        <div className="container">
+          <div
+            className="row justify-content-center"
+            data-aos="zoom-in"
+            data-aos-delay="100"
+          >
+            <div className="col-xl-10">
+              <div className="text-center">
+                <h3>Call To Action</h3>
+                <p>
+                  Duis aute irure dolor in reprehenderit in voluptate velit esse
+                  cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                  occaecat cupidatat non proident, sunt in culpa qui officia
+                  deserunt mollit anim id est laborum.
+                </p>
+                <a className="cta-btn" href="#">
+                  Call To Action
+                </a>
               </div>
             </div>
           </div>
