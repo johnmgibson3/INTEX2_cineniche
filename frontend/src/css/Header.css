@@ -1,0 +1,125 @@
+/* Fixed Header Styles */
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(
+    28,
+    28,
+    28,
+    0.95
+  ); /* Dark background with slight transparency */
+  color: #fff;
+  padding: 15px 0;
+  z-index: 1000; /* Ensure header appears above other content */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.fixed-header .container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.fixed-header .header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo */
+.fixed-header .logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+
+.fixed-header .logo:hover {
+  color: #ba1d2b; /* Red accent color */
+}
+
+/* Navigation */
+.fixed-header .main-nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.fixed-header .main-nav li {
+  margin-left: 25px;
+}
+
+.fixed-header .main-nav a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.fixed-header .main-nav a:hover,
+.fixed-header .main-nav a.active {
+  color: #ba1d2b; /* Red accent color */
+}
+
+/* Action Buttons */
+.fixed-header .header-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.fixed-header .btn {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.fixed-header .btn-primary {
+  background-color: #ba1d2b; /* Red accent color */
+  color: #fff;
+  border: none;
+}
+
+.fixed-header .btn-primary:hover {
+  background-color: #d82333; /* Lighter red on hover */
+}
+
+.fixed-header .btn-secondary {
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid #ba1d2b;
+}
+
+.fixed-header .btn-secondary:hover {
+  background-color: rgba(186, 29, 43, 0.1);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .fixed-header .main-nav {
+    display: none; /* Hide navigation on small screens */
+  }
+
+  .fixed-header .header-actions {
+    gap: 0px;
+  }
+
+  .fixed-header .btn {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}
+
+/* Add padding to body to prevent content from hiding behind fixed header */
+body {
+  padding-top: 70px; /* Adjust based on your header height */
+}

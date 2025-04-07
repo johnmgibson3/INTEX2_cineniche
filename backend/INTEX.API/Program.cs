@@ -13,6 +13,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<MoviesContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("MovieConnection")));
+
+builder.Services.AddCors(options =>
+    options.AddPolicy("AllowReactAppBlah",
+    policy => {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    }));
+
 
 
 builder.Services.AddDbContext<MoviesContext>(options =>

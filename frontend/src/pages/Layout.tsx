@@ -1,16 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import BottomNavigation from '../components/BottomNavigation';
+import Header from '../components/Header';
+import MobileFooter from '../components/MobileFooter';
+import Footer from '../components/Footer'; // Import the new Footer component
+import '../css/Layout.css';
 
 const Layout: React.FC = () => {
   const location = useLocation();
-  const showNav = location.pathname !== '/Login' && location.pathname !== '/Login2';
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Scroll top initialization (omitted for brevity)
 
   return (
-    <div style={{ paddingBottom: showNav ? '65px' : '0px' }}>
-      <Outlet />
-      {showNav && <BottomNavigation />}
-    </div>
+    <>
+      <Header />
+      <div className="main-content">
+        <Outlet />
+      </div>
+
+      {isMobile ? <MobileFooter /> : <Footer />}
+
+      {/* Scroll Top Button */}
+      <a
+        href="#"
+        id="scroll-top"
+        className="scroll-top d-flex align-items-center justify-content-center"
+      >
+        <i className="bi bi-arrow-up-short"></i>
+      </a>
+    </>
   );
 };
 
