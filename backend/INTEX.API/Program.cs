@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using INTEX.API.Data;
 using INTEX.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
