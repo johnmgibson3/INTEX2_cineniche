@@ -76,10 +76,10 @@ const Header: React.FC = () => {
           <i className="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
 
-        <Link className="btn-getstarted" to="/signup">
+        <Link className="btn-getstarted" to="/register">
           Create Account
         </Link>
-        <Link className="btn-getstarted" to="/signup">
+        <Link className="btn-getstarted" to="/login">
           Login
         </Link>
       </div>

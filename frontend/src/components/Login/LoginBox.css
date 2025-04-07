@@ -2,7 +2,7 @@
 
 /* Center the login container */
 .login-container {
-    background-image: url('../images/photo-1449247709967-d4461a6a6103.jpg');
+
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -67,3 +67,15 @@
 .login-card label, input {
     color: #000000;
 }
+
+.login-wrapper {
+    height: 100vh;
+    width: 100%;
+    background-image: url('/img/CineNiche2.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
