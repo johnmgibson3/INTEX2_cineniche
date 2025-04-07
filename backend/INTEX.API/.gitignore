@@ -24,7 +24,7 @@ project.assets.json
 publish/
 
 # ASP.NET runtime artifacts
-*.db
+
 *.db-shm
 *.db-wal
 appsettings.Local.json
