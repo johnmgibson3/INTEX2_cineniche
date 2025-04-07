@@ -5,6 +5,7 @@ import NoPage404 from './pages/NoPage404';
 import Layout from './pages/Layout';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import PrivacyPolicy from './pages/Privacy/PrivacyPolicy';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="home" element={<Home />} />
           <Route path="login" element={<Login/>} />
           <Route path="register" element={<Register/>} />
+          <Route path="privacy" element={<PrivacyPolicy/>} />
           <Route path="*" element={<NoPage404 />} />
           
         </Route>
