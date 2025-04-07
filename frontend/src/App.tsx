@@ -3,7 +3,6 @@ import './App.css';
 import Home from './pages/Home';
 import NoPage404 from './pages/NoPage404';
 import Layout from './pages/Layout';
-import HomePage from './pages/HomePage';
 
 function App() {
   return (
@@ -13,7 +12,6 @@ function App() {
           <Route index element={<Navigate to="/home" replace />} />
           <Route path="home" element={<Home />} />
           <Route path="*" element={<NoPage404 />} />
-          <Route path="/HomePage" element={<HomePage />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
