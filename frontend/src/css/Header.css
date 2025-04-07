@@ -120,3 +120,11 @@
 }
 
 /* Add padding to body to prevent content from hiding behind fixed header */
+/* Explicitly remove underlines from navigation links */
+.navmenu a,
+.navmenu a:visited,
+.navmenu a:hover,
+.navmenu a:active,
+.navmenu a:focus {
+  text-decoration: none !important;
+}
