@@ -154,24 +154,15 @@ section,
   border-color: var(--accent-color);
 }
 
-/* About Section */
 .about .about-img {
   position: relative;
-  margin: 60px 0 0 60px;
-}
-
-.about .about-img:before {
-  position: absolute;
-  inset: -60px 0 0 -60px;
-  content: '';
-  background: url('/assets/img/about-bg.png') top left;
-  background-repeat: no-repeat;
-  z-index: 1;
+  margin: 100px 0 0 60px; /* Increased top margin from 60px to 100px */
 }
 
 .about .about-img img {
   position: relative;
   z-index: 2;
+  padding-top: 20px; /* Adds more space at the top of the image */
 }
 
 .about h3 {
