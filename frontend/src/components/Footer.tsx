@@ -1,7 +1,9 @@
 import React from 'react';
 import '../css/Footer.css';
+import { Link, useLocation } from 'react-router-dom';
 
 const Footer: React.FC = () => {
+  const location = useLocation();
   return (
     <footer className="footer dark-background">
       <div className="footer-fullwidth">
@@ -47,7 +49,13 @@ const Footer: React.FC = () => {
           </div>
           <div className="copyright text-center">
             <p>
-              © <strong>CineNiche</strong> All Rights Reserved
+              © <strong>CineNiche</strong> All Rights Reserved{' '}  
+              <Link
+                to="/privacy"
+                className={location.pathname === '/privacy' ? 'active' : ''}
+              >
+                Privacy
+              </Link>
             </p>
           </div>
         </div>

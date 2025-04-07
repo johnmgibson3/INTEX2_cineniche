@@ -1,9 +1,9 @@
 /* Make sure the footer spans the full viewport width */
 .footer {
   width: 100%;
-  background-color: #1c1c1c; /* Or your desired dark color */
+  background-color: #1c1c1c;
   color: #fff;
-  padding: 40px 0;
+  padding: 11px 0;
 }
 
 /* Use a full-width container similar to container-fluid */
@@ -14,9 +14,9 @@
 /* Customize content without the Bootstrap container restrictions */
 .footer-content {
   width: 100%;
-  padding: 0 20px; /* Adjust horizontal padding as needed */
+  padding: 0 18px;
   margin: 0 auto;
-  max-width: none; /* Remove any max-width limitations */
+  max-width: none;
 }
 
 /* Layout for footer rows and sections */
@@ -24,17 +24,18 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 2px;
+  margin-top: -10px;
 }
 
 .footer-section {
   flex: 1;
-  min-width: 200px;
-  margin: 10px 0;
+  min-width: 110px;
+  margin: 2px 0;
 }
 
 .footer-section h4 {
-  margin-bottom: 10px;
+  margin-bottom: 3px;
   position: relative;
   display: inline-block;
 }
@@ -49,34 +50,74 @@
   background: #8bb83b;
 }
 
+/* Updated social links styling */
 .social-links {
   display: flex;
-  gap: 10px;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .social-links a {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  transition: background-color 0.2s;
+  background-color: rgba(255, 255, 255, 0.3); /* Increased opacity */
+  color: #ffffff; /* Pure white color */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Add a subtle border */
+  transition:
+    background-color 0.3s,
+    color 0.3s,
+    transform 0.3s;
 }
 
 .social-links a:hover {
   background-color: #8bb83b;
+  color: #ffffff; /* Ensure white on hover */
+  transform: translateY(-3px);
+}
+
+.social-links i {
+  font-size: 22px; /* Slightly larger icons */
+  font-weight: bold; /* Make icons bolder */
 }
 
 .text-center {
   text-align: center;
 }
 
-copyright p,
+.copyright p,
 .footer .copyright p {
   margin: 0;
   font-size: 12px;
   opacity: 0.7;
+}
+
+.footer-content {
+  padding: 0 10px;
+}
+
+.footer-section p {
+  margin: 2px 0;
+  font-size: 13px;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .footer-row {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-section {
+    margin-bottom: 15px;
+  }
+
+  .footer-section h4::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }

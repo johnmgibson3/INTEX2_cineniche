@@ -120,6 +120,11 @@
 }
 
 /* Add padding to body to prevent content from hiding behind fixed header */
-body {
-  padding-top: 70px; /* Adjust based on your header height */
+/* Explicitly remove underlines from navigation links */
+.navmenu a,
+.navmenu a:visited,
+.navmenu a:hover,
+.navmenu a:active,
+.navmenu a:focus {
+  text-decoration: none !important;
 }
