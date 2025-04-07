@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import MobileFooter from '../components/MobileFooter';
 import Footer from '../components/Footer'; // Import the new Footer component
 import '../css/Layout.css';
+import '../css/ButtonFixes.css'; // Import our new button fixes
 
 const Layout: React.FC = () => {
   const location = useLocation();
