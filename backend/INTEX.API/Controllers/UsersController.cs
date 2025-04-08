@@ -2,46 +2,69 @@
 using Microsoft.EntityFrameworkCore;
 using INTEX.API.Models;
 
-namespace INTEX.API.Controllers
+namespace INTEX.API.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class UsersController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    private readonly MoviesContext _context;
+
+    public UsersController(MoviesContext context)
     {
-        private readonly MoviesContext _context;
+        _context = context;
+    }
 
-        public UsersController(MoviesContext context)
-        {
-            _context = context;
-        }
+    [HttpGet("All")]
+    public IActionResult GetAll(int pageSize = 10, int pageNum = 1)
+    {
+        var totalCount = _context.MoviesUsers.Count();
 
-        // GET: api/Users
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<MoviesUser>>> GetUsers()
-        {
-            return await _context.MoviesUsers.ToListAsync();
-        }
+        var users = _context.MoviesUsers
+            .Skip((pageNum - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
 
-        // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<MoviesUser>> GetUser(int id)
-        {
-            var user = await _context.MoviesUsers.FindAsync(id);
+        return Ok(new { Users = users, TotalCount = totalCount });
+    }
 
-            if (user == null)
-                return NotFound();
+    [HttpGet("{id}")]
+    public IActionResult Get(int id)
+    {
+        var user = _context.MoviesUsers.Find(id);
+        if (user == null) return NotFound(new { message = "User not found" });
 
-            return user;
-        }
+        return Ok(user);
+    }
 
-        // POST: api/Users
-        [HttpPost]
-        public async Task<ActionResult<MoviesUser>> PostUser(MoviesUser user)
-        {
-            _context.MoviesUsers.Add(user);
-            await _context.SaveChangesAsync();
+    [HttpPost("Add")]
+    public IActionResult Add([FromBody] MoviesUser newUser)
+    {
+        _context.MoviesUsers.Add(newUser);
+        _context.SaveChanges();
+        return Ok(newUser);
+    }
 
-            return CreatedAtAction(nameof(GetUser), new { id = user.UserId }, user);
-        }
+    [HttpPut("Update/{id}")]
+    public IActionResult Update(int id, [FromBody] MoviesUser updatedUser)
+    {
+        var user = _context.MoviesUsers.Find(id);
+        if (user == null) return NotFound(new { message = "User not found" });
+
+        _context.Entry(user).CurrentValues.SetValues(updatedUser);
+        _context.SaveChanges();
+
+        return Ok(user);
+    }
+
+    [HttpDelete("Delete/{id}")]
+    public IActionResult Delete(int id)
+    {
+        var user = _context.MoviesUsers.Find(id);
+        if (user == null) return NotFound(new { message = "User not found" });
+
+        _context.MoviesUsers.Remove(user);
+        _context.SaveChanges();
+        return NoContent();
     }
 }
