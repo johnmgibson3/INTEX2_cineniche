@@ -43,5 +43,19 @@ namespace INTEX.API.Controllers
 
             return CreatedAtAction(nameof(GetUser), new { id = user.UserId }, user);
         }
+
+        // POST: api/register
+        [HttpPost]
+        [Route("/api/register")]  // Note the slash at the beginning
+        public async Task<ActionResult<MoviesUser>> Register(MoviesUser user)
+        {
+            // Add your registration logic here
+            // You may want to check if the user already exists, hash the password, etc.
+
+            _context.MoviesUsers.Add(user);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetUser), new { id = user.UserId }, user);
+        }
     }
 }

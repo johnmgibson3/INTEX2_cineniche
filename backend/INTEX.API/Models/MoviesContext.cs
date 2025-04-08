@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Humanizer;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace INTEX.API.Models;
 
-public partial class MoviesContext : DbContext
+public partial class MoviesContext : IdentityDbContext<LoginCredentials>
 {
     public MoviesContext()
     {
@@ -19,14 +20,19 @@ public partial class MoviesContext : DbContext
     public virtual DbSet<MoviesRating> MoviesRatings { get; set; }
     public virtual DbSet<MoviesTitle> MoviesTitles { get; set; }
     public virtual DbSet<MoviesUser> MoviesUsers { get; set; }
-    public virtual DbSet<LoginCredentials> LoginCredentials { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-
-        => optionsBuilder.UseSqlite("Data Source=Data/Movies.db");
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlite("Data Source=Data/Movies.db");
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder); // This is critical for Identity to work!
+
         modelBuilder.Entity<MoviesRating>(entity =>
         {
             // ✅ ADD this: composite primary key
@@ -80,7 +86,7 @@ public partial class MoviesContext : DbContext
 
         modelBuilder.Entity<MoviesUser>(entity =>
         {
-            entity.HasKey(e => e.UserId); // ✅ Now inside proper block
+            entity.HasKey(e => e.UserId);
 
             entity.ToTable("movies_users");
 
@@ -97,27 +103,27 @@ public partial class MoviesContext : DbContext
             entity.Property(e => e.State).HasColumnName("state");
             entity.Property(e => e.UserId).HasColumnName("user_id");
             entity.Property(e => e.Zip).HasColumnName("zip");
+        });
 
         modelBuilder.Entity<LoginCredentials>(entity =>
         {
             entity.ToTable("login_credentials");
 
-            entity.HasKey(e => e.UserId);
+            // Don't set HasKey here since it's inherited from IdentityUser
+            // and will be using the Id property that you've mapped to user_id
 
-            entity.Property(e => e.UserId).HasColumnName("user_id");
-            entity.Property(e => e.username).HasColumnName("username");
-            entity.Property(e => e.email_confirmed).HasColumnName("email_confirmed");
-            entity.Property(e => e.password_hash).HasColumnName("password_hash");
-            entity.Property(e => e.security_stamp).HasColumnName("security_stamp");
-            entity.Property(e => e.concurrency_stamp).HasColumnName("concurrency_stamp");
-            entity.Property(e => e.phone_confirmed).HasColumnName("phone_confirmed");
-            entity.Property(e => e.two_factor_enabled).HasColumnName("two_factor_enabled");
-            entity.Property(e => e.lockout_end).HasColumnName("lockout_end");
-            entity.Property(e => e.lockout_enabled).HasColumnName("lockout_enabled");
-            entity.Property(e => e.access_failed_count).HasColumnName("access_failed_count");
-            entity.Property(e => e.admin_status).HasColumnName("admin_status");
-        });
-
+            // Configure the property mappings (already defined in your LoginCredentials class)
+            entity.Property(e => e.Id).HasColumnName("user_id");
+            entity.Property(e => e.UserName).HasColumnName("username");
+            entity.Property(e => e.EmailConfirmed).HasColumnName("email_confirmed");
+            entity.Property(e => e.PasswordHash).HasColumnName("password_hash");
+            entity.Property(e => e.SecurityStamp).HasColumnName("security_stamp");
+            entity.Property(e => e.ConcurrencyStamp).HasColumnName("concurrency_stamp");
+            entity.Property(e => e.PhoneNumberConfirmed).HasColumnName("phone_confirmed");
+            entity.Property(e => e.TwoFactorEnabled).HasColumnName("two_factor_enabled");
+            // Skip LockoutEnd since it's NotMapped and has special handling
+            entity.Property(e => e.LockoutEnabled).HasColumnName("lockout_enabled");
+            entity.Property(e => e.AccessFailedCount).HasColumnName("access_failed_count");
         });
 
         OnModelCreatingPartial(modelBuilder);
