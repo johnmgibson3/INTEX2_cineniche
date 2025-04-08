@@ -3,7 +3,6 @@ using INTEX.API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using INTEX.API.Services;
-using INTEX.API.Models;
 using INTEX.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
