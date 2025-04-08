@@ -16,23 +16,86 @@ public class RatingsController : ControllerBase
     }
 
     // GET: api/Ratings
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<MoviesRating>>> GetRatings()
+    [HttpGet("All")]
+    public IActionResult GetAllRatings(int pageSize = 10, int pageNum = 1, [FromQuery] int? userId = null)
     {
-        return await _context.MoviesRatings.ToListAsync();
+        var query = _context.MoviesRatings.AsQueryable();
+
+        if (userId.HasValue)
+        {
+            query = query.Where(r => r.UserId == userId);
+        }
+
+        var totalCount = query.Count();
+
+        var ratings = query
+            .Skip((pageNum - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        return Ok(new
+        {
+            Ratings = ratings,
+            TotalCount = totalCount
+        });
     }
 
-    // GET: api/Ratings/{userId}/{showId}
+    // GET: api/Ratings/1/s123
     [HttpGet("{userId}/{showId}")]
-    public async Task<ActionResult<MoviesRating>> GetRating(int userId, int showId)
+    public IActionResult GetRating(int userId, string showId)
     {
-        var rating = await _context.MoviesRatings.FindAsync(userId, showId);
+        var rating = _context.MoviesRatings.Find(userId, showId);
 
         if (rating == null)
         {
-            return NotFound();
+            return NotFound(new { message = "Rating not found" });
         }
 
-        return rating;
+        return Ok(rating);
+    }
+
+    // POST: api/Ratings
+    [HttpPost("Add")]
+    public IActionResult AddRating([FromBody] MoviesRating newRating)
+    {
+        _context.MoviesRatings.Add(newRating);
+        _context.SaveChanges();
+
+        return Ok(newRating);
+    }
+
+    // PUT: api/Ratings/1/s123
+    [HttpPut("Update/{userId}/{showId}")]
+    public IActionResult UpdateRating(int userId, string showId, [FromBody] MoviesRating updatedRating)
+    {
+        var existing = _context.MoviesRatings.Find(userId, showId);
+
+        if (existing == null)
+        {
+            return NotFound(new { message = "Rating not found" });
+        }
+
+        existing.Rating = updatedRating.Rating;
+        _context.MoviesRatings.Update(existing);
+        _context.SaveChanges();
+
+        return Ok(existing);
+    }
+
+    // DELETE: api/Ratings/Delete/1/s123
+    [HttpDelete("Delete/{userId}/{showId}")]
+    public IActionResult DeleteRating(int userId, string showId)
+    {
+        var rating = _context.MoviesRatings.Find(userId, showId);
+
+        if (rating == null)
+        {
+            return NotFound(new { message = "Rating not found" });
+        }
+
+        _context.MoviesRatings.Remove(rating);
+        _context.SaveChanges();
+
+        return NoContent();
     }
 }

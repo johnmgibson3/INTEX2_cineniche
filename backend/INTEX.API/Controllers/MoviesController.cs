@@ -2,46 +2,69 @@
 using Microsoft.EntityFrameworkCore;
 using INTEX.API.Models;
 
-namespace INTEX.API.Controllers
+namespace INTEX.API.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class MoviesController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class MoviesController : ControllerBase
+    private readonly MoviesContext _context;
+
+    public MoviesController(MoviesContext context)
     {
-        private readonly MoviesContext _context;
+        _context = context;
+    }
 
-        public MoviesController(MoviesContext context)
-        {
-            _context = context;
-        }
+    [HttpGet("All")]
+    public IActionResult GetAll(int pageSize = 10, int pageNum = 1)
+    {
+        var totalCount = _context.MoviesTitles.Count();
 
-        // GET: api/Movies
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<MoviesTitle>>> GetMovies()
-        {
-            return await _context.MoviesTitles.ToListAsync();
-        }
+        var movies = _context.MoviesTitles
+            .Skip((pageNum - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
 
-        // GET: api/Movies/s1234
-        [HttpGet("{id}")]
-        public async Task<ActionResult<MoviesTitle>> GetMovie(string id)
-        {
-            var movie = await _context.MoviesTitles.FindAsync(id);
+        return Ok(new { Movies = movies, TotalCount = totalCount });
+    }
 
-            if (movie == null)
-                return NotFound();
+    [HttpGet("{showId}")]
+    public IActionResult Get(string showId)
+    {
+        var movie = _context.MoviesTitles.Find(showId);
+        if (movie == null) return NotFound(new { message = "Movie not found" });
 
-            return movie;
-        }
+        return Ok(movie);
+    }
 
-        // POST: api/Movies
-        [HttpPost]
-        public async Task<ActionResult<MoviesTitle>> PostMovie(MoviesTitle movie)
-        {
-            _context.MoviesTitles.Add(movie);
-            await _context.SaveChangesAsync();
+    [HttpPost("Add")]
+    public IActionResult Add([FromBody] MoviesTitle newMovie)
+    {
+        _context.MoviesTitles.Add(newMovie);
+        _context.SaveChanges();
+        return Ok(newMovie);
+    }
 
-            return CreatedAtAction(nameof(GetMovie), new { id = movie.ShowId }, movie);
-        }
+    [HttpPut("Update/{showId}")]
+    public IActionResult Update(string showId, [FromBody] MoviesTitle updated)
+    {
+        var movie = _context.MoviesTitles.Find(showId);
+        if (movie == null) return NotFound(new { message = "Movie not found" });
+
+        _context.Entry(movie).CurrentValues.SetValues(updated);
+        _context.SaveChanges();
+
+        return Ok(movie);
+    }
+
+    [HttpDelete("Delete/{showId}")]
+    public IActionResult Delete(string showId)
+    {
+        var movie = _context.MoviesTitles.Find(showId);
+        if (movie == null) return NotFound(new { message = "Movie not found" });
+
+        _context.MoviesTitles.Remove(movie);
+        _context.SaveChanges();
+        return NoContent();
     }
 }
