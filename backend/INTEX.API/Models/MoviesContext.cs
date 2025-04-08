@@ -107,27 +107,28 @@ public partial class MoviesContext : IdentityDbContext<LoginCredentials>
             entity.Property(e => e.Zip).HasColumnName("zip");
         });
 
-        });
 
         modelBuilder.Entity<LoginCredentials>(entity =>
         {
             entity.ToTable("login_credentials");
 
+            // ✅ Corrected this line
+            entity.HasKey(e => e.Id); // because `Id` is the real key from IdentityUser
 
-            entity.HasKey(e => e.UserId);
+            entity.Property(e => e.Id).HasColumnName("user_id");
+            entity.Property(e => e.UserName).HasColumnName("username");
+            entity.Property(e => e.EmailConfirmed).HasColumnName("email_confirmed");
+            entity.Property(e => e.PasswordHash).HasColumnName("password_hash");
+            entity.Property(e => e.SecurityStamp).HasColumnName("security_stamp");
+            entity.Property(e => e.ConcurrencyStamp).HasColumnName("concurrency_stamp");
+            entity.Property(e => e.PhoneNumberConfirmed).HasColumnName("phone_confirmed");
+            entity.Property(e => e.TwoFactorEnabled).HasColumnName("two_factor_enabled");
+            entity.Property(e => e.LockoutEnabled).HasColumnName("lockout_enabled");
+            entity.Property(e => e.AccessFailedCount).HasColumnName("access_failed_count");
+            entity.Property(e => e.AdminStatus).HasColumnName("admin_status");
 
-            entity.Property(e => e.UserId).HasColumnName("user_id");
-            entity.Property(e => e.username).HasColumnName("username");
-            entity.Property(e => e.email_confirmed).HasColumnName("email_confirmed");
-            entity.Property(e => e.password_hash).HasColumnName("password_hash");
-            entity.Property(e => e.security_stamp).HasColumnName("security_stamp");
-            entity.Property(e => e.concurrency_stamp).HasColumnName("concurrency_stamp");
-            entity.Property(e => e.phone_confirmed).HasColumnName("phone_confirmed");
-            entity.Property(e => e.two_factor_enabled).HasColumnName("two_factor_enabled");
-            entity.Property(e => e.lockout_end).HasColumnName("lockout_end");
-            entity.Property(e => e.lockout_enabled).HasColumnName("lockout_enabled");
-            entity.Property(e => e.access_failed_count).HasColumnName("access_failed_count");
-            entity.Property(e => e.admin_status).HasColumnName("admin_status");
+            // If you want to use LockoutEndBool as a custom field:
+            entity.Property(e => e.LockoutEndBool).HasColumnName("lockout_end");
         });
 
 
