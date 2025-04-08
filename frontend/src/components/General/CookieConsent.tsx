@@ -15,6 +15,10 @@ const CookieConsent: React.FC = () => {
 
   const acceptCookies = () => {
     localStorage.setItem(COOKIE_CONSENT_KEY, 'accepted');
+
+    // Set a simple cookie for testing (visible to JavaScript)
+    document.cookie = 'cookies_enabled=true; path=/; max-age=31536000';
+
     setVisible(false);
   };
 

@@ -1,65 +1,100 @@
 import React, { useEffect, useState } from 'react';
-import MovieCarousel from '../components/Movie/MovieCarousel';
 import { fetchAllMovies } from '../api/MoviesAPI';
+import MovieCarousel from '../components/Movie/MovieCarousel';
+import MovieFilterBar from '../components/Movie/MovieFilterBar';
 import { Movie } from '../types/Movie';
-
-const genreKeys: { key: keyof Movie; label: string }[] = [
-  { key: 'action', label: 'Action & Adventure' },
-  { key: 'animeSeriesInternationalTvShows', label: 'Anime & Intl. TV Shows' },
-  {
-    key: 'britishTvShowsDocuseriesInternationalTvShows',
-    label: 'British/Intl. TV',
-  },
-  { key: 'children', label: 'Children & Family' },
-  { key: 'comedies', label: 'Comedies' },
-  { key: 'comediesDramasInternationalMovies', label: 'Comedies/Dramas Intl.' },
-  { key: 'comediesInternationalMovies', label: 'Comedies Intl.' },
-  { key: 'comediesRomanticMovies', label: 'Romantic Comedies' },
-  { key: 'crimeTvShowsDocuseries', label: 'Crime & Docuseries' },
-  { key: 'documentaries', label: 'Documentaries' },
-  { key: 'documentariesInternationalMovies', label: 'Docs Intl.' },
-  { key: 'docuseries', label: 'Docuseries' },
-  { key: 'dramas', label: 'Dramas' },
-  { key: 'dramasInternationalMovies', label: 'Dramas Intl.' },
-  { key: 'dramasRomanticMovies', label: 'Romantic Dramas' },
-  { key: 'familyMovies', label: 'Family Movies' },
-  { key: 'fantasy', label: 'Fantasy' },
-  { key: 'horrorMovies', label: 'Horror' },
-  { key: 'internationalMoviesThrillers', label: 'Intl. Thrillers' },
-  {
-    key: 'internationalTvShowsRomanticTvShowsTvDramas',
-    label: 'Intl. Romance/Drama TV',
-  },
-  { key: 'kidsTv', label: 'Kids TV' },
-  { key: 'languageTvShows', label: 'Language TV Shows' },
-  { key: 'musicals', label: 'Musicals' },
-  { key: 'natureTv', label: 'Nature TV' },
-  { key: 'realityTv', label: 'Reality TV' },
-  { key: 'spirituality', label: 'Spirituality' },
-  { key: 'tvAction', label: 'TV Action' },
-  { key: 'tvComedies', label: 'TV Comedies' },
-  { key: 'tvDramas', label: 'TV Dramas' },
-  { key: 'talkShowsTvComedies', label: 'Talk Shows / Comedies' },
-  { key: 'thrillers', label: 'Thrillers' },
-];
+import { genreMap } from '../constants/genreMap';
+import Paginator from '../components/Movie/Paginator';
 
 const MoviePage: React.FC = () => {
-  const [movies, setMovies] = useState<Movie[]>([]);
+  const [allMovies, setAllMovies] = useState<Movie[]>([]);
+  const [filteredMovies, setFilteredMovies] = useState<Movie[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
 
   useEffect(() => {
-    fetchAllMovies().then(setMovies);
+    fetchAllMovies().then((data) => {
+      setAllMovies(data);
+      setFilteredMovies(data);
+    });
   }, []);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredMovies.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredMovies.length / itemsPerPage);
+
+  const handleFilterChange = ({
+    searchText,
+    genre,
+    sortBy,
+  }: {
+    searchText: string;
+    genre: string;
+    sortBy: string;
+  }) => {
+    let result = [...allMovies];
+
+    if (searchText) {
+      result = result.filter((m) =>
+        m.title?.toLowerCase().includes(searchText.toLowerCase())
+      );
+    }
+
+    if (genre) {
+      const genreKey = Object.entries(genreMap).find(
+        ([, label]) => label === genre
+      )?.[0];
+      if (genreKey) {
+        result = result.filter((m) => m[genreKey as keyof Movie] === 1);
+      }
+    }
+
+    switch (sortBy) {
+      case 'directorAZ':
+        result.sort((a, b) =>
+          (a.director || '').localeCompare(b.director || '')
+        );
+        break;
+      case 'directorZA':
+        result.sort((a, b) =>
+          (b.director || '').localeCompare(a.director || '')
+        );
+        break;
+      case 'yearAsc':
+        result.sort((a, b) => (a.releaseYear ?? 0) - (b.releaseYear ?? 0));
+        break;
+      case 'yearDesc':
+        result.sort((a, b) => (b.releaseYear ?? 0) - (a.releaseYear ?? 0));
+        break;
+    }
+
+    setCurrentPage(1);
+    setFilteredMovies(result);
+  };
 
   return (
     <div className="page-wrapper bg-dark text-white">
       <div className="container py-4">
-        {genreKeys.map(({ key, label }) => (
-          <MovieCarousel
-            key={key}
-            title={label}
-            filter={(movie) => movie[key] === 1}
+        <MovieFilterBar
+          genres={Object.values(genreMap)}
+          onFilterChange={handleFilterChange}
+        />
+
+        <MovieCarousel
+          title="Filtered Movies"
+          filter={(movie) =>
+            currentItems.some((m) => m.showId === movie.showId)
+          }
+        />
+
+        <div className="d-flex justify-content-center mt-4">
+          <Paginator
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
           />
-        ))}
+        </div>
       </div>
     </div>
   );
