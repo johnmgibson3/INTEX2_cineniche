@@ -1,7 +1,6 @@
 import { Movie } from '../types/Movie';
 
-const API_URL =
-  import.meta.env.VITE_API_URL || 'http://localhost:5000/api/movies';
+const API_URL = 'https://localhost:5000/api/Movies';
 
 export const getMovies = async (): Promise<Movie[] | null> => {
   try {
@@ -75,4 +74,10 @@ export const deleteMovie = async (showId: string): Promise<boolean> => {
     console.error('deleteMovie error:', error);
     return false;
   }
+};
+
+export const fetchAllMovies = async (): Promise<Movie[]> => {
+  const response = await fetch(`${API_URL}/All?pageSize=0&pageNum=1`);
+  const data = await response.json();
+  return data.movies; // this matches the structure returned from your API
 };

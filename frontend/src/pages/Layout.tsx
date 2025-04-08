@@ -5,6 +5,7 @@ import MobileFooter from '../components/MobileFooter';
 import Footer from '../components/Footer'; // Import the new Footer component
 import '../css/Layout.css';
 import '../css/ButtonFixes.css'; // Import our new button fixes
+import CookieConsent from '../components/General/CookieConsent';
 
 const Layout: React.FC = () => {
   const location = useLocation();
@@ -38,6 +39,7 @@ const Layout: React.FC = () => {
       >
         <i className="bi bi-arrow-up-short"></i>
       </a>
+      <CookieConsent />
     </>
   );
 };
