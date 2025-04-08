@@ -6,7 +6,7 @@ namespace INTEX.API.Models;
 
 public partial class MoviesTitle
 {
-    public int ShowId { get; set; }
+    public string? ShowId { get; set; }
 
     public string? Type { get; set; }
 
@@ -20,7 +20,7 @@ public partial class MoviesTitle
 
     public int? ReleaseYear { get; set; }
 
-    public float? Rating { get; set; }
+    public string? Rating { get; set; }
 
     public string? Duration { get; set; }
 
