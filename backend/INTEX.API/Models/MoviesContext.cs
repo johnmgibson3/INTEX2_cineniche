@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Humanizer;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace INTEX.API.Models;
 
-public partial class MoviesContext : DbContext
+public partial class MoviesContext : IdentityDbContext<LoginCredentials>
 {
     public MoviesContext()
     {
@@ -19,7 +20,6 @@ public partial class MoviesContext : DbContext
     public virtual DbSet<MoviesRating> MoviesRatings { get; set; }
     public virtual DbSet<MoviesTitle> MoviesTitles { get; set; }
     public virtual DbSet<MoviesUser> MoviesUsers { get; set; }
-    public virtual DbSet<LoginCredentials> LoginCredentials { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -33,6 +33,8 @@ public partial class MoviesContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder); // This is critical for Identity to work!
+
         modelBuilder.Entity<MoviesRating>(entity =>
         {
             // ✅ ADD this: composite primary key
@@ -86,7 +88,7 @@ public partial class MoviesContext : DbContext
 
         modelBuilder.Entity<MoviesUser>(entity =>
         {
-            entity.HasKey(e => e.UserId); // ✅ Now inside proper block
+            entity.HasKey(e => e.UserId);
 
             entity.ToTable("movies_users");
 
@@ -103,12 +105,14 @@ public partial class MoviesContext : DbContext
             entity.Property(e => e.State).HasColumnName("state");
             entity.Property(e => e.UserId).HasColumnName("user_id");
             entity.Property(e => e.Zip).HasColumnName("zip");
+        });
 
         });
 
         modelBuilder.Entity<LoginCredentials>(entity =>
         {
             entity.ToTable("login_credentials");
+
 
             entity.HasKey(e => e.UserId);
 

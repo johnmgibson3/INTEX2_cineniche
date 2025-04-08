@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using INTEX.API.Services;
 using INTEX.API.Models;
+using INTEX.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +21,7 @@ builder.Services.AddDbContext<MoviesContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
 
 builder.Services.AddCors(options =>
-    options.AddPolicy("AllowReactAppBlah",
+    options.AddPolicy("AllowFrontend", //This may need to be changed? 
     policy => {
         policy.AllowAnyOrigin()
             .AllowAnyMethod()
@@ -32,9 +33,13 @@ builder.Services.AddDbContext<MoviesContext>(options =>
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+builder.Services.AddIdentity<LoginCredentials, IdentityRole>() //THIS WAS ADDED FOR THE RBAC STUFF 
+    .AddEntityFrameworkStores<MoviesContext>()
+    .AddDefaultTokenProviders();
 
-    .AddEntityFrameworkStores<MoviesContext>();
+//builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+
+//    .AddEntityFrameworkStores<MoviesContext>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -50,7 +55,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredUniqueChars = 6;           // Require at least 6 unique characters
 });
 
-builder.Services.AddScoped<IUserClaimsPrincipalFactory<IdentityUser>, CustomUserClaimsPrincipalFactory>();
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<LoginCredentials>, CustomUserClaimsPrincipalFactory>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -73,6 +78,8 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddSingleton<IEmailSender<LoginCredentials>, NoOpEmailSender<LoginCredentials>>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -91,9 +98,9 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapIdentityApi<IdentityUser>();
+app.MapIdentityApi<LoginCredentials>();
 
-app.MapPost("/logout", async (HttpContext context, SignInManager<IdentityUser> signInManager) =>
+app.MapPost("/logout", async (HttpContext context, SignInManager<LoginCredentials> signInManager) =>
 {
     await signInManager.SignOutAsync();
     // Ensure authentication cookie is removed
