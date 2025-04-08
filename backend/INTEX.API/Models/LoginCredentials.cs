@@ -13,19 +13,19 @@ namespace INTEX.API.Models
         public override string Id { get => base.Id; set => base.Id = value; }
 
         [Column("username")]
-        public override string UserName { get => base.UserName; set => base.UserName = value; }
+        public override string? UserName { get => base.UserName; set => base.UserName = value; }
 
         [Column("email_confirmed")]
         public override bool EmailConfirmed { get => base.EmailConfirmed; set => base.EmailConfirmed = value; }
 
         [Column("password_hash")]
-        public override string PasswordHash { get => base.PasswordHash; set => base.PasswordHash = value; }
+        public override string? PasswordHash { get => base.PasswordHash; set => base.PasswordHash = value; }
 
         [Column("security_stamp")]
-        public override string SecurityStamp { get => base.SecurityStamp; set => base.SecurityStamp = value; }
+        public override string? SecurityStamp { get => base.SecurityStamp; set => base.SecurityStamp = value; }
 
         [Column("concurrency_stamp")]
-        public override string ConcurrencyStamp { get => base.ConcurrencyStamp; set => base.ConcurrencyStamp = value; }
+        public override string? ConcurrencyStamp { get => base.ConcurrencyStamp; set => base.ConcurrencyStamp = value; }
 
         [Column("phone_confirmed")]
         public override bool PhoneNumberConfirmed { get => base.PhoneNumberConfirmed; set => base.PhoneNumberConfirmed = value; }
@@ -34,7 +34,6 @@ namespace INTEX.API.Models
         public override bool TwoFactorEnabled { get => base.TwoFactorEnabled; set => base.TwoFactorEnabled = value; }
 
         // SQLite doesn't have a DateTimeOffset type, so we might need special handling
-        // If your column is bool instead of DateTimeOffset, you might need custom conversion
         [NotMapped]
         public override DateTimeOffset? LockoutEnd { get => base.LockoutEnd; set => base.LockoutEnd = value; }
 
