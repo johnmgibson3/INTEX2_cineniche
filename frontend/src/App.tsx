@@ -6,12 +6,11 @@ import Layout from './pages/Layout';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PrivacyPolicy from './pages/Privacy/PrivacyPolicy';
+import Contact from './pages/Contact';
 
 function App() {
   return (
-    
     <BrowserRouter>
-     
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Navigate to="/home" replace />} />
@@ -19,8 +18,8 @@ function App() {
           <Route path="login" element={<Login/>} />
           <Route path="register" element={<Register/>} />
           <Route path="privacy" element={<PrivacyPolicy/>} />
+          <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NoPage404 />} />
-          
         </Route>
       </Routes>
     </BrowserRouter>

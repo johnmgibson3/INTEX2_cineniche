@@ -1,3 +1,4 @@
+/* This is the modified index.css */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -13,13 +14,38 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Modify the a tag styling to not affect buttons */
 a {
   font-weight: 500;
   color: #646cff;
-  text-decoration: inherit;
+  text-decoration: inherit; /* Keep 'inherit' to avoid default underlines */
 }
+
+/* Fix for buttons that use <Link> (which renders as <a>) */
+a.btn-getstarted {
+  text-decoration: none !important; /* Force no underline */
+  color: #ffffff !important; /* Force white text */
+}
+
+/* Apply the same to all button-styled links */
+a.btn,
+a.btn-get-started,
+a.btn-getstarted,
+a.cta-btn {
+  text-decoration: none !important;
+  color: #ffffff !important;
+}
+
 a:hover {
   color: #535bf2;
+}
+
+/* Make sure button-styled links maintain their hover styles */
+a.btn:hover,
+a.btn-get-started:hover,
+a.btn-getstarted:hover,
+a.cta-btn:hover {
+  color: #ffffff !important; /* Keep text white on hover */
 }
 
 body {
@@ -64,5 +90,12 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+  /* Ensure button links maintain contrast in light mode */
+  a.btn,
+  a.btn-get-started,
+  a.btn-getstarted,
+  a.cta-btn {
+    color: #ffffff !important;
   }
 }
