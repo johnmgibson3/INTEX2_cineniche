@@ -25,9 +25,11 @@ public partial class MoviesContext : IdentityDbContext<LoginCredentials>
     {
         if (!optionsBuilder.IsConfigured)
         {
+            // Optional fallback
             optionsBuilder.UseSqlite("Data Source=Data/Movies.db");
         }
     }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
