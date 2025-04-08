@@ -22,8 +22,14 @@ public partial class MoviesContext : DbContext
     public virtual DbSet<LoginCredentials> LoginCredentials { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            // Optional fallback
+            optionsBuilder.UseSqlite("Data Source=Data/Movies.db");
+        }
+    }
 
-        => optionsBuilder.UseSqlite("Data Source=Data/Movies.db");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
