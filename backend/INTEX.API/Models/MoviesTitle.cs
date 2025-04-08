@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace INTEX.API.Models;
 
 public partial class MoviesTitle
 {
+
     public string? ShowId { get; set; }
 
     public string? Type { get; set; }

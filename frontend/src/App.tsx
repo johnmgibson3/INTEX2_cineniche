@@ -18,7 +18,14 @@ function App() {
           <Route path="home" element={<Home />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          <Route path="movies" element={<MoviePage />} />
+          <Route
+            path="movies"
+            element={
+              <div className="page-wrapper bg-dark text-white">
+                <MoviePage />
+              </div>
+            }
+          />
           <Route path="privacy" element={<PrivacyPolicy />} />
           <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NoPage404 />} />
