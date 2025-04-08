@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Humanizer;
 using Microsoft.EntityFrameworkCore;
 
 namespace INTEX.API.Models;
@@ -18,6 +19,7 @@ public partial class MoviesContext : DbContext
     public virtual DbSet<MoviesRating> MoviesRatings { get; set; }
     public virtual DbSet<MoviesTitle> MoviesTitles { get; set; }
     public virtual DbSet<MoviesUser> MoviesUsers { get; set; }
+    public virtual DbSet<LoginCredentials> LoginCredentials { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -101,6 +103,27 @@ public partial class MoviesContext : DbContext
             entity.Property(e => e.State).HasColumnName("state");
             entity.Property(e => e.UserId).HasColumnName("user_id");
             entity.Property(e => e.Zip).HasColumnName("zip");
+
+        modelBuilder.Entity<LoginCredentials>(entity =>
+        {
+            entity.ToTable("login_credentials");
+
+            entity.HasKey(e => e.UserId);
+
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.username).HasColumnName("username");
+            entity.Property(e => e.email_confirmed).HasColumnName("email_confirmed");
+            entity.Property(e => e.password_hash).HasColumnName("password_hash");
+            entity.Property(e => e.security_stamp).HasColumnName("security_stamp");
+            entity.Property(e => e.concurrency_stamp).HasColumnName("concurrency_stamp");
+            entity.Property(e => e.phone_confirmed).HasColumnName("phone_confirmed");
+            entity.Property(e => e.two_factor_enabled).HasColumnName("two_factor_enabled");
+            entity.Property(e => e.lockout_end).HasColumnName("lockout_end");
+            entity.Property(e => e.lockout_enabled).HasColumnName("lockout_enabled");
+            entity.Property(e => e.access_failed_count).HasColumnName("access_failed_count");
+            entity.Property(e => e.admin_status).HasColumnName("admin_status");
+        });
+
         });
 
         OnModelCreatingPartial(modelBuilder);
