@@ -76,8 +76,11 @@ export const deleteMovie = async (showId: string): Promise<boolean> => {
   }
 };
 
-export const fetchAllMovies = async (): Promise<Movie[]> => {
-  const response = await fetch(`${API_URL}/All?pageSize=0&pageNum=1`);
-  const data = await response.json();
-  return data.movies; // this matches the structure returned from your API
-};
+export async function fetchAllMovies(): Promise<Movie[]> {
+  const response = await fetch('/api/Movies/All');
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to fetch movies: ${errorText}`);
+  }
+  return await response.json();
+}

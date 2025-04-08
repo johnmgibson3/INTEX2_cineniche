@@ -1,4 +1,3 @@
-// src/components/Movie/MovieDetails.tsx
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { Movie } from '../../types/Movie';
@@ -10,22 +9,37 @@ interface MovieDetailsProps {
 
 const genreLabels: Record<string, string> = {
   action: 'Action',
-  dramas: 'Drama',
-  comedies: 'Comedy',
-  horrorMovies: 'Horror',
-  documentaries: 'Documentary',
-  musicals: 'Musical',
-  realityTv: 'Reality TV',
-  thrillers: 'Thriller',
-  tvComedies: 'TV Comedy',
-  tvDramas: 'TV Drama',
-  spirituality: 'Spirituality',
+  adventure: 'Adventure',
   animeSeriesInternationalTvShows: 'Anime/Intl. TV',
+  britishTvShowsDocuseriesInternationalTvShows: 'British/Intl. TV Shows',
   children: 'Children & Family',
+  comedies: 'Comedies',
+  comediesDramasInternationalMovies: 'Comedies/Dramas Intl.',
+  comediesInternationalMovies: 'Comedies Intl.',
+  comediesRomanticMovies: 'Romantic Comedies',
+  crimeTvShowsDocuseries: 'Crime & Docuseries',
+  documentaries: 'Documentaries',
+  documentariesInternationalMovies: 'Docs Intl.',
+  docuseries: 'Docuseries',
+  dramas: 'Dramas',
+  dramasInternationalMovies: 'Dramas Intl.',
+  dramasRomanticMovies: 'Romantic Dramas',
+  familyMovies: 'Family Movies',
+  fantasy: 'Fantasy',
+  horrorMovies: 'Horror',
   internationalMoviesThrillers: 'Intl. Thrillers',
-  comediesRomanticMovies: 'Romantic Comedy',
-  dramasRomanticMovies: 'Romantic Drama',
-  // Add more genre labels as needed...
+  internationalTvShowsRomanticTvShowsTvDramas: 'Intl. Romance/Drama TV',
+  kidsTv: 'Kids TV',
+  languageTvShows: 'Language TV',
+  musicals: 'Musicals',
+  natureTv: 'Nature TV',
+  realityTv: 'Reality TV',
+  spirituality: 'Spirituality',
+  tvAction: 'TV Action',
+  tvComedies: 'TV Comedies',
+  tvDramas: 'TV Dramas',
+  talkShowsTvComedies: 'Talk Shows/Comedies',
+  thrillers: 'Thrillers',
 };
 
 const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose }) => {
@@ -50,6 +64,21 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose }) => {
           }}
         />
         <div>
+          {movie.showId && (
+            <p>
+              <strong>ID:</strong> {movie.showId}
+            </p>
+          )}
+          {movie.type && (
+            <p>
+              <strong>Type:</strong> {movie.type}
+            </p>
+          )}
+          {movie.director && (
+            <p>
+              <strong>Director:</strong> {movie.director}
+            </p>
+          )}
           {movie.releaseYear && (
             <p>
               <strong>Release Year:</strong> {movie.releaseYear}
