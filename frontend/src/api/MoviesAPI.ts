@@ -1,6 +1,6 @@
 import { Movie } from '../types/Movie';
 
-const API_URL = 'https://localhost:5000/api/Movies';
+const API_URL = 'https://localhost:5000/api/Movies/All';
 
 export const getMovies = async (): Promise<Movie[] | null> => {
   try {
