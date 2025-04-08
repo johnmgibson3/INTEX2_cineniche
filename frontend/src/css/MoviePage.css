@@ -1,123 +1,55 @@
 /* MoviePage.css */
 
-.movie-page {
-  background-color: #f7b5b5; /* Light red background */
-  min-height: 100vh;
-  padding: 2rem 1rem;
-  color: #222;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* Search bar + filter */
-.search-filter {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.search-filter input {
-  max-width: 300px;
-}
-
-/* Section container – no card styling */
+/* Section wrapper */
 .movie-section {
   margin-bottom: 3rem;
-  padding: 1rem 0;
 }
 
-/* Left-aligned section header */
+/* Section title */
 .movie-section h5 {
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 600;
   margin-bottom: 1rem;
-  color: #000 !important;
-  font-size: 1.2rem;
-  text-align: left; /* align left */
+  color: #ffffff;
 }
 
-/* Horizontal scrolling row */
-.movie-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
-  scroll-snap-type: x mandatory;
-}
-
-.movie-row::-webkit-scrollbar {
-  display: none;
-}
-
+/* Movie card */
 .movie-poster {
-  scroll-snap-align: start;
+  text-align: center;
+  background-color: #212529; /* Slightly lighter than background */
+  border-radius: 8px;
+  margin: 0.25rem;
+  transition:
+    transform 0.2s ease-in-out,
+    background-color 0.2s ease;
 }
 
-/* Poster style */
+/* Hover effect */
+.movie-poster:hover {
+  transform: translateY(-4px);
+}
+
+/* Poster image */
 .movie-poster img {
-  width: 100px;
-  height: 150px;
-  border-radius: 5px;
-  object-fit: cover;
-  transition: transform 0.2s ease-in-out;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  height: 240px;
+  border-radius: 2px;
+  transition: transform 0.3s ease;
 }
 
+/* Optional: zoom on image hover */
 .movie-poster img:hover {
   transform: scale(1.05);
 }
 
-/* Title under poster */
-.movie-title {
-  font-size: 0.85rem;
-  text-align: center;
+/* Movie title text */
+.movie-poster p {
+  color: #ffffff;
+  font-size: 0.875rem;
   margin-top: 0.5rem;
-  color: #444;
 }
 
-/* Arrow icon */
-.arrow-icon {
-  font-size: 1.5rem;
-  color: #555;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.arrow-icon:hover {
-  transform: scale(1.1);
-}
-
-.movie-row {
-  overflow-x: auto;
-  white-space: nowrap;
-  padding-bottom: 0.5rem;
-}
-
-.movie-poster {
-  flex: 0 0 auto;
-}
-
-.carousel-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  text-align: left;
-  color: white;
-  margin-left: 0.5rem;
-}
-
-body {
-  background-color: #1c1c1e;
-  color: white;
-}
-
-.movie-section {
-  background-color: #1c1c1e;
-  padding: 1rem 0;
-  margin-bottom: 2rem;
-  width: 100%;
-}
-
-.bg-dark {
-  background-color: #1c1c1e;
+/* Carousel navigation arrows */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1);
 }
