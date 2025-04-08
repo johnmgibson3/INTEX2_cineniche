@@ -50,7 +50,7 @@ const Header: React.FC = () => {
       <div className="container-fluid position-relative d-flex align-items-center">
         <Link to="/" className="logo d-flex align-items-center me-auto">
           {/* Uncomment if you have a logo */}
-          {/* <img src="/assets/img/logo.png" alt="" /> */}
+          <img src="/img/logo.png" alt="Logo" />
           <h1 className="sitename">CineNiche</h1>
         </Link>
 

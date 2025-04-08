@@ -1,0 +1,75 @@
+/* ButtonFixes.css */
+/* This file provides fixes for text and button styling issues */
+
+/* Global text color fix for dark backgrounds */
+.dark-background,
+.section.dark-background,
+section.dark-background,
+.about.section,
+.services.section,
+.about .tab-content p,
+.services .service-item .description {
+  color: #f5f5f5 !important; /* Light text color for dark backgrounds */
+}
+
+/* Fix for all button-styled links */
+a.btn-getstarted,
+a.btn-get-started,
+a.cta-btn,
+a.btn {
+  text-decoration: none !important;
+  color: #ffffff !important;
+  display: inline-block;
+}
+
+/* Header specific button fixes */
+.header .btn-getstarted,
+.header .btn-getstarted:focus {
+  color: var(--contrast-color, #ffffff) !important;
+  text-decoration: none !important;
+}
+
+/* Hero section button fixes */
+.hero .btn-get-started {
+  color: var(--default-color, #ffffff) !important;
+  text-decoration: none !important;
+}
+
+/* Call to action button fixes */
+.call-to-action .cta-btn {
+  color: var(--contrast-color, #ffffff) !important;
+  text-decoration: none !important;
+}
+
+/* Override any hover styles that might be causing issues */
+a.btn-getstarted:hover,
+a.btn-get-started:hover,
+a.cta-btn:hover,
+a.btn:hover {
+  text-decoration: none !important;
+}
+
+/* Fix text colors in the about section */
+.about h3,
+.about .nav-link,
+.about .tab-content h4,
+.about .tab-content p,
+.about .fst-italic,
+.services .service-item .description,
+.services .service-item .title a {
+  color: #f5f5f5 !important;
+}
+
+/* Fix for service item descriptions */
+.section .description {
+  color: #e0e0e0 !important;
+}
+
+/* Fix for all paragraphs on dark backgrounds */
+.dark-background p,
+section.dark-background p,
+.section.dark-background p,
+.about.section p,
+.services.section p {
+  color: #e0e0e0 !important;
+}
