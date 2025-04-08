@@ -5,7 +5,7 @@ namespace INTEX.API.Models;
 
 public partial class MoviesRating
 {
-    public int? UserId { get; set; }
+    public string? UserId { get; set; }
 
     public string? ShowId { get; set; }
 

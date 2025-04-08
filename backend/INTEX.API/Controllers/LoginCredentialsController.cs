@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using INTEX.API.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace INTEX.API.Controllers;
 
@@ -9,62 +11,85 @@ namespace INTEX.API.Controllers;
 public class LoginCredentialsController : ControllerBase
 {
     private readonly MoviesContext _context;
+    private readonly UserManager<LoginCredentials> _userManager;
 
-    public LoginCredentialsController(MoviesContext context)
+    public LoginCredentialsController(
+        MoviesContext context,
+        UserManager<LoginCredentials> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
     [HttpGet("All")]
     public IActionResult GetAll(int pageSize = 10, int pageNum = 1)
     {
-        var totalCount = _context.LoginCredentials.Count();
-
-        var credentials = _context.LoginCredentials
+        var totalCount = _context.Users.Count();
+        var credentials = _context.Users
             .Skip((pageNum - 1) * pageSize)
             .Take(pageSize)
             .ToList();
-
         return Ok(new { Credentials = credentials, TotalCount = totalCount });
     }
 
     [HttpGet("{userId}")]
-    public IActionResult Get(int userId)
+    public async Task<IActionResult> Get(string userId)
     {
-        var cred = _context.LoginCredentials.Find(userId);
+        var cred = await _userManager.FindByIdAsync(userId);
         if (cred == null) return NotFound(new { message = "Credentials not found" });
-
         return Ok(cred);
     }
 
     [HttpPost("Add")]
-    public IActionResult Add([FromBody] LoginCredentials newCred)
+    public async Task<IActionResult> Add([FromBody] LoginCredentials newCred)
     {
-        _context.LoginCredentials.Add(newCred);
-        _context.SaveChanges();
-        return Ok(newCred);
+        // Use UserManager to create users with proper password hashing
+        var result = await _userManager.CreateAsync(newCred, "TemporaryPassword123!");
+
+        if (result.Succeeded)
+        {
+            return Ok(newCred);
+        }
+
+        return BadRequest(result.Errors);
     }
 
     [HttpPut("Update/{userId}")]
-    public IActionResult Update(int userId, [FromBody] LoginCredentials updated)
+    public async Task<IActionResult> Update(string userId, [FromBody] LoginCredentials updated)
     {
-        var existing = _context.LoginCredentials.Find(userId);
+        var existing = await _userManager.FindByIdAsync(userId);
         if (existing == null) return NotFound(new { message = "Credentials not found" });
 
-        _context.Entry(existing).CurrentValues.SetValues(updated);
-        _context.SaveChanges();
+        // Update user properties
+        existing.UserName = updated.UserName;
+        existing.Email = updated.Email;
+        existing.PhoneNumber = updated.PhoneNumber;
+        existing.AdminStatus = updated.AdminStatus;
+        // Add other properties as needed
 
-        return Ok(existing);
+        var result = await _userManager.UpdateAsync(existing);
+
+        if (result.Succeeded)
+        {
+            return Ok(existing);
+        }
+
+        return BadRequest(result.Errors);
     }
 
     [HttpDelete("Delete/{userId}")]
-    public IActionResult Delete(int userId)
+    public async Task<IActionResult> Delete(string userId)
     {
-        var cred = _context.LoginCredentials.Find(userId);
+        var cred = await _userManager.FindByIdAsync(userId);
         if (cred == null) return NotFound(new { message = "Credentials not found" });
 
-        _context.LoginCredentials.Remove(cred);
-        _context.SaveChanges();
-        return NoContent();
+        var result = await _userManager.DeleteAsync(cred);
+
+        if (result.Succeeded)
+        {
+            return NoContent();
+        }
+
+        return BadRequest(result.Errors);
     }
 }

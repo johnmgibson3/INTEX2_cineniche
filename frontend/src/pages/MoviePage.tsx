@@ -1,83 +1,67 @@
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import '../css/MoviePage.css';
-import { Container } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
 import MovieCarousel from '../components/Movie/MovieCarousel';
+import { fetchAllMovies } from '../api/MoviesAPI';
+import { Movie } from '../types/Movie';
 
-const movieCategories = [
-  { title: 'Your Library', key: 'library' },
-  { title: 'Recommended for you', key: 'recommended' },
-  { title: 'Comedies', key: 'comedies' },
-  { title: 'Horror', key: 'horror' },
-];
-
-// Mock example movie data
-const mockMovies = [
+const genreKeys: { key: keyof Movie; label: string }[] = [
+  { key: 'action', label: 'Action & Adventure' },
+  { key: 'animeSeriesInternationalTvShows', label: 'Anime & Intl. TV Shows' },
   {
-    id: 1,
-    title: 'Example Movie',
-    imageUrl: '/img/poster1.jpg',
-    genre: 'Comedy',
+    key: 'britishTvShowsDocuseriesInternationalTvShows',
+    label: 'British/Intl. TV',
   },
+  { key: 'children', label: 'Children & Family' },
+  { key: 'comedies', label: 'Comedies' },
+  { key: 'comediesDramasInternationalMovies', label: 'Comedies/Dramas Intl.' },
+  { key: 'comediesInternationalMovies', label: 'Comedies Intl.' },
+  { key: 'comediesRomanticMovies', label: 'Romantic Comedies' },
+  { key: 'crimeTvShowsDocuseries', label: 'Crime & Docuseries' },
+  { key: 'documentaries', label: 'Documentaries' },
+  { key: 'documentariesInternationalMovies', label: 'Docs Intl.' },
+  { key: 'docuseries', label: 'Docuseries' },
+  { key: 'dramas', label: 'Dramas' },
+  { key: 'dramasInternationalMovies', label: 'Dramas Intl.' },
+  { key: 'dramasRomanticMovies', label: 'Romantic Dramas' },
+  { key: 'familyMovies', label: 'Family Movies' },
+  { key: 'fantasy', label: 'Fantasy' },
+  { key: 'horrorMovies', label: 'Horror' },
+  { key: 'internationalMoviesThrillers', label: 'Intl. Thrillers' },
   {
-    id: 2,
-    title: 'Another One',
-    imageUrl: '/img/poster2.jpg',
-    genre: 'Horror',
+    key: 'internationalTvShowsRomanticTvShowsTvDramas',
+    label: 'Intl. Romance/Drama TV',
   },
-  { id: 3, title: 'Sample Film', imageUrl: '/img/poster3.jpg', genre: 'Drama' },
+  { key: 'kidsTv', label: 'Kids TV' },
+  { key: 'languageTvShows', label: 'Language TV Shows' },
+  { key: 'musicals', label: 'Musicals' },
+  { key: 'natureTv', label: 'Nature TV' },
+  { key: 'realityTv', label: 'Reality TV' },
+  { key: 'spirituality', label: 'Spirituality' },
+  { key: 'tvAction', label: 'TV Action' },
+  { key: 'tvComedies', label: 'TV Comedies' },
+  { key: 'tvDramas', label: 'TV Dramas' },
+  { key: 'talkShowsTvComedies', label: 'Talk Shows / Comedies' },
+  { key: 'thrillers', label: 'Thrillers' },
 ];
 
 const MoviePage: React.FC = () => {
-  return (
-    <main className="movie-page">
-      <Container>
-        {/* Search & Filters */}
-        <div className="search-filter">
-          <div className="dropdown">
-            <button
-              className="btn btn-outline-secondary dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-            >
-              All
-            </button>
-            <ul className="dropdown-menu">
-              <li>
-                <a className="dropdown-item" href="#">
-                  Genre
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Director
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Year
-                </a>
-              </li>
-            </ul>
-          </div>
-          <input
-            className="form-control"
-            type="text"
-            placeholder="Search Movies..."
-          />
-        </div>
+  const [movies, setMovies] = useState<Movie[]>([]);
 
-        {/* Movie Carousels */}
-        {movieCategories.map((category) => (
+  useEffect(() => {
+    fetchAllMovies().then(setMovies);
+  }, []);
+
+  return (
+    <div className="page-wrapper bg-dark text-white">
+      <div className="container py-4">
+        {genreKeys.map(({ key, label }) => (
           <MovieCarousel
-            key={category.key}
-            title={category.title}
-            movies={mockMovies}
+            key={key}
+            title={label}
+            filter={(movie) => movie[key] === 1}
           />
         ))}
-      </Container>
-    </main>
+      </div>
+    </div>
   );
 };
 

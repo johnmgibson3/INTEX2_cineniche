@@ -1,5 +1,5 @@
 export interface Rating {
-  userId?: number;
+  userId?: string;
   showId?: string;
   rating?: number;
 }

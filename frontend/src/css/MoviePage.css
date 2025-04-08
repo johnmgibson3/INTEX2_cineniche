@@ -87,3 +87,37 @@
 .arrow-icon:hover {
   transform: scale(1.1);
 }
+
+.movie-row {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 0.5rem;
+}
+
+.movie-poster {
+  flex: 0 0 auto;
+}
+
+.carousel-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: left;
+  color: white;
+  margin-left: 0.5rem;
+}
+
+body {
+  background-color: #1c1c1e;
+  color: white;
+}
+
+.movie-section {
+  background-color: #1c1c1e;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.bg-dark {
+  background-color: #1c1c1e;
+}

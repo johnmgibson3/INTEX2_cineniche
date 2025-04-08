@@ -16,17 +16,12 @@ public class MoviesController : ControllerBase
     }
 
     [HttpGet("All")]
-    public IActionResult GetAll(int pageSize = 10, int pageNum = 1)
+    public async Task<IActionResult> GetAllMovies()
     {
-        var totalCount = _context.MoviesTitles.Count();
-
-        var movies = _context.MoviesTitles
-            .Skip((pageNum - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-
-        return Ok(new { Movies = movies, TotalCount = totalCount });
+        var movies = await _context.MoviesTitles.ToListAsync();
+        return Ok(movies);
     }
+
 
     [HttpGet("{showId}")]
     public IActionResult Get(string showId)
@@ -67,4 +62,5 @@ public class MoviesController : ControllerBase
         _context.SaveChanges();
         return NoContent();
     }
+    
 }
