@@ -1,6 +1,5 @@
 export const genreMap: Record<string, string> = {
-  action: 'Action',
-  adventure: 'Adventure',
+  action: 'Action/Adventure',
   animeSeriesInternationalTvShows: 'Anime/Intl. TV',
   britishTvShowsDocuseriesInternationalTvShows: 'British/Intl. TV Shows',
   children: 'Children & Family',

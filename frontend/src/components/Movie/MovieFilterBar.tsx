@@ -8,11 +8,16 @@ type FilterOptions = {
 };
 
 type Props = {
-  genres: string[]; // all unique genres from dataset
+  genres: string[];
   onFilterChange: (options: FilterOptions) => void;
+  onClear?: () => void;
 };
 
-const MovieFilterBar: React.FC<Props> = ({ genres, onFilterChange }) => {
+const MovieFilterBar: React.FC<Props> = ({
+  genres,
+  onFilterChange,
+  onClear,
+}) => {
   const [searchText, setSearchText] = useState('');
   const [genre, setGenre] = useState('');
   const [sortBy, setSortBy] = useState<FilterOptions['sortBy']>('');
@@ -25,7 +30,7 @@ const MovieFilterBar: React.FC<Props> = ({ genres, onFilterChange }) => {
     setSearchText('');
     setGenre('');
     setSortBy('');
-    onFilterChange({ searchText: '', genre: '', sortBy: '' });
+    onClear?.();
   };
 
   return (

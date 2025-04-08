@@ -1,7 +1,9 @@
+// MoviePage.tsx
 import React, { useEffect, useState } from 'react';
 import { fetchAllMovies } from '../api/MoviesAPI';
 import MovieCarousel from '../components/Movie/MovieCarousel';
 import MovieFilterBar from '../components/Movie/MovieFilterBar';
+import '../css/MoviePage.css';
 import { Movie } from '../types/Movie';
 import { genreMap } from '../constants/genreMap';
 import Paginator from '../components/Movie/Paginator';
@@ -10,6 +12,7 @@ const MoviePage: React.FC = () => {
   const [allMovies, setAllMovies] = useState<Movie[]>([]);
   const [filteredMovies, setFilteredMovies] = useState<Movie[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filterApplied, setFilterApplied] = useState(false);
   const itemsPerPage = 12;
 
   useEffect(() => {
@@ -21,7 +24,9 @@ const MoviePage: React.FC = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredMovies.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filterApplied
+    ? filteredMovies.slice(indexOfFirstItem, indexOfLastItem)
+    : filteredMovies;
   const totalPages = Math.ceil(filteredMovies.length / itemsPerPage);
 
   const handleFilterChange = ({
@@ -69,8 +74,15 @@ const MoviePage: React.FC = () => {
         break;
     }
 
-    setCurrentPage(1);
     setFilteredMovies(result);
+    setCurrentPage(1);
+    setFilterApplied(true);
+  };
+
+  const handleClear = () => {
+    setFilteredMovies(allMovies);
+    setCurrentPage(1);
+    setFilterApplied(false);
   };
 
   return (
@@ -79,22 +91,36 @@ const MoviePage: React.FC = () => {
         <MovieFilterBar
           genres={Object.values(genreMap)}
           onFilterChange={handleFilterChange}
+          onClear={handleClear}
         />
 
-        <MovieCarousel
-          title="Filtered Movies"
-          filter={(movie) =>
-            currentItems.some((m) => m.showId === movie.showId)
-          }
-        />
-
-        <div className="d-flex justify-content-center mt-4">
-          <Paginator
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
-        </div>
+        {filterApplied ? (
+          <>
+            <MovieCarousel
+              title="Filtered Movies"
+              filter={(movie) =>
+                currentItems.some((m) => m.showId === movie.showId)
+              }
+            />
+            <div className="d-flex justify-content-center mt-4">
+              <Paginator
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            {Object.entries(genreMap).map(([genreKey, genreLabel]) => (
+              <MovieCarousel
+                key={genreKey}
+                title={genreLabel}
+                filter={(movie) => movie[genreKey as keyof Movie] === 1}
+              />
+            ))}
+          </>
+        )}
       </div>
     </div>
   );

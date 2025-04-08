@@ -6,6 +6,7 @@ import MovieFilterBar from '../components/Movie/MovieFilterBar';
 import { Movie } from '../types/Movie';
 import { genreMap } from '../constants/genreMap';
 import Paginator from '../components/Movie/Paginator';
+import '../css/AdminMovieTable.css';
 
 const AdminMovieTable: React.FC = () => {
   const [allMovies, setAllMovies] = useState<Movie[]>([]);
