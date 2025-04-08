@@ -16,7 +16,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<MoviesContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("MovieConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
 
 builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactAppBlah",
