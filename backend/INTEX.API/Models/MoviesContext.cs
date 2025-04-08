@@ -104,6 +104,8 @@ public partial class MoviesContext : DbContext
             entity.Property(e => e.UserId).HasColumnName("user_id");
             entity.Property(e => e.Zip).HasColumnName("zip");
 
+        });
+
         modelBuilder.Entity<LoginCredentials>(entity =>
         {
             entity.ToTable("login_credentials");
@@ -124,7 +126,6 @@ public partial class MoviesContext : DbContext
             entity.Property(e => e.admin_status).HasColumnName("admin_status");
         });
 
-        });
 
         OnModelCreatingPartial(modelBuilder);
     }
