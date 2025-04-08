@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using INTEX.API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using INTEX.API.Services;
