@@ -1,6 +1,7 @@
 import { Rating } from '../types/Rating';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://localhost:5000/api';
+const API_URL =
+  'https://intexapi-1-1-backend-g5b4ckc3cwb2e5en.eastus-01.azurewebsites.net/api';
 
 export const getRatings = async (): Promise<Rating[] | null> => {
   try {

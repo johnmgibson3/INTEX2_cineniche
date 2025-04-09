@@ -1,5 +1,5 @@
 const API_URL =
-  'https://intexapi-1-1-backend-g5b4ckc3cwb2e5en.eastus-01.azurewebsites.net/api';
+  'https://intexapi-1-1-backend-g5b4ckc3cwb2e5en.eastus-01.azurewebsites.net';
 
 export const registerUser = async (
   username: string,
@@ -7,7 +7,7 @@ export const registerUser = async (
   password: string
 ): Promise<{ success: boolean; message: string }> => {
   try {
-    const res = await fetch(`${API_URL}/register`, {
+    const res = await fetch(`${API_URL}/api/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, email, password }),
@@ -24,7 +24,7 @@ export const registerUser = async (
 };
 
 export async function fetchUser() {
-  const res = await fetch('https://localhost:5000/api/Auth/me', {
+  const res = await fetch(`${API_URL}/api/Auth/me`, {
     credentials: 'include',
   });
   if (!res.ok) throw new Error('Not authenticated');
@@ -32,7 +32,7 @@ export async function fetchUser() {
 }
 
 export async function logoutUser() {
-  await fetch('https://localhost:5000/logout', {
+  await fetch(`${API_URL}/logout`, {
     method: 'POST',
     credentials: 'include',
   });

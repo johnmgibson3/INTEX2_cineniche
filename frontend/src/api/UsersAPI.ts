@@ -1,7 +1,7 @@
 import { User } from '../types/User';
 
 const API_URL =
-  import.meta.env.VITE_API_URL || 'http://localhost:5000/api/users';
+  'https://intexapi-1-1-backend-g5b4ckc3cwb2e5en.eastus-01.azurewebsites.net/api';
 
 export const getUsers = async (): Promise<User[] | null> => {
   try {
