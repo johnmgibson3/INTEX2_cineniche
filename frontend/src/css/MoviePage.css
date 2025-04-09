@@ -15,30 +15,62 @@
 
 /* Movie card */
 .movie-poster {
-  text-align: center;
-  background-color: #212529; /* Slightly lighter than background */
+  width: 200px;
+  height: 430px;
+  margin: 0;
+  overflow: hidden;
   border-radius: 8px;
-  margin: 0.25rem;
-  transition:
-    transform 0.2s ease-in-out,
-    background-color 0.2s ease;
+  position: relative;
+  flex: 0 0 auto;
 }
 
 /* Hover effect */
 .movie-poster:hover {
-  transform: translateY(-4px);
+  transform: translateY(0px);
+  transform: scale(1.01);
+  z-index: 3;
 }
 
 /* Poster image */
 .movie-poster img {
-  height: 240px;
-  border-radius: 2px;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 50px;
   transition: transform 0.3s ease;
+}
+
+.poster-gradient {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* Full coverage */
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.4),
+    rgba(0, 0, 0, 0.7)
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: 8px; /* ⬅️ Match the poster’s border-radius */
+  margin: 0;
+  padding: 0;
+}
+
+.movie-poster:hover .poster-gradient {
+  opacity: 1; /* Fade in on hover */
+  transform: scale(1.5);
 }
 
 /* Optional: zoom on image hover */
 .movie-poster img:hover {
   transform: scale(1.05);
+  z-index: 2;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
 /* Movie title text */
@@ -52,4 +84,57 @@
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
   filter: invert(1);
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 50%;
+}
+
+.carousel {
+  padding: 0;
+  max-width: 100%;
+}
+
+.movie-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  overflow-x: auto;
+  width: 100%;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  position: relative;
+}
+
+.movie-row::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+.poster-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.4rem 0;
+  text-align: center;
+  color: #fff;
+  font-size: 2.65rem;
+  font-weight: bold;
+
+  opacity: 0;
+  transform: translateY(100);
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.movie-poster:hover .poster-title {
+  transform: translateY(-1.5rem);
+  opacity: 1;
+}
+
+.movie-poster:hover .poster-default-title {
+  opacity: 0;
 }
