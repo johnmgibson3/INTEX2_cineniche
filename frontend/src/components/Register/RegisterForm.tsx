@@ -5,9 +5,10 @@ import { Link } from 'react-router-dom';
 
 export default function RegisterForm() {
   const [uid, setUid] = useState('');
-  const [email, setEmail] = useState('');  // New email state
+  const [email, setEmail] = useState(''); // New email state
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  //const [message, setMessage] = useState('');
   const [message, setMessage] = useState('');
   const [showPassword] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
@@ -18,7 +19,7 @@ export default function RegisterForm() {
     lower: /[a-z]/.test(password),
     digit: /\d/.test(password),
     special: /[^A-Za-z0-9]/.test(password),
-    unique: new Set(password).size >= 6
+    unique: new Set(password).size >= 6,
   };
   const allValid = Object.values(rules).every(Boolean);
 
@@ -34,10 +35,11 @@ export default function RegisterForm() {
     }
 
     try {
-      const response = await fetch('https://localhost:5000/api/Auth/register', { // Updated URL
+      const response = await fetch('https://localhost:5000/api/Auth/register', {
+        // Updated URL
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',  // Needed for cookie-based auth if required
+        credentials: 'include', // Needed for cookie-based auth if required
         body: JSON.stringify({ username: uid, email, password }), // Updated payload
       });
 
@@ -106,14 +108,34 @@ export default function RegisterForm() {
             </label>
           </p>
 
-          {passwordTouched && (<ul style={{ fontSize: '0.85rem', marginTop: '0.5rem', color: '#ccc' }}>
-            <li style={{ color: rules.length ? 'green' : 'red' }}>At least 14 characters</li>
-            <li style={{ color: rules.upper ? 'green' : 'red' }}>One uppercase letter</li>
-            <li style={{ color: rules.lower ? 'green' : 'red' }}>One lowercase letter</li>
-            <li style={{ color: rules.digit ? 'green' : 'red' }}>One number</li>
-            <li style={{ color: rules.special ? 'green' : 'red' }}>One special character</li>
-            <li style={{ color: rules.unique ? 'green' : 'red' }}>At least 6 unique characters</li>
-          </ul>)}
+          {passwordTouched && (
+            <ul
+              style={{
+                fontSize: '0.85rem',
+                marginTop: '0.5rem',
+                color: '#ccc',
+              }}
+            >
+              <li style={{ color: rules.length ? 'green' : 'red' }}>
+                At least 14 characters
+              </li>
+              <li style={{ color: rules.upper ? 'green' : 'red' }}>
+                One uppercase letter
+              </li>
+              <li style={{ color: rules.lower ? 'green' : 'red' }}>
+                One lowercase letter
+              </li>
+              <li style={{ color: rules.digit ? 'green' : 'red' }}>
+                One number
+              </li>
+              <li style={{ color: rules.special ? 'green' : 'red' }}>
+                One special character
+              </li>
+              <li style={{ color: rules.unique ? 'green' : 'red' }}>
+                At least 6 unique characters
+              </li>
+            </ul>
+          )}
 
           <p>
             <label htmlFor="confirmPassword">
@@ -130,16 +152,20 @@ export default function RegisterForm() {
           </p>
 
           <p>
-            <button type="submit" disabled={!allValid}>Register</button>
+            <button type="submit" disabled={!allValid}>
+              Register
+            </button>
           </p>
 
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
             Already a member?{' '}
-            <Link to="/login" style={{ color: '#007bff', textDecoration: 'underline' }}>
+            <Link
+              to="/login"
+              style={{ color: '#007bff', textDecoration: 'underline' }}
+            >
               Sign-In
             </Link>
           </p>
-          
         </form>
       </div>
     </div>

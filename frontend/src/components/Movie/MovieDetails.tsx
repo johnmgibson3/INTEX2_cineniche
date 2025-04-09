@@ -46,9 +46,9 @@ const genreLabels: Record<string, string> = {
 };
 
 const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose }) => {
-  const posterUrl = `https://moviepostersintex11.blob.core.windows.net/intex/Movie%20Posters/${encodeURIComponent(movie.title ?? 'default')}.jpg`;
   const [averageRating, setAverageRating] = useState<number | null>(null);
-  const [srcAttempted, setSrcAttempted] = useState(0);
+  //const [srcAttempted, setSrcAttempted] = useState(0);
+  const [srcAttempted] = useState(0);
   const posterUrls = getMoviePosterUrl(movie.title ?? '');
 
   const genres = Object.entries(movie)

@@ -24,7 +24,11 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, filter }) => {
     const loadMovies = async () => {
       try {
         const movies = await fetchAllMovies();
-        const filtered = filter ? movies.filter(filter) : movies;
+        const filtered = movies
+          ? filter
+            ? movies.filter(filter)
+            : movies
+          : [];
         setAllMovies(filtered);
       } catch (err) {
         console.error('Failed to load movies:', err);

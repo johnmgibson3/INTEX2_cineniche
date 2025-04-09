@@ -11,8 +11,7 @@ import MoviePage from './pages/MoviePage';
 import AdminMovieTable from './pages/AdminMovieTable';
 import ProtectedRoute from './components/RouteProtection/ProtectedRoute';
 // admin is ready to be enforced simply slap this around admin path
-import AdminRoute from './components/RouteProtection/AdminRoute';
-
+//import AdminRoute from './components/RouteProtection/AdminRoute';
 
 function App() {
   return (
@@ -27,10 +26,10 @@ function App() {
             path="movies"
             element={
               <ProtectedRoute>
-              <div className="page-wrapper bg-dark text-white">
-                <MoviePage />
-              </div>
-            </ProtectedRoute>
+                <div className="page-wrapper bg-dark text-white">
+                  <MoviePage />
+                </div>
+              </ProtectedRoute>
             }
           />
           <Route path="admin" element={<AdminMovieTable />} />
