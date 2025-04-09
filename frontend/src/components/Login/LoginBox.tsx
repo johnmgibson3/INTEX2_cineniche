@@ -14,18 +14,19 @@ export default function LoginForm() {
   const [showPassword] = useState(false);
 
   const sendLogin = async (e: { preventDefault: () => void }) => {
-
-
     e.preventDefault();
 
     try {
       // Replace with your actual login logic
-      const response = await fetch('https://localhost:5000/api/Auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: uid, password }),
-        credentials: 'include',
-      });
+      const response = await fetch(
+        'https://intexapi-1-1-backend-g5b4ckc3cwb2e5en.eastus-01.azurewebsites.net/api/Auth/login',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: uid, password }),
+          credentials: 'include',
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
@@ -78,14 +79,15 @@ export default function LoginForm() {
             {message}
           </p>
 
-
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
             Not a member?{' '}
-            <Link to="/register" style={{ color: '#007bff', textDecoration: 'underline' }}>
+            <Link
+              to="/register"
+              style={{ color: '#007bff', textDecoration: 'underline' }}
+            >
               Create an account
             </Link>
           </p>
-
         </form>
       </div>
     </div>
