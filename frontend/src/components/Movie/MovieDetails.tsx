@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { Movie } from '../../types/Movie';
+import { getAverageRating } from '../../api/RatingsAPI';
+import '../../css/MoviePage.css';
+import { getMoviePosterUrl } from '../../constants/movieImage';
 
 interface MovieDetailsProps {
   movie: Movie;
@@ -44,10 +47,28 @@ const genreLabels: Record<string, string> = {
 
 const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose }) => {
   const posterUrl = `https://moviepostersintex11.blob.core.windows.net/intex/Movie%20Posters/${encodeURIComponent(movie.title ?? 'default')}.jpg`;
+  const [averageRating, setAverageRating] = useState<number | null>(null);
+  const [srcAttempted, setSrcAttempted] = useState(0);
+  const posterUrls = getMoviePosterUrl(movie.title ?? '');
 
   const genres = Object.entries(movie)
     .filter(([key, value]) => genreLabels[key] && value === 1)
     .map(([key]) => genreLabels[key]);
+
+  useEffect(() => {
+    const fetchAverageRating = async () => {
+      try {
+        if (movie.showId) {
+          const avg = await getAverageRating(movie.showId);
+          setAverageRating(avg);
+        }
+      } catch (error) {
+        console.error('Error fetching average rating:', error);
+      }
+    };
+
+    fetchAverageRating();
+  }, [movie.showId]);
 
   return (
     <Modal show onHide={onClose} centered size="lg">
@@ -56,7 +77,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose }) => {
       </Modal.Header>
       <Modal.Body className="d-flex gap-4">
         <img
-          src={posterUrl}
+          src={posterUrls[srcAttempted] || posterUrls[posterUrls.length - 1]}
           alt={movie.title}
           style={{ height: '300px', borderRadius: '8px', objectFit: 'cover' }}
           onError={(e) => {
@@ -64,11 +85,6 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose }) => {
           }}
         />
         <div>
-          {movie.showId && (
-            <p>
-              <strong>ID:</strong> {movie.showId}
-            </p>
-          )}
           {movie.type && (
             <p>
               <strong>Type:</strong> {movie.type}
@@ -113,6 +129,51 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose }) => {
             <p className="mt-3" style={{ whiteSpace: 'pre-line' }}>
               {movie.description}
             </p>
+          )}
+          {averageRating === null ? (
+            <p className="mt-2" style={{ color: '#ccc' }}>
+              Be the first to rate this movie!
+            </p>
+          ) : (
+            <div
+              className="mt-2 d-flex align-items-center"
+              style={{ fontSize: '0.95rem' }}
+            >
+              <strong style={{ marginRight: '0.5rem' }}>
+                Average User Rating:
+              </strong>
+              {Array.from({ length: 5 }, (_, i) => {
+                const diff = averageRating - i;
+                if (diff >= 1) {
+                  return (
+                    <span key={i} style={{ color: '#ffc107' }}>
+                      ★
+                    </span>
+                  );
+                } else if (diff >= 0.25 && diff < 0.75) {
+                  return (
+                    <span key={i} style={{ color: '#ffc107' }}>
+                      ⭐
+                    </span>
+                  );
+                } else {
+                  return (
+                    <span key={i} style={{ color: '#ccc' }}>
+                      ★
+                    </span>
+                  );
+                }
+              })}
+              <span
+                style={{
+                  marginLeft: '0.5rem',
+                  color: '#aaa',
+                  fontSize: '0.85rem',
+                }}
+              >
+                ({averageRating.toFixed(1)} / 5)
+              </span>
+            </div>
           )}
         </div>
       </Modal.Body>

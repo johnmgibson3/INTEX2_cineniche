@@ -1,27 +1,37 @@
 import { useState } from 'react';
+
+import { useNavigate } from 'react-router-dom';
 //import React, { useState } from 'react';
+
 import './LoginBox.css';
+import { Link } from 'react-router-dom';
 
 export default function LoginForm() {
+  const navigate = useNavigate();
   const [uid, setUid] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [showPassword] = useState(false);
 
   const sendLogin = async (e: { preventDefault: () => void }) => {
+
+
     e.preventDefault();
+
     try {
       // Replace with your actual login logic
-      const response = await fetch('/api/login', {
+      const response = await fetch('https://localhost:5000/api/Auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uid, password }),
+        body: JSON.stringify({ username: uid, password }),
+        credentials: 'include',
       });
 
       const data = await response.json();
       if (response.ok) {
         // handle successful login
         setMessage('Login successful!');
+        setTimeout(() => navigate('/movies'), 1000); // Redirect after 1s
       } else {
         setMessage(data.error || 'Login failed');
       }
@@ -67,6 +77,15 @@ export default function LoginForm() {
           <p id="message" style={{ color: 'red' }}>
             {message}
           </p>
+
+
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            Not a member?{' '}
+            <Link to="/register" style={{ color: '#007bff', textDecoration: 'underline' }}>
+              Create an account
+            </Link>
+          </p>
+
         </form>
       </div>
     </div>

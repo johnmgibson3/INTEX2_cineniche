@@ -19,8 +19,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MoviesContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
 
-builder.Services.AddDbContext<MoviesContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("MovieConnection")));
+
+//builder.Services.AddDbContext<MoviesContext>(options =>
+//    options.UseSqlite(builder.Configuration.GetConnectionString("MovieConnection")));
+
 
 builder.Services.AddAuthorization();
 
@@ -46,15 +48,20 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredUniqueChars = 6;           // Require at least 6 unique characters
 });
 
-builder.Services.AddScoped<IUserClaimsPrincipalFactory<LoginCredentials>, CustomUserClaimsPrincipalFactory>();
+//builder.Services.AddScoped<IUserClaimsPrincipalFactory<LoginCredentials>, CustomUserClaimsPrincipalFactory>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.None; //change after adding https for production
     options.Cookie.Name = ".AspNetCore.Identity.Application";
-    options.LoginPath = "/login";
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    
+    options.Events.OnRedirectToLogin = context =>
+    {
+        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+        return Task.CompletedTask;
+    };
 });
 
 builder.Services.AddCors(options =>
@@ -71,6 +78,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSingleton<IEmailSender<LoginCredentials>, NoOpEmailSender<LoginCredentials>>();
 
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -80,16 +89,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseCors("AllowFrontend");
-
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.MapIdentityApi<LoginCredentials>();
+// app.MapIdentityApi<IdentityUser>();
 
 app.MapPost("/logout", async (HttpContext context, SignInManager<LoginCredentials> signInManager) =>
 {

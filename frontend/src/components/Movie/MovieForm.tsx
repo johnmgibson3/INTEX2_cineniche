@@ -13,7 +13,6 @@ type Props = {
 const MovieForm: React.FC<Props> = ({ movie, onSave, onCancel }) => {
   const isEditMode = !!movie;
 
-  // Default blank movie object
   const blankMovie: Movie = {
     ...Object.keys(genreMap).reduce(
       (acc, key) => {
@@ -22,7 +21,7 @@ const MovieForm: React.FC<Props> = ({ movie, onSave, onCancel }) => {
       },
       {} as Record<keyof Movie, any>
     ),
-    showId: '',
+
     title: '',
     releaseYear: undefined,
     director: '',
@@ -32,7 +31,7 @@ const MovieForm: React.FC<Props> = ({ movie, onSave, onCancel }) => {
 
   useEffect(() => {
     if (movie) {
-      setForm({ ...blankMovie, ...movie }); // Start from blankMovie, then override with movie
+      setForm({ ...blankMovie, ...movie });
     }
   }, [movie]);
 
@@ -54,10 +53,10 @@ const MovieForm: React.FC<Props> = ({ movie, onSave, onCancel }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      if (isEditMode) {
-        await updateMovie(form.showId!, form); // force string (we control this)
+      if (isEditMode && form.showId !== undefined) {
+        await updateMovie(form.showId, form);
       } else {
-        await addMovie(form);
+        await addMovie(form); // No showId — backend will generate it
       }
       onSave();
     } catch (err) {
@@ -68,18 +67,6 @@ const MovieForm: React.FC<Props> = ({ movie, onSave, onCancel }) => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      {!isEditMode && (
-        <Form.Group className="mb-3">
-          <Form.Label>Show ID</Form.Label>
-          <Form.Control
-            name="showId"
-            value={form.showId}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-      )}
-
       <Form.Group className="mb-3">
         <Form.Label>Title</Form.Label>
         <Form.Control
