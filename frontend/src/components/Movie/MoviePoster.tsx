@@ -24,7 +24,8 @@ const toTitleCase = (str: string): string =>
 
 const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  const [, setHasError] = useState(false);
+  //const [hasError, setHasError] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [srcAttempted, setSrcAttempted] = useState<
     'original' | 'fallback' | 'default'
