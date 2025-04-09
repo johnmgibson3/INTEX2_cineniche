@@ -49,9 +49,8 @@ public partial class MoviesContext : IdentityDbContext<LoginCredentials>
 
         modelBuilder.Entity<MoviesTitle>(entity =>
         {
-            entity
-                .HasNoKey() // Optional: define key if needed
-                .ToTable("movies_titles");
+            entity.ToTable("movies_titles"); // ✅ FIRST call ToTable
+            entity.HasKey(e => e.ShowId);    // ✅ THEN define the key
 
             entity.Property(e => e.AnimeSeriesInternationalTvShows).HasColumnName("Anime Series International TV Shows");
             entity.Property(e => e.BritishTvShowsDocuseriesInternationalTvShows).HasColumnName("British TV Shows Docuseries International TV Shows");
