@@ -1,6 +1,8 @@
 // MoviePage.tsx
 import React, { useEffect, useState, useMemo } from 'react';
 import { fetchAllMovies } from '../api/MoviesAPI';
+import { fetchAllHybridRecommendationsSecure } from '../api/HybridAPI.ts';
+import { Recommend } from '../types/HybridRecommender.ts';
 import MovieCarousel from '../components/Movie/MovieCarousel';
 import MovieFilterBar from '../components/Movie/MovieFilterBar';
 import '../css/MoviePage.css';
@@ -35,14 +37,27 @@ const MoviePage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filterApplied, setFilterApplied] = useState(false);
   const itemsPerPage = 12;
+  const [recommendations, setRecommendations] = useState<Recommend[]>([]);
 
   useEffect(() => {
     const load = async () => {
       const movies = await fetchAllMovies();
+      
       setAllMovies(movies ?? []);
+      //Benji Code
+      const recommendationsData = await fetchAllHybridRecommendationsSecure();
+      if (movies) {
+        setAllMovies(movies);
+      }
+      if (recommendationsData) {
+        setRecommendations(recommendationsData);
+      }
+    //Regular code
     };
     load();
   }, []);
+
+  
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;

@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { Movie } from '../../types/Movie';
+
 import { getAverageRating } from '../../api/RatingsAPI';
 import '../../css/MoviePage.css';
 import { getMoviePosterUrl } from '../../constants/movieImage';
+import { Recommend } from '../../types/HybridRecommender.ts'
+import MoviePoster from './MoviePoster';
+
 
 interface MovieDetailsProps {
   movie: Movie;
@@ -46,15 +50,59 @@ const genreLabels: Record<string, string> = {
 };
 
 const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose }) => {
+
   const [averageRating, setAverageRating] = useState<number | null>(null);
   //const [srcAttempted, setSrcAttempted] = useState(0);
   const [srcAttempted] = useState(0);
   const posterUrls = getMoviePosterUrl(movie.title ?? '');
+  //Benji Code
+  const [recommendations, setRecommendations] = useState<Recommend | null>(null);
+  const [recommendationMovies, setRecommendationMovies] = useState<Movie[]>([]);
+
+  // Fetch recommendations when the component mounts
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      try {
+        const response = await axios.get(`/api/Hybrid/${movie.showId}`);
+        setRecommendations(response.data);
+        
+        // Convert recommendation titles to Movie objects for the MoviePoster component
+        if (response.data) {
+          const recMovies: Movie[] = [];
+          
+          for (let i = 1; i <= 5; i++) {
+            const titleKey = `rec${i}Title` as keyof Recommend;
+            const title = response.data[titleKey] as string;
+            
+            if (title) {
+              recMovies.push({
+                title: title,
+                showId: `rec-${i}`, // We don't have the actual showId, using placeholder
+                // Other fields can be left undefined
+              });
+            }
+          }
+          
+          setRecommendationMovies(recMovies);
+        }
+      } catch (error) {
+        console.error('Error fetching recommendations:', error);
+      }
+    };
+
+    if (movie.showId) {
+      fetchRecommendations();
+    }
+  }, [movie.showId]);
+
+  const posterUrl = `https://moviepostersintex11.blob.core.windows.net/intex/Movie%20Posters/${encodeURIComponent(movie.title ?? 'default')}.jpg`;
+
 
   const genres = Object.entries(movie)
     .filter(([key, value]) => genreLabels[key] && value === 1)
     .map(([key]) => genreLabels[key]);
 
+   //Regular code
   useEffect(() => {
     const fetchAverageRating = async () => {
       try {
@@ -69,7 +117,20 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose }) => {
 
     fetchAverageRating();
   }, [movie.showId]);
+    
+  //Benji Code
+  // Prepare recommendation titles
+  const recommendationTitles = recommendations 
+  ? [
+      recommendations.rec1Title, 
+      recommendations.rec2Title, 
+      recommendations.rec3Title, 
+      recommendations.rec4Title, 
+      recommendations.rec5Title
+    ].filter(title => title) // Remove any undefined titles
+  : [];
 
+  //Regular code
   return (
     <Modal show onHide={onClose} centered size="lg">
       <Modal.Header closeButton>
@@ -177,6 +238,30 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose }) => {
           )}
         </div>
       </Modal.Body>
+      <Modal.Footer>
+        <div className="d-flex flex-column justify-content-center w-100">
+          <h6 className="text-center mb-3 text-black">If you enjoy this movie, you may enjoy:</h6>
+          <div className="d-flex justify-content-center gap-3">
+            {recommendationMovies.length > 0 ? (
+              recommendationMovies.map((recMovie, index) => (
+                <div key={index} style={{ marginLeft: '8px', marginRight: '8px' }}>
+                  <MoviePoster
+                    movie={recMovie}
+                    onClick={() => {
+                      // Could navigate to the recommended movie detail in the future
+                      console.log(`Clicked recommendation: ${recMovie.title}`);
+                    }}
+                  />
+                </div>
+              ))
+            ) : (
+              <div className="text-center text-muted">
+                Loading recommendations...
+              </div>
+            )}
+          </div>
+        </div>
+      </Modal.Footer>
       <Modal.Footer>
         <Button variant="secondary" onClick={onClose}>
           Close

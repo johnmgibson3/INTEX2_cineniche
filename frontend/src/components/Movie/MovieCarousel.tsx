@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import MoviePoster from './MoviePoster';
 import MovieDetails from './MovieDetails';
-import { Movie } from '../../types/Movie';
+import { Movie } from '../../types/Movie.ts';
 import { fetchAllMovies } from '../../api/MoviesAPI';
 import '../../css/MoviePage.css';
 
