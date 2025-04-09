@@ -105,5 +105,21 @@ namespace INTEX.API.Controllers
             Response.Cookies.Delete(".AspNetCore.Identity.Application");
             return Ok(new { message = "Logout successful." });
         }
+        
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> Me()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return Unauthorized();
+
+            return Ok(new
+            {
+                username = user.UserName,
+                isAdmin = user.AdminStatus // 🔥 This is your custom admin check
+            });
+        }
+
     }
 }

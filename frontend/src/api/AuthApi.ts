@@ -20,4 +20,22 @@ export const registerUser = async (
     console.error('registerUser error:', err);
     return { success: false, message: 'Network or server error.' };
   }
+
+  
 };
+
+
+export async function fetchUser() {
+  const res = await fetch('https://localhost:5000/api/Auth/me', {
+    credentials: 'include',
+  });
+  if (!res.ok) throw new Error('Not authenticated');
+  return res.json();
+}
+
+export async function logoutUser() {
+  await fetch('https://localhost:5000/logout', {
+    method: 'POST',
+    credentials: 'include',
+  });
+}

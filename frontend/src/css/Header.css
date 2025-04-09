@@ -128,3 +128,20 @@
 .navmenu a:focus {
   text-decoration: none !important;
 }
+
+.user-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: white;
+}
+
+.user-actions button {
+  background: none;
+  border: none;
+  color: #0dcaf0;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 0;
+}
