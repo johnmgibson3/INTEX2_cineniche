@@ -20,13 +20,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MoviesContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
 
-builder.Services.AddCors(options =>
-    options.AddPolicy("AllowFrontend", //This may need to be changed? 
-    policy => {
-        policy.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-    }));
 
 builder.Services.AddDbContext<MoviesContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("MovieConnection")));
@@ -55,7 +48,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredUniqueChars = 6;           // Require at least 6 unique characters
 });
 
-builder.Services.AddScoped<IUserClaimsPrincipalFactory<LoginCredentials>, CustomUserClaimsPrincipalFactory>();
+//builder.Services.AddScoped<IUserClaimsPrincipalFactory<LoginCredentials>, CustomUserClaimsPrincipalFactory>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -80,6 +73,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSingleton<IEmailSender<LoginCredentials>, NoOpEmailSender<LoginCredentials>>();
 
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -89,16 +84,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseCors("AllowFrontend");
-
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.MapIdentityApi<LoginCredentials>();
+// app.MapIdentityApi<IdentityUser>();
 
 app.MapPost("/logout", async (HttpContext context, SignInManager<LoginCredentials> signInManager) =>
 {

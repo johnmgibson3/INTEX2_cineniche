@@ -20,6 +20,9 @@ public partial class MoviesContext : IdentityDbContext<LoginCredentials>
     public virtual DbSet<MoviesRating> MoviesRatings { get; set; }
     public virtual DbSet<MoviesTitle> MoviesTitles { get; set; }
     public virtual DbSet<MoviesUser> MoviesUsers { get; set; }
+    
+    public virtual DbSet<LoginCredentials> LoginCredentials { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -126,6 +129,7 @@ public partial class MoviesContext : IdentityDbContext<LoginCredentials>
             entity.Property(e => e.LockoutEnabled).HasColumnName("lockout_enabled");
             entity.Property(e => e.AccessFailedCount).HasColumnName("access_failed_count");
             entity.Property(e => e.AdminStatus).HasColumnName("admin_status");
+            modelBuilder.Entity<LoginCredentials>().Ignore(e => e.Email);
 
             // If you want to use LockoutEndBool as a custom field:
             entity.Property(e => e.LockoutEndBool).HasColumnName("lockout_end");

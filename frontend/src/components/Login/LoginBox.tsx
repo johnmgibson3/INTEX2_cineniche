@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+//import React, { useState } from 'react';
 import './LoginBox.css';
 
 export default function LoginForm() {
   const [uid, setUid] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword] = useState(false);
 
-  const sendLogin = async (e: { preventDefault: () => void; }) => {
+  const sendLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
       // Replace with your actual login logic
-      const response = await fetch('/api/login', {
+      const response = await fetch('https://localhost:5000/api/Auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uid, password }),
+        body: JSON.stringify({ username: uid, password }),
+        credentials: 'include',
       });
 
       const data = await response.json();
@@ -63,10 +65,11 @@ export default function LoginForm() {
           <p>
             <button type="submit">Login</button>
           </p>
-          <p id="message" style={{ color: 'red' }}>{message}</p>
+          <p id="message" style={{ color: 'red' }}>
+            {message}
+          </p>
         </form>
       </div>
     </div>
   );
 }
-
