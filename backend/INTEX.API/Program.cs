@@ -80,6 +80,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSingleton<IEmailSender<LoginCredentials>, NoOpEmailSender<LoginCredentials>>();
 
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -99,6 +101,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapIdentityApi<LoginCredentials>();
+// app.MapIdentityApi<IdentityUser>();
 
 app.MapPost("/logout", async (HttpContext context, SignInManager<LoginCredentials> signInManager) =>
 {
