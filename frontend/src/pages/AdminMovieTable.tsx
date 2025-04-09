@@ -3,6 +3,7 @@ import { Table, Button, Modal } from 'react-bootstrap';
 import { fetchAllMovies, deleteMovie } from '../api/MoviesAPI';
 import MovieForm from '../components/Movie/MovieForm';
 import MovieFilterBar from '../components/Movie/MovieFilterBar';
+import MovieDetails from '../components/Movie/MovieDetails';
 import { Movie } from '../types/Movie';
 import { genreMap } from '../constants/genreMap';
 import Paginator from '../components/Movie/Paginator';
@@ -14,6 +15,7 @@ const AdminMovieTable: React.FC = () => {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [showFormModal, setShowFormModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -97,6 +99,11 @@ const AdminMovieTable: React.FC = () => {
     setShowDeleteModal(true);
   };
 
+  const openDetailsModal = (movie: Movie) => {
+    setSelectedMovie(movie);
+    setShowDetailsModal(true);
+  };
+
   const handleDelete = async () => {
     if (!selectedMovie) return;
     try {
@@ -167,7 +174,11 @@ const AdminMovieTable: React.FC = () => {
                   >
                     🗑️
                   </Button>{' '}
-                  <Button variant="outline-secondary" size="sm">
+                  <Button
+                    variant="outline-secondary"
+                    size="sm"
+                    onClick={() => openDetailsModal(movie)}
+                  >
                     ⋮
                   </Button>
                 </td>
@@ -223,6 +234,15 @@ const AdminMovieTable: React.FC = () => {
             Delete
           </Button>
         </Modal.Footer>
+      </Modal>
+
+      <Modal show={showDetailsModal} onHide={() => setShowDetailsModal(false)}>
+        {selectedMovie && (
+          <MovieDetails
+            movie={selectedMovie}
+            onClose={() => setShowDetailsModal(false)}
+          />
+        )}
       </Modal>
     </div>
   );

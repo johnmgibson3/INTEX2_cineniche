@@ -23,8 +23,8 @@ builder.Services.AddDbContext<MoviesContext>(options =>
 builder.Services.AddDbContext<HybridContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("HybridConnection")));
 
-builder.Services.AddDbContext<MoviesContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("MovieConnection")));
+//builder.Services.AddDbContext<MoviesContext>(options =>
+//    options.UseSqlite(builder.Configuration.GetConnectionString("MovieConnection")));
 
 builder.Services.AddAuthorization();
 
@@ -57,8 +57,13 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.None; //change after adding https for production
     options.Cookie.Name = ".AspNetCore.Identity.Application";
-    options.LoginPath = "/login";
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    
+    options.Events.OnRedirectToLogin = context =>
+    {
+        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+        return Task.CompletedTask;
+    };
 });
 
 builder.Services.AddCors(options =>

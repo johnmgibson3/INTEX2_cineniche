@@ -1,10 +1,10 @@
 import { Movie } from '../types/Movie';
 
-const API_URL = 'https://localhost:5000/api/Movies/All';
+const API_URL = 'https://localhost:5000/api';
 
 export const getMovies = async (): Promise<Movie[] | null> => {
   try {
-    const res = await fetch(`${API_URL}/all`);
+    const res = await fetch(`${API_URL}/Movies/All`);
     if (!res.ok)
       throw new Error(`Failed to fetch movies. Status: ${res.status}`);
     const data = await res.json();
@@ -17,7 +17,7 @@ export const getMovies = async (): Promise<Movie[] | null> => {
 
 export const getMovie = async (showId: string): Promise<Movie | null> => {
   try {
-    const res = await fetch(`${API_URL}/${showId}`);
+    const res = await fetch(`${API_URL}/Movies/${showId}`);
     if (!res.ok) throw new Error(`Movie not found: ${res.status}`);
     return await res.json();
   } catch (error) {
@@ -28,7 +28,7 @@ export const getMovie = async (showId: string): Promise<Movie | null> => {
 
 export const addMovie = async (movie: Movie): Promise<boolean> => {
   try {
-    const res = await fetch(`${API_URL}/add`, {
+    const res = await fetch(`${API_URL}/Movies/Add`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ export const updateMovie = async (
   movie: Movie
 ): Promise<boolean> => {
   try {
-    const res = await fetch(`${API_URL}/update/${showId}`, {
+    const res = await fetch(`${API_URL}/Movies/Update/${showId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ export const updateMovie = async (
 
 export const deleteMovie = async (showId: string): Promise<boolean> => {
   try {
-    const res = await fetch(`${API_URL}/delete/${showId}`, {
+    const res = await fetch(`${API_URL}/Movies/Delete/${showId}`, {
       method: 'DELETE',
     });
 
@@ -76,14 +76,22 @@ export const deleteMovie = async (showId: string): Promise<boolean> => {
   }
 };
 
-export const fetchAllMovies = async (): Promise<Movie[]> => {
-  const res = await fetch('https://localhost:5000/api/Movies/All');
-  if (!res.ok) {
-    const errorText = await res.text();
-    console.error('❌ API returned error:', res.status, errorText);
-    throw new Error(`Failed to fetch: ${res.status}`);
+export const fetchAllMovies = async (): Promise<Movie[] | null> => {
+  try {
+    const res = await fetch('https://localhost:5000/api/Movies/All', {
+      method: 'GET',
+      credentials: 'include', // ✅ must be included
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch: ${res.status}`);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error('❌ fetchAllMovies error:', error);
+    return null;
   }
-  return res.json(); // 💥 this is where it breaks if it's not JSON
 };
 
 export const fetchSecureData = async () => {

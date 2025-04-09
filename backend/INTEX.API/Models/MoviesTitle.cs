@@ -8,7 +8,9 @@ namespace INTEX.API.Models;
 public partial class MoviesTitle
 {
 
-    public string? ShowId { get; set; }
+    [Key]
+    [Column("show_id")]
+    public string? ShowId { get; set; } = null!;
 
     public string? Type { get; set; }
 

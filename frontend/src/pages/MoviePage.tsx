@@ -1,5 +1,5 @@
 // MoviePage.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { fetchAllMovies } from '../api/MoviesAPI';
 import MovieCarousel from '../components/Movie/MovieCarousel';
 import MovieFilterBar from '../components/Movie/MovieFilterBar';
@@ -7,6 +7,27 @@ import '../css/MoviePage.css';
 import { Movie } from '../types/Movie';
 import { genreMap } from '../constants/genreMap';
 import Paginator from '../components/Movie/Paginator';
+
+const useInView = () => {
+  const ref = React.useRef<HTMLDivElement | null>(null);
+  const [isVisible, setIsVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, isVisible };
+};
 
 const MoviePage: React.FC = () => {
   const [allMovies, setAllMovies] = useState<Movie[]>([]);
@@ -16,10 +37,11 @@ const MoviePage: React.FC = () => {
   const itemsPerPage = 12;
 
   useEffect(() => {
-    fetchAllMovies().then((data) => {
-      setAllMovies(data);
-      setFilteredMovies(data);
-    });
+    const load = async () => {
+      const movies = await fetchAllMovies();
+      setAllMovies(movies);
+    };
+    load();
   }, []);
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -112,13 +134,30 @@ const MoviePage: React.FC = () => {
           </>
         ) : (
           <>
-            {Object.entries(genreMap).map(([genreKey, genreLabel]) => (
-              <MovieCarousel
-                key={genreKey}
-                title={genreLabel}
-                filter={(movie) => movie[genreKey as keyof Movie] === 1}
-              />
-            ))}
+            {Object.entries(genreMap).map(([key, label]) => {
+              const { ref, isVisible } = useInView();
+
+              const genreMovies = useMemo(() => {
+                return allMovies.filter(
+                  (movie) => movie[key as keyof Movie] === 1
+                );
+              }, [allMovies]);
+
+              return (
+                <div
+                  ref={ref}
+                  key={key}
+                  style={{ minHeight: '200px', marginBottom: '2rem' }}
+                >
+                  {isVisible && genreMovies.length > 0 && (
+                    <MovieCarousel
+                      title={label}
+                      filter={(movie) => movie[key as keyof Movie] === 1}
+                    />
+                  )}
+                </div>
+              );
+            })}
           </>
         )}
       </div>
