@@ -8,6 +8,7 @@ import Register from './pages/Register';
 import PrivacyPolicy from './pages/Privacy/PrivacyPolicy';
 import Contact from './pages/Contact';
 import MoviePage from './pages/MoviePage';
+import AdminMovieTable from './pages/AdminMovieTable';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               </div>
             }
           />
+          <Route path="admin" element={<AdminMovieTable />} />
           <Route path="privacy" element={<PrivacyPolicy />} />
           <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NoPage404 />} />

@@ -76,11 +76,25 @@ export const deleteMovie = async (showId: string): Promise<boolean> => {
   }
 };
 
-export async function fetchAllMovies(): Promise<Movie[]> {
-  const response = await fetch('/api/Movies/All');
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Failed to fetch movies: ${errorText}`);
+export const fetchAllMovies = async (): Promise<Movie[]> => {
+  const res = await fetch('https://localhost:5000/api/Movies/All');
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error('❌ API returned error:', res.status, errorText);
+    throw new Error(`Failed to fetch: ${res.status}`);
   }
-  return await response.json();
-}
+  return res.json(); // 💥 this is where it breaks if it's not JSON
+};
+
+export const fetchSecureData = async () => {
+  const res = await fetch(
+    'https://localhost:5000/api/YourController/SecureEndpoint',
+    {
+      method: 'GET',
+      credentials: 'include',
+    }
+  );
+
+  if (!res.ok) throw new Error('Unauthorized');
+  return res.json();
+};
