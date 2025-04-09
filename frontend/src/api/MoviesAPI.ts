@@ -76,14 +76,22 @@ export const deleteMovie = async (showId: string): Promise<boolean> => {
   }
 };
 
-export const fetchAllMovies = async (): Promise<Movie[]> => {
-  const res = await fetch('https://localhost:5000/api/Movies/All');
-  if (!res.ok) {
-    const errorText = await res.text();
-    console.error('❌ API returned error:', res.status, errorText);
-    throw new Error(`Failed to fetch: ${res.status}`);
+export const fetchAllMovies = async (): Promise<Movie[] | null> => {
+  try {
+    const res = await fetch('https://localhost:5000/api/Movies/All', {
+      method: 'GET',
+      credentials: 'include', // ✅ must be included
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch: ${res.status}`);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error('❌ fetchAllMovies error:', error);
+    return null;
   }
-  return res.json(); // 💥 this is where it breaks if it's not JSON
 };
 
 export const fetchSecureData = async () => {

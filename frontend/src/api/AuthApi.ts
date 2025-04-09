@@ -20,4 +20,20 @@ export const registerUser = async (
     console.error('registerUser error:', err);
     return { success: false, message: 'Network or server error.' };
   }
+
+  
 };
+
+
+export const fetchUser = async () => {
+    try {
+      const res = await fetch('https://localhost:5000/api/Auth/me', {
+        credentials: 'include',
+      });
+      if (!res.ok) return null;
+      return await res.json(); // includes username and isAdmin
+    } catch {
+      return null;
+    }
+  };
+  

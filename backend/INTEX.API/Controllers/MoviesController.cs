@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using INTEX.API.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace INTEX.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class MoviesController : ControllerBase
