@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using INTEX.API.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace INTEX.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class MoviesController : ControllerBase
@@ -22,8 +24,7 @@ public class MoviesController : ControllerBase
     {
         try
         {
-            await using var context = new MoviesContext();  // or use dependency injection properly
-            var movies = await context.MoviesTitles.ToListAsync();
+            var movies = await _context.MoviesTitles.ToListAsync();
             return Ok(movies);
         }
         catch (Exception ex)

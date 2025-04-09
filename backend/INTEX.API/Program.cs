@@ -55,8 +55,13 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.None; //change after adding https for production
     options.Cookie.Name = ".AspNetCore.Identity.Application";
-    options.LoginPath = "/login";
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    
+    options.Events.OnRedirectToLogin = context =>
+    {
+        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+        return Task.CompletedTask;
+    };
 });
 
 builder.Services.AddCors(options =>
