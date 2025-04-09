@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+//import { Outlet, useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import MobileFooter from '../components/MobileFooter';
 import Footer from '../components/Footer'; // Import the new Footer component
@@ -8,7 +9,7 @@ import '../css/ButtonFixes.css'; // Import our new button fixes
 import CookieConsent from '../components/General/CookieConsent';
 
 const Layout: React.FC = () => {
-  const location = useLocation();
+  //const location = useLocation();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {

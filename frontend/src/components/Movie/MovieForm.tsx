@@ -15,10 +15,6 @@ const MovieForm: React.FC<Props> = ({ movie, onSave, onCancel }) => {
 
   // Default blank movie object
   const blankMovie: Movie = {
-    showId: '',
-    title: '',
-    releaseYear: undefined,
-    director: '',
     ...Object.keys(genreMap).reduce(
       (acc, key) => {
         acc[key as keyof Movie] = 0;
@@ -26,6 +22,10 @@ const MovieForm: React.FC<Props> = ({ movie, onSave, onCancel }) => {
       },
       {} as Record<keyof Movie, any>
     ),
+    showId: '',
+    title: '',
+    releaseYear: undefined,
+    director: '',
   };
 
   const [form, setForm] = useState<Movie>(blankMovie);
