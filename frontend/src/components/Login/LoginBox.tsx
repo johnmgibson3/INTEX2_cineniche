@@ -1,8 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 //import React, { useState } from 'react';
 import './LoginBox.css';
 
+
 export default function LoginForm() {
+  const navigate = useNavigate();
   const [uid, setUid] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -23,6 +26,7 @@ export default function LoginForm() {
       if (response.ok) {
         // handle successful login
         setMessage('Login successful!');
+        setTimeout(() => navigate('/movies'), 1000); // Redirect after 1s
       } else {
         setMessage(data.error || 'Login failed');
       }
