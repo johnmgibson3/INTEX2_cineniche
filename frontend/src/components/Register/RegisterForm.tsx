@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './RegisterForm.css'; // Reuse existing styles
+import './RegisterForm.css';
 
 export default function RegisterForm() {
   const [uid, setUid] = useState('');
+  const [email, setEmail] = useState('');  // New email state
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -13,28 +14,31 @@ export default function RegisterForm() {
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!uid || !password || !confirmPassword) {
+    if (!uid || !email || !password || !confirmPassword) {
       setMessage('Please fill in all fields.');
+      return;
     } else if (password !== confirmPassword) {
       setMessage('Passwords do not match.');
-    } else {
-      try {
-        const response = await fetch('/api/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ uid, password }),
-        });
+      return;
+    }
 
-        const data = await response.json();
-        if (response.ok) {
-          setMessage('Registration successful! Redirecting...');
-          setTimeout(() => navigate('/login'), 2000);
-        } else {
-          setMessage(data.error || 'Registration failed.');
-        }
-      } catch (error) {
-        setMessage('An error occurred.');
+    try {
+      const response = await fetch('https://localhost:5000/api/Auth/register', { // Updated URL
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',  // Needed for cookie-based auth if required
+        body: JSON.stringify({ username: uid, email, password }), // Updated payload
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setMessage('Registration successful! Redirecting...');
+        setTimeout(() => navigate('/login'), 2000);
+      } else {
+        setMessage(data.message || 'Registration failed.');
       }
+    } catch (error) {
+      setMessage('An error occurred.');
     }
   };
 
@@ -57,6 +61,19 @@ export default function RegisterForm() {
                 required
                 value={uid}
                 onChange={(e) => setUid(e.target.value)}
+              />
+            </label>
+          </p>
+          <p>
+            <label htmlFor="email">
+              Email:
+              <input
+                type="email"
+                name="email"
+                id="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </label>
           </p>
@@ -94,9 +111,7 @@ export default function RegisterForm() {
               Go to Login
             </button>
           </p>
-          <p id="message" style={{ color: 'red' }}>
-            {message}
-          </p>
+          <p id="message" style={{ color: 'red' }}>{message}</p>
         </form>
       </div>
     </div>
