@@ -17,7 +17,7 @@ public class RatingsController : ControllerBase
 
     // GET: api/Ratings
     [HttpGet("All")]
-    public IActionResult GetAllRatings(int pageSize = 10, int pageNum = 1, [FromQuery] string userId = null)
+    public IActionResult GetAllRatings([FromQuery] string userId = null)
     {
         var query = _context.MoviesRatings.AsQueryable();
 
@@ -28,8 +28,6 @@ public class RatingsController : ControllerBase
 
         var totalCount = query.Count();
         var ratings = query
-            .Skip((pageNum - 1) * pageSize)
-            .Take(pageSize)
             .ToList();
 
         return Ok(new
@@ -38,6 +36,34 @@ public class RatingsController : ControllerBase
             TotalCount = totalCount
         });
     }
+
+    // GET: api/Ratings/Average/s123
+    [HttpGet("Average/{showId}")]
+    public IActionResult GetAverageRating(string showId)
+    {
+        var ratings = _context.MoviesRatings
+            .Where(r => r.ShowId == showId)
+            .Select(r => (double)r.Rating); // ensure double to avoid integer division
+
+        if (!ratings.Any())
+        {
+            return Ok(new { average = (double?)null }); // return null to indicate no ratings
+        }
+
+        double average = ratings.Average();
+        double rounded = Math.Round(average, 1, MidpointRounding.AwayFromZero);
+        return Ok(new { average = rounded });
+    }
+
+
+
+
+
+
+
+
+
+
 
     // GET: api/Ratings/abc123/s123
     [HttpGet("{userId}/{showId}")]
