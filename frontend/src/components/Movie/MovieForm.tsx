@@ -21,6 +21,7 @@ const MovieForm: React.FC<Props> = ({ movie, onSave, onCancel }) => {
       },
       {} as Record<keyof Movie, any>
     ),
+
     title: '',
     releaseYear: undefined,
     director: '',

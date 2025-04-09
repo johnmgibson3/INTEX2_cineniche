@@ -3,7 +3,6 @@ using INTEX.API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using INTEX.API.Services;
-using INTEX.API.Models;
 using INTEX.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +22,7 @@ builder.Services.AddDbContext<MoviesContext>(options =>
 
 //builder.Services.AddDbContext<MoviesContext>(options =>
 //    options.UseSqlite(builder.Configuration.GetConnectionString("MovieConnection")));
+
 
 builder.Services.AddAuthorization();
 
@@ -69,7 +69,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000") // Replace with your frontend URL
+            policy.WithOrigins("http://localhost:3000", "https://delightful-dune-0a989c41e.6.azurestaticapps.net") // Replace with your frontend URL
                 .AllowCredentials() // Required to allow cookies
                 .AllowAnyMethod()
                 .AllowAnyHeader();
