@@ -1,4 +1,5 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/Auth';
+const API_URL =
+  'https://intexapi-1-1-backend-g5b4ckc3cwb2e5en.eastus-01.azurewebsites.net/api';
 
 export const registerUser = async (
   username: string,
@@ -20,10 +21,7 @@ export const registerUser = async (
     console.error('registerUser error:', err);
     return { success: false, message: 'Network or server error.' };
   }
-
-  
 };
-
 
 export async function fetchUser() {
   const res = await fetch('https://localhost:5000/api/Auth/me', {
