@@ -24,8 +24,7 @@ public class MoviesController : ControllerBase
     {
         try
         {
-            await using var context = new MoviesContext();  // or use dependency injection properly
-            var movies = await context.MoviesTitles.ToListAsync();
+            var movies = await _context.MoviesTitles.ToListAsync();
             return Ok(movies);
         }
         catch (Exception ex)
