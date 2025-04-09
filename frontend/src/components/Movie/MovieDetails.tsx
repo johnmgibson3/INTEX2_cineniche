@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { Movie } from '../../types/Movie';
+import { Recommend } from '../../types/HybridRecommender.ts'
 
 interface MovieDetailsProps {
   movie: Movie;
