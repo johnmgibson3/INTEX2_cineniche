@@ -5,6 +5,7 @@ namespace INTEX.API.Models;
 
 public partial class MoviesUser
 {
+    [Column("user_id")]
     public string? UserId { get; set; }
     [Column("name")]
     public string? Name { get; set; }
@@ -18,17 +19,17 @@ public partial class MoviesUser
     public string? Gender { get; set; }
     [Column("netflix")]
     public int? Netflix { get; set; }
-
+    [Column("Amazon Prime")]
     public int? AmazonPrime { get; set; }
-
+    [Column("Disney+")]
     public int? Disney { get; set; }
-
+    [Column("Paramount+")]
     public int? Paramount { get; set; }
     [Column("max")]
     public int? Max { get; set; }
     [Column("hulu")]
     public int? Hulu { get; set; }
-
+    [Column("Apple TV+")]
     public int? AppleTv { get; set; }
     [Column("peacock")]
     public int? Peacock { get; set; }
@@ -36,6 +37,6 @@ public partial class MoviesUser
     public string? City { get; set; }
     [Column("state")]
     public string? State { get; set; }
-    [Column("sip")]
+    [Column("zip")]
     public int? Zip { get; set; }
 }

@@ -12,10 +12,11 @@ export default function LoginForm() {
     e.preventDefault();
     try {
       // Replace with your actual login logic
-      const response = await fetch('/api/login', {
+      const response = await fetch('https://localhost:5000/api/Auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uid, password }),
+        body: JSON.stringify({ username: uid, password }),
+        credentials: 'include',
       });
 
       const data = await response.json();
