@@ -9,7 +9,7 @@ export default function RegisterForm() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   //const [message, setMessage] = useState('');
-  const [message, setMessage] = useState('');
+  const [, setMessage] = useState('');
   const [showPassword] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
   const navigate = useNavigate();
