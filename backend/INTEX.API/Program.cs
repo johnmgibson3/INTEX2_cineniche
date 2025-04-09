@@ -21,8 +21,8 @@ builder.Services.AddDbContext<MoviesContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
 
 
-builder.Services.AddDbContext<MoviesContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("MovieConnection")));
+//builder.Services.AddDbContext<MoviesContext>(options =>
+//    options.UseSqlite(builder.Configuration.GetConnectionString("MovieConnection")));
 
 builder.Services.AddAuthorization();
 
