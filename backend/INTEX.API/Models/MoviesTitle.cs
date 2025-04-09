@@ -9,9 +9,8 @@ public partial class MoviesTitle
 {
 
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("show_id")]
-    public string? ShowId { get; set; }
+    public string? ShowId { get; set; } = null!;
 
     public string? Type { get; set; }
 

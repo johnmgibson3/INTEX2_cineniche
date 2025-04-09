@@ -64,11 +64,6 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose }) => {
           }}
         />
         <div>
-          {movie.showId && (
-            <p>
-              <strong>ID:</strong> {movie.showId}
-            </p>
-          )}
           {movie.type && (
             <p>
               <strong>Type:</strong> {movie.type}

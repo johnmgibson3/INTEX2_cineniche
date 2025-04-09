@@ -20,19 +20,27 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Load all movies and filter by genre
   useEffect(() => {
-    const load = async () => {
-      const movies = await fetchAllMovies();
-      const filtered = filter ? movies.filter(filter) : movies;
-      setAllMovies(filtered);
+    const loadMovies = async () => {
+      try {
+        const movies = await fetchAllMovies();
+        const filteredMovies = filter ? movies.filter(filter) : movies;
+        setAllMovies(filteredMovies);
+      } catch (error) {
+        console.error('Error loading movies in carousel:', error);
+      }
     };
-    load();
+
+    loadMovies();
   }, [filter]);
 
+  // Show more posters when arrow is clicked
   const handleShowMore = () => {
     setVisibleCount((prev) => prev + chunkSize);
   };
 
+  // Only render visible subset of movies
   const visibleMovies = allMovies.slice(0, visibleCount);
 
   return (
@@ -53,15 +61,20 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({
             />
           ))}
         </div>
-        <div
-          className="arrow-icon ms-2"
-          style={{ cursor: 'pointer', fontSize: '1.5rem' }}
-          onClick={handleShowMore}
-        >
-          <i className="bi bi-arrow-right-circle" />
-        </div>
+
+        {/* Show arrow only if more movies are available */}
+        {visibleCount < allMovies.length && (
+          <div
+            className="arrow-icon ms-2"
+            style={{ cursor: 'pointer', fontSize: '1.5rem' }}
+            onClick={handleShowMore}
+          >
+            <i className="bi bi-arrow-right-circle" />
+          </div>
+        )}
       </div>
 
+      {/* Modal for showing movie details */}
       {selectedMovie && (
         <MovieDetails
           movie={selectedMovie}

@@ -28,8 +28,8 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     }));
 
-builder.Services.AddDbContext<MoviesContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("MovieConnection")));
+//builder.Services.AddDbContext<MoviesContext>(options =>
+//    options.UseSqlite(builder.Configuration.GetConnectionString("MovieConnection")));
 
 builder.Services.AddAuthorization();
 
