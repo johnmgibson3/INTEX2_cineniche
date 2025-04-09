@@ -1,6 +1,9 @@
 import { Movie } from '../types/Movie';
 
-const API_URL = 'https://localhost:5000/api';
+
+const API_URL =
+  'https://intexapi-1-1-backend-g5b4ckc3cwb2e5en.eastus-01.azurewebsites.net/api';
+
 
 export const getMovies = async (): Promise<Movie[] | null> => {
   try {
@@ -77,7 +80,9 @@ export const deleteMovie = async (showId: string): Promise<boolean> => {
 };
 
 export const fetchAllMovies = async (): Promise<Movie[]> => {
-  const res = await fetch('https://localhost:5000/api/Movies/All');
+  const res = await fetch(
+    'https://intexapi-1-1-backend-g5b4ckc3cwb2e5en.eastus-01.azurewebsites.net/api/Movies/All'
+  );
   if (!res.ok) {
     const errorText = await res.text();
     console.error('❌ API returned error:', res.status, errorText);
@@ -87,13 +92,10 @@ export const fetchAllMovies = async (): Promise<Movie[]> => {
 };
 
 export const fetchSecureData = async () => {
-  const res = await fetch(
-    'https://localhost:5000/api/YourController/SecureEndpoint',
-    {
-      method: 'GET',
-      credentials: 'include',
-    }
-  );
+  const res = await fetch('${API_URL}YourController/SecureEndpoint', {
+    method: 'GET',
+    credentials: 'include',
+  });
 
   if (!res.ok) throw new Error('Unauthorized');
   return res.json();
