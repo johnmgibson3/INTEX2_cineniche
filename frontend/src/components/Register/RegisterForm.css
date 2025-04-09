@@ -40,8 +40,18 @@
 .login-card input[type="text"],
 .login-card input[type="password"] {
     width: 90%;
-    padding: 10px; /* Moderate size, not too big */
-    font-size: 16px; /* Professional text size */
+    padding: 7px; /* Moderate size, not too big */
+    font-size: 13px; /* Professional text size */
+    border: 1px solid #c0bfbf;
+    background: #fdfdfd;
+    border-radius: 4px;
+    margin-bottom: 9px; /* Space between inputs */
+    margin-left: -9px;
+}
+.login-card input[type="username"] {
+    width: 70%;
+    padding: 7px; /* Moderate size, not too big */
+    font-size: 13px; /* Professional text size */
     border: 1px solid #c0bfbf;
     background: #fdfdfd;
     border-radius: 4px;

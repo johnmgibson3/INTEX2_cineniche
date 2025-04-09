@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Movie } from '../../types/Movie';
 import Shimmer from './Shimmer';
+import '../../css/MoviePage.css';
 
 interface MoviePosterProps {
   movie: Movie;
@@ -23,7 +24,8 @@ const toTitleCase = (str: string): string =>
 
 const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  const [, setHasError] = useState(false);
+  //const [hasError, setHasError] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [srcAttempted, setSrcAttempted] = useState<
     'original' | 'fallback' | 'default'
@@ -74,17 +76,28 @@ const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick }) => {
   };
 
   return (
-    <div onClick={onClick} style={{ cursor: 'pointer', width: '100px' }}>
+    <div
+      onClick={onClick}
+      className="movie-poster"
+      style={{
+        flex: '0 0 auto',
+        width: '250px',
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
       <div
+        ref={imgRef}
         style={{
-          width: '100px',
-          height: '150px',
+          width: '100%',
+          height: '400px',
           borderRadius: '5px',
           overflow: 'hidden',
-          position: 'relative',
           backgroundColor: '#333',
+          position: 'relative',
         }}
-        ref={imgRef}
       >
         {!loaded && isVisible && srcAttempted !== 'default' && (
           <div
@@ -97,9 +110,10 @@ const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick }) => {
               height: '100%',
             }}
           >
-            <Shimmer width="100px" height="150px" />
+            <Shimmer width="100%" height="100%" />
           </div>
         )}
+
         {isVisible && (
           <img
             src={getPosterSrc()}
@@ -114,23 +128,27 @@ const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick }) => {
               borderRadius: '5px',
               transition: 'opacity 0.5s ease-in-out',
               opacity: loaded ? 1 : 0,
-              position: 'absolute',
-              top: 0,
-              left: 0,
               zIndex: 2,
             }}
           />
         )}
+        <div className="poster-gradient" />
+        <div className="poster-title">{movie.title}</div>
       </div>
+
+      {/* TITLE BELOW */}
       <div
+        className="poster-default-title"
         style={{
           color: '#fff',
-          fontSize: '0.8rem',
+          fontSize: '1.5rem',
+          fontWeight: 'bold',
           textAlign: 'center',
-          marginTop: '0.3rem',
+          marginTop: '0.5rem',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
+          maxWidth: '100%',
         }}
         title={movie.title}
       >

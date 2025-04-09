@@ -42,6 +42,9 @@ const MoviePage: React.FC = () => {
   useEffect(() => {
     const load = async () => {
       const movies = await fetchAllMovies();
+      
+      setAllMovies(movies ?? []);
+      //Benji Code
       const recommendationsData = await fetchAllHybridRecommendationsSecure();
       if (movies) {
         setAllMovies(movies);
@@ -49,6 +52,7 @@ const MoviePage: React.FC = () => {
       if (recommendationsData) {
         setRecommendations(recommendationsData);
       }
+    //Regular code
     };
     load();
   }, []);
