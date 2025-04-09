@@ -24,8 +24,8 @@ public class LoginCredentialsController : ControllerBase
     [HttpGet("All")]
     public IActionResult GetAll(int pageSize = 10, int pageNum = 1)
     {
-        var totalCount = _context.Users.Count();
-        var credentials = _context.Users
+        var totalCount = _context.LoginCredentials.Count();
+        var credentials = _context.LoginCredentials
             .Skip((pageNum - 1) * pageSize)
             .Take(pageSize)
             .ToList();
@@ -62,7 +62,6 @@ public class LoginCredentialsController : ControllerBase
 
         // Update user properties
         existing.UserName = updated.UserName;
-        existing.Email = updated.Email;
         existing.PhoneNumber = updated.PhoneNumber;
         existing.AdminStatus = updated.AdminStatus;
         // Add other properties as needed

@@ -14,6 +14,14 @@ namespace INTEX.API.Models
 
         [Column("username")]
         public override string? UserName { get => base.UserName; set => base.UserName = value; }
+        [NotMapped]
+        public override string? Email
+        {
+            get => null;
+            set { /* ignored */ }
+        }
+
+
 
         [Column("email_confirmed")]
         public override bool EmailConfirmed { get => base.EmailConfirmed; set => base.EmailConfirmed = value; }
