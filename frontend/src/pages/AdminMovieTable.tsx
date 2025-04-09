@@ -14,6 +14,12 @@ const AdminMovieTable: React.FC = () => {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [showFormModal, setShowFormModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+
+  const openDetailsModal = (movie: Movie) => {
+    setSelectedMovie(movie);
+    setShowDetailsModal(true);
+  };
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -167,7 +173,11 @@ const AdminMovieTable: React.FC = () => {
                   >
                     🗑️
                   </Button>{' '}
-                  <Button variant="outline-secondary" size="sm">
+                  <Button
+                    variant="outline-secondary"
+                    size="sm"
+                    onClick={() => openDetailsModal(movie)}
+                  >
                     ⋮
                   </Button>
                 </td>
