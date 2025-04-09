@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-//import React, { useState } from 'react';
 import './LoginBox.css';
-
+import { Link } from 'react-router-dom';
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -12,7 +11,9 @@ export default function LoginForm() {
   const [showPassword] = useState(false);
 
   const sendLogin = async (e: { preventDefault: () => void }) => {
+
     e.preventDefault();
+
     try {
       // Replace with your actual login logic
       const response = await fetch('https://localhost:5000/api/Auth/login', {
@@ -71,6 +72,13 @@ export default function LoginForm() {
           </p>
           <p id="message" style={{ color: 'red' }}>
             {message}
+          </p>
+
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            Not a member?{' '}
+            <Link to="/register" style={{ color: '#007bff', textDecoration: 'underline' }}>
+              Create an account
+            </Link>
           </p>
         </form>
       </div>
