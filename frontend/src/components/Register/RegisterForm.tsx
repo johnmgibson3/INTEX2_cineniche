@@ -10,7 +10,9 @@ export default function RegisterForm() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
   const [showPassword] = useState(false);
+
   const [passwordTouched, setPasswordTouched] = useState(false);
+
   const navigate = useNavigate();
   const rules = {
     length: password.length >= 14,

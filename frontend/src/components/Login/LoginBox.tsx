@@ -1,5 +1,8 @@
 import { useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
+//import React, { useState } from 'react';
+
 import './LoginBox.css';
 import { Link } from 'react-router-dom';
 
@@ -11,6 +14,7 @@ export default function LoginForm() {
   const [showPassword] = useState(false);
 
   const sendLogin = async (e: { preventDefault: () => void }) => {
+
 
     e.preventDefault();
 
@@ -74,12 +78,14 @@ export default function LoginForm() {
             {message}
           </p>
 
+
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
             Not a member?{' '}
             <Link to="/register" style={{ color: '#007bff', textDecoration: 'underline' }}>
               Create an account
             </Link>
           </p>
+
         </form>
       </div>
     </div>
