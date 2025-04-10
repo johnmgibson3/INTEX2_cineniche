@@ -28,10 +28,12 @@ const AdminMovieTable: React.FC = () => {
   const loadMovies = async () => {
     try {
       const response = await fetchAllMovies();
+
       if (response) {
         setAllMovies(response);
         setFilteredMovies(response);
       }
+
     } catch (error) {
       console.error('Error loading movies:', error);
     }
