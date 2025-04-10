@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchAllMovies, fetchMoviesByGenre } from '../api/MoviesAPI';
 import MovieCarousel from '../components/Movie/MovieCarousel';
 import MovieFilterBar from '../components/Movie/MovieFilterBar';
+import RecommendedMovies from '../components/Movie/RecommendedMovies';
 import '../css/MoviePage.css';
 import { Movie } from '../types/Movie';
 import { genreMap } from '../constants/genreMap';
@@ -72,7 +73,6 @@ const MoviePage: React.FC = () => {
         setAllMovies(movies);
         setFilteredMovies(movies);
       }
-
     };
     load();
   }, []);
@@ -165,6 +165,9 @@ const MoviePage: React.FC = () => {
           </>
         ) : (
           <>
+            {/* Add Recommendations at the top */}
+            <RecommendedMovies allMovies={allMovies} />
+
             {Object.entries(genreMap).map(([key, label]) => (
               <GenreSection key={key} genreKey={key} label={label} />
             ))}

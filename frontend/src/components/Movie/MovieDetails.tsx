@@ -9,6 +9,7 @@ import MovieRating from './MovieRating';
 interface MovieDetailsProps {
   movie: Movie;
   onClose: () => void;
+  onSelectMovie: (movie: Movie) => void; // <-- NEW PROP to handle selecting movies from recommendations
 }
 
 const genreLabels: Record<string, string> = {

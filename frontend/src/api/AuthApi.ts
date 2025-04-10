@@ -38,9 +38,26 @@ export async function logoutUser() {
   });
 }
 
+// Add this to AuthApi.ts
 export async function getUserIdFromHeader(): Promise<string | null> {
-  const res = await fetch('/api/Auth/me');
-  if (!res.ok) return null;
-  const data = await res.json();
-  return data?.userId ?? null;
+  try {
+    console.log('🔍 Attempting to fetch user ID');
+    const res = await fetch('https://localhost:5000/api/Auth/me', {
+      credentials: 'include', // Important for including auth cookies
+    });
+
+    console.log('🔍 Auth/me response status:', res.status);
+
+    if (!res.ok) {
+      console.warn('🔍 Failed to get user ID, status:', res.status);
+      return null;
+    }
+
+    const data = await res.json();
+    console.log('🔍 Auth data received:', data);
+    return data?.id ?? data?.userId ?? null;
+  } catch (error) {
+    console.error('Error fetching user ID:', error);
+    return null;
+  }
 }
