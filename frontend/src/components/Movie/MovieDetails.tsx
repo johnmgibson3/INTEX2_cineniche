@@ -2,13 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { Movie } from '../../types/Movie';
 import { getAverageRating } from '../../api/RatingsAPI';
+import { getMovie } from '../../api/MoviesAPI';
 import '../../css/MoviePage.css';
 import { getMoviePosterUrl } from '../../constants/movieImage';
+import { Recommend } from '../../types/HybridRecommender.ts'
+import MoviePoster from './MoviePoster';
 import MovieRating from './MovieRating';
+
 
 interface MovieDetailsProps {
   movie: Movie;
   onClose: () => void;
+  onSelectMovie: (movie: Movie) => void; // <-- NEW PROP. This makes it so if you click on another movie, it'll close the popup and open a new one. 
 }
 
 const genreLabels: Record<string, string> = {
@@ -46,18 +51,70 @@ const genreLabels: Record<string, string> = {
   thrillers: 'Thrillers',
 };
 
-const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose }) => {
+const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose, onSelectMovie }) => {
+
   const [averageRating, setAverageRating] = useState<number | null>(null);
 
   const [srcAttempted] = useState(0);
   //const [srcAttempted, setSrcAttempted] = useState(0);
 
   const posterUrls = getMoviePosterUrl(movie.title ?? '');
+  //Benji Code
+  const [recommendations, setRecommendations] = useState<Recommend | null>(null);
+  const [recommendationMovies, setRecommendationMovies] = useState<Movie[]>([]);
+  const [selectedRecMovie, setSelectedRecMovie] = useState<Movie | null>(null);
+
+
+  // Fetch recommendations when the component mounts
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      try {
+        const res = await fetch(`https://localhost:5000/api/Hybrid/${movie.showId}`);
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+  
+        const data = await res.json();
+        setRecommendations(data);
+  
+        // Convert recommendation titles to Movie objects for the MoviePoster component
+        if (data) {
+          const recMovies: Movie[] = [];
+  
+          for (let i = 1; i <= 5; i++) {
+            const titleKey = `rec${i}Title` as keyof Recommend;
+            const idKey = `rec${i}Id` as keyof Recommend;
+          
+            const title = data[titleKey] as string;
+            const showId = data[idKey] as string;
+          
+            if (title && showId) {
+              recMovies.push({
+                title,
+                showId,
+              });
+            }
+          }
+  
+          setRecommendationMovies(recMovies);
+        }
+      } catch (error) {
+        console.error('Error fetching recommendations:', error);
+      }
+    };
+  
+    fetchRecommendations();
+  }, [movie.showId]);
+  
+
+  const posterUrl = `https://moviepostersintex11.blob.core.windows.net/intex/Movie%20Posters/${encodeURIComponent(movie.title ?? 'default')}.jpg`;
+
 
   const genres = Object.entries(movie)
     .filter(([key, value]) => genreLabels[key] && value === 1)
     .map(([key]) => genreLabels[key]);
 
+   //Regular code
   useEffect(() => {
     const fetchAverageRating = async () => {
       try {
@@ -184,7 +241,56 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose }) => {
             {movie.showId && <MovieRating showId={movie.showId} />}
           </div>
         </div>
+        
       </Modal.Body>
+      <Modal.Footer
+        style={{
+          backgroundColor: '#fff', // White background for the footer
+          paddingBottom: '0px', // Add more space at the bottom
+        }}
+      >
+        <div className="d-flex flex-column justify-content-center w-100">
+          <h6 className="text-center mb-3" style={{ color: '#000' }}> {/* Text color set to black */}
+            If you enjoy this movie, you may enjoy:
+          </h6>
+          <div className="d-flex justify-content-center gap-3">
+            {recommendationMovies.length > 0 ? (
+              recommendationMovies.map((recMovie, index) => (
+                <div key={index} style={{ marginLeft: '8px', marginRight: '8px', marginBottom: '20px'}}>
+                  <MoviePoster
+                    movie={recMovie}
+                    onClick={async () => {
+                      try {
+                        const fullMovie = await getMovie(recMovie.showId!);
+                        if (fullMovie) {
+                          onClose(); // Close current modal
+                          setTimeout(() => {
+                            onSelectMovie(fullMovie); // Open new one with full info
+                          }, 100);
+                        } else {
+                          console.warn("Could not load full movie data");
+                        }
+                      } catch (err) {
+                        console.error("Error loading movie from recommendation:", err);
+                      }
+                    }}
+                    style={{ height: '260px', width: '130px' }}
+                    titleSize="1.0rem"
+                    titleColor="black"
+                    hoverTitleSize="20px"
+                  />
+                </div>
+              ))
+            ) : (
+              <div className="text-center text-muted">
+                Loading recommendations...
+              </div>
+            )}
+          </div>
+
+        </div>
+      </Modal.Footer>
+
       <Modal.Footer>
         <Button variant="secondary" onClick={onClose}>
           Close

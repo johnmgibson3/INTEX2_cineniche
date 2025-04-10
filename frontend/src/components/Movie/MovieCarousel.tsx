@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import MoviePoster from './MoviePoster';
 import MovieDetails from './MovieDetails';
-import { Movie } from '../../types/Movie';
+import { Movie } from '../../types/Movie.ts';
 import { fetchAllMovies } from '../../api/MoviesAPI';
 import '../../css/MoviePage.css';
 
@@ -70,6 +70,14 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, filter }) => {
       left: direction === 'left' ? -scrollAmount : scrollAmount,
       behavior: 'smooth',
     });
+  };
+
+    // Handle selecting a movie (with a delay to reset modal)
+  const handleSelectMovie = (movie: Movie) => {
+    setSelectedMovie(null); // Close current modal
+    setTimeout(() => {
+      setSelectedMovie(movie); // Reopen with new movie
+    }, 100); // Small delay ensures clean remount
   };
 
   return (
@@ -149,8 +157,10 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, filter }) => {
       {/* Movie Modal */}
       {selectedMovie && (
         <MovieDetails
+          key={selectedMovie.showId} // 👈 This forces full remount
           movie={selectedMovie}
           onClose={() => setSelectedMovie(null)}
+          onSelectMovie={handleSelectMovie} // 👈 use the delayed handler
         />
       )}
     </div>
