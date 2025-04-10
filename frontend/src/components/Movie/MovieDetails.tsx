@@ -4,6 +4,7 @@ import { Movie } from '../../types/Movie';
 import { getAverageRating } from '../../api/RatingsAPI';
 import '../../css/MoviePage.css';
 import { getMoviePosterUrl } from '../../constants/movieImage';
+import MovieRating from './MovieRating';
 
 interface MovieDetailsProps {
   movie: Movie;
@@ -46,7 +47,6 @@ const genreLabels: Record<string, string> = {
 };
 
 const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose }) => {
-  const posterUrl = `https://moviepostersintex11.blob.core.windows.net/intex/Movie%20Posters/${encodeURIComponent(movie.title ?? 'default')}.jpg`;
   const [averageRating, setAverageRating] = useState<number | null>(null);
   const [srcAttempted, setSrcAttempted] = useState(0);
   const posterUrls = getMoviePosterUrl(movie.title ?? '');
@@ -131,7 +131,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose }) => {
             </p>
           )}
           {averageRating === null ? (
-            <p className="mt-2" style={{ color: '#ccc' }}>
+            <p className="mt-2" style={{ color: '#b8860b' }}>
               Be the first to rate this movie!
             </p>
           ) : (
@@ -175,6 +175,11 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose }) => {
               </span>
             </div>
           )}
+
+          {/* Inject MovieRating component here */}
+          <div className="mt-3">
+            {movie.showId && <MovieRating showId={movie.showId} />}
+          </div>
         </div>
       </Modal.Body>
       <Modal.Footer>

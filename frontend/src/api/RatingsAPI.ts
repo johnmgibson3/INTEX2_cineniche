@@ -15,6 +15,28 @@ export const getRatings = async (): Promise<Rating[] | null> => {
   }
 };
 
+export async function submitRating(
+  showId: string,
+  userId: string,
+  rating: number
+): Promise<void> {
+  const res = await fetch('/api/Ratings/Add', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      showId,
+      userId,
+      rating,
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to submit rating');
+  }
+}
+
 export async function getAverageRating(showId: string): Promise<number | null> {
   try {
     const response = await fetch(
@@ -49,7 +71,7 @@ export const getRating = async (
 
 export const addRating = async (rating: Rating): Promise<boolean> => {
   try {
-    const res = await fetch(`${API_URL}/add`, {
+    const res = await fetch(`${API_URL}/Add`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(rating),
@@ -68,7 +90,7 @@ export const updateRating = async (
   rating: Rating
 ): Promise<boolean> => {
   try {
-    const res = await fetch(`${API_URL}/update/${userId}/${showId}`, {
+    const res = await fetch(`${API_URL}/Update/${userId}/${showId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(rating),
@@ -86,7 +108,7 @@ export const deleteRating = async (
   showId: string
 ): Promise<boolean> => {
   try {
-    const res = await fetch(`${API_URL}/delete/${userId}/${showId}`, {
+    const res = await fetch(`${API_URL}/Delete/${userId}/${showId}`, {
       method: 'DELETE',
     });
 
