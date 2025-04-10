@@ -24,6 +24,8 @@ builder.Services.AddDbContext<MoviesContext>(options =>
 //builder.Services.AddDbContext<MoviesContext>(options =>
 //    options.UseSqlite(builder.Configuration.GetConnectionString("MovieConnection")));
 
+
+
 builder.Services.AddAuthorization();
 
 builder.Services.AddIdentity<LoginCredentials, IdentityRole>() //THIS WAS ADDED FOR THE RBAC STUFF 
@@ -56,7 +58,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.SameSite = SameSiteMode.None; //change after adding https for production
     options.Cookie.Name = ".AspNetCore.Identity.Application";
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-    options.Cookie.Domain = "intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net"; 
+    // options.Cookie.Domain = "intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net"; 
     options.Events.OnRedirectToLogin = context =>
     {
         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -88,8 +90,15 @@ var app = builder.Build();
 //     app.UseSwagger();
 //     app.UseSwaggerUI();
 // }
+
+
 app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
+app.Use(async (context, next) =>
+{
+    await next();
+    context.Response.Headers["Access-Control-Allow-Credentials"] = "true";
+});
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
