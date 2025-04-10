@@ -29,7 +29,7 @@ const PrivacyPolicy: React.FC = () => {
       <div className="privacy-container">
         <div className="privacy-header">
           <h2 className="privacy-title">CineNiche Privacy Policy</h2>
-          <p className="privacy-subtitle">Last updated: April 5, 2025</p>
+          <p className="privacy-subtitle">Last updated: April 10, 2025</p>
           <p className="privacy-intro">
             CineNiche ("we", "our", or "us") is committed to protecting your
             privacy. This privacy policy explains how CineNiche collects, uses,
@@ -38,90 +38,102 @@ const PrivacyPolicy: React.FC = () => {
           </p>
         </div>
 
-        <div className="privacy-toc">
-          <h3>Table of Contents</h3>
-          <ul className="privacy-toc-list">
-            <li>
-              <a href="#collect" onClick={scrollToSection('collect')}>
-                Information We Collect
-              </a>
-            </li>
-            <li>
-              <a
-                href="#collection-methods"
-                onClick={scrollToSection('collection-methods')}
-              >
-                How We Collect Your Data
-              </a>
-            </li>
-            <li>
-              <a href="#use" onClick={scrollToSection('use')}>
-                How We Use Your Information
-              </a>
-            </li>
-            <li>
-              <a href="#storage" onClick={scrollToSection('storage')}>
-                How We Store Your Data
-              </a>
-            </li>
-            <li>
-              <a href="#marketing" onClick={scrollToSection('marketing')}>
-                Marketing Communications
-              </a>
-            </li>
-            <li>
-              <a href="#rights" onClick={scrollToSection('rights')}>
-                Your Data Protection Rights
-              </a>
-            </li>
-            <li>
-              <a href="#cookies" onClick={scrollToSection('cookies')}>
-                Cookies Policy
-              </a>
-            </li>
-            <li>
-              <a href="#cookie-usage" onClick={scrollToSection('cookie-usage')}>
-                How We Use Cookies
-              </a>
-            </li>
-            <li>
-              <a href="#cookie-types" onClick={scrollToSection('cookie-types')}>
-                Types of Cookies We Use
-              </a>
-            </li>
-            <li>
-              <a
-                href="#cookie-management"
-                onClick={scrollToSection('cookie-management')}
-              >
-                Managing Your Cookies
-              </a>
-            </li>
-            <li>
-              <a href="#third-party" onClick={scrollToSection('third-party')}>
-                Third-Party Websites
-              </a>
-            </li>
-            <li>
-              <a href="#changes" onClick={scrollToSection('changes')}>
-                Changes to Our Privacy Policy
-              </a>
-            </li>
-            <li>
-              <a href="#contact" onClick={scrollToSection('contact')}>
-                Contact Information
-              </a>
-            </li>
-            <li>
-              <a href="#authorities" onClick={scrollToSection('authorities')}>
-                Regulatory Authorities
-              </a>
-            </li>
-          </ul>
+        <div className="privacy-layout">
+          <div className="privacy-toc">
+            <h3>Table of Contents</h3>
+            <ul className="privacy-toc-list">
+              <li>
+                <a href="#collect" onClick={scrollToSection('collect')}>
+                  Information We Collect
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#collection-methods"
+                  onClick={scrollToSection('collection-methods')}
+                >
+                  How We Collect Your Data
+                </a>
+              </li>
+              <li>
+                <a href="#use" onClick={scrollToSection('use')}>
+                  How We Use Your Information
+                </a>
+              </li>
+              <li>
+                <a href="#storage" onClick={scrollToSection('storage')}>
+                  How We Store Your Data
+                </a>
+              </li>
+              <li>
+                <a href="#marketing" onClick={scrollToSection('marketing')}>
+                  Marketing Communications
+                </a>
+              </li>
+              <li>
+                <a href="#rights" onClick={scrollToSection('rights')}>
+                  Your Data Protection Rights
+                </a>
+              </li>
+              <li>
+                <a href="#cookies" onClick={scrollToSection('cookies')}>
+                  Cookies Policy
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#cookie-usage"
+                  onClick={scrollToSection('cookie-usage')}
+                >
+                  How We Use Cookies
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#cookie-types"
+                  onClick={scrollToSection('cookie-types')}
+                >
+                  Types of Cookies We Use
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#cookie-management"
+                  onClick={scrollToSection('cookie-management')}
+                >
+                  Managing Your Cookies
+                </a>
+              </li>
+              <li>
+                <a href="#third-party" onClick={scrollToSection('third-party')}>
+                  Third-Party Websites
+                </a>
+              </li>
+              <li>
+                <a href="#changes" onClick={scrollToSection('changes')}>
+                  Changes to Our Privacy Policy
+                </a>
+              </li>
+              <li>
+                <a href="#contact" onClick={scrollToSection('contact')}>
+                  Contact Information
+                </a>
+              </li>
+              <li>
+                <a href="#authorities" onClick={scrollToSection('authorities')}>
+                  Regulatory Authorities
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        <div className="privacy-content">
-          <Section id="collect" title="Information We Collect">
+        <div>
+          <Section
+            id="collect"
+            title="Information We Collect"
+            className="privacy-content-right"
+          >
             <p>
               CineNiche collects several types of information from our users,
               including:
@@ -501,12 +513,14 @@ const Section = ({
   id,
   title,
   children,
+  className,
 }: {
   id: string;
   title: string;
   children: React.ReactNode;
+  className?: string;
 }) => (
-  <section id={id} className="privacy-section">
+  <section id={id} className={`privacy-section ${className || ''}`}>
     <h3 className="section-title">{title}</h3>
     {children}
   </section>

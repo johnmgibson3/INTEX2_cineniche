@@ -49,6 +49,7 @@
   text-align: center;
   padding: 30px 20px;
   background: #ffffff;
+  color: #222 !important; /* Force darker text */
   border-radius: 8px;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
@@ -79,6 +80,7 @@
   font-size: 20px;
   margin-bottom: 10px;
   font-weight: 600;
+  color: #222 !important; /* Force darker text */
 }
 
 .info-box p {
@@ -87,9 +89,16 @@
   color: #6c757d;
 }
 
+.contact-faq-image {
+  width: 120px;
+  height: auto;
+  filter: brightness(0.8) sepia(1) hue-rotate(-50deg) saturate(5);
+}
+
 /* Contact Form Section */
 .contact-form-section {
   padding: 80px 0;
+  color: #222 !important; /* Force darker text */
   background-color: #ffffff;
 }
 
@@ -253,6 +262,11 @@
 
 /* Map Section */
 .map-section {
+  padding: 0;
+}
+
+.map-section .container {
+  max-width: 100%;
   padding: 0;
 }
 

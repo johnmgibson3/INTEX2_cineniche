@@ -22,7 +22,7 @@
   margin-bottom: 2.5rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid #e9ecef;
-  padding-right: 320px; /* Make room for TOC */
+  padding-left: 320px; /* Make room for TOC */
 }
 
 .privacy-title {
@@ -53,7 +53,7 @@
   width: 280px;
   position: absolute;
   top: 2.5rem;
-  right: 2.5rem;
+  left: 2.5rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
@@ -94,9 +94,8 @@
   text-decoration: underline;
 }
 
-/* Content sections */
-.privacy-content {
-  margin-right: 320px; /* Make room for TOC */
+.privacy-content-right {
+  margin-left: 320px; /* Make room for TOC */
 }
 
 .privacy-section {
@@ -233,7 +232,7 @@ p {
   border-top: 1px solid #e9ecef;
   font-size: 14px;
   color: #6c757d;
-  margin-right: 320px; /* Match content area */
+  /* Match content area */
 }
 
 .privacy-footer a {

@@ -105,7 +105,23 @@ namespace INTEX.API.Controllers
             Response.Cookies.Delete(".AspNetCore.Identity.Application");
             return Ok(new { message = "Logout successful." });
         }
-        
+
+        //[Authorize]
+        //[HttpGet("me")]
+        //public async Task<IActionResult> Me()
+        //{
+        //    var user = await _userManager.GetUserAsync(User);
+        //    if (user == null)
+        //        return Unauthorized();
+
+        //    return Ok(new
+        //    {
+        //        username = user.UserName,
+        //        isAdmin = user.AdminStatus // 🔥 This is your custom admin check
+        //    });
+        //}
+
+        // In AuthController.cs - Ensure the "me" endpoint returns the userId
         [Authorize]
         [HttpGet("me")]
         public async Task<IActionResult> Me()
@@ -116,8 +132,9 @@ namespace INTEX.API.Controllers
 
             return Ok(new
             {
+                id = user.Id,
                 username = user.UserName,
-                isAdmin = user.AdminStatus // 🔥 This is your custom admin check
+                isAdmin = user.AdminStatus // If applicable
             });
         }
 
