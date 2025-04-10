@@ -1,6 +1,6 @@
 import { Movie } from '../types/Movie';
 
-const API_URL = 'https://localhost:5000/api';
+const API_URL = 'https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api';
 
 export const getMovies = async (): Promise<Movie[] | null> => {
   try {
@@ -78,7 +78,7 @@ export const deleteMovie = async (showId: string): Promise<boolean> => {
 
 export const fetchAllMovies = async (): Promise<Movie[] | null> => {
   try {
-    const res = await fetch('https://localhost:5000/api/Movies/All', {
+    const res = await fetch('https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api/Movies/All', {
       method: 'GET',
       credentials: 'include', // ✅ must be included
     });
@@ -97,7 +97,7 @@ export const fetchAllMovies = async (): Promise<Movie[] | null> => {
 export async function fetchMoviesByGenre(genreKey: string) {
   try {
     const res = await fetch(
-      `https://localhost:5000/api/Movies/ByGenre/${genreKey}`,
+      `https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api/Movies/ByGenre/${genreKey}`,
       {
         credentials: 'include',
       }
@@ -112,7 +112,7 @@ export async function fetchMoviesByGenre(genreKey: string) {
 
 export const fetchSecureData = async () => {
   const res = await fetch(
-    'https://localhost:5000/api/YourController/SecureEndpoint',
+    'https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api/YourController/SecureEndpoint',
     {
       method: 'GET',
       credentials: 'include',

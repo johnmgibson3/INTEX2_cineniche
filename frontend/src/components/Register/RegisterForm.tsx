@@ -37,7 +37,7 @@ export default function RegisterForm() {
     }
 
     try {
-      const response = await fetch('https://localhost:5000/api/Auth/register', {
+      const response = await fetch('https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api/Auth/register', {
         // Updated URL
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
