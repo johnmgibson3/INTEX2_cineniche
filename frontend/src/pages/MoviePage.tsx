@@ -6,6 +6,7 @@ import { Recommend } from '../types/HybridRecommender.ts';
 import MovieCarousel from '../components/Movie/MovieCarousel';
 import MovieFilterBar from '../components/Movie/MovieFilterBar';
 import MoviePoster from '../components/Movie/MoviePoster';
+import RecommendedMovies from '../components/Movie/RecommendedMovies';
 import Paginator from '../components/Movie/Paginator';
 import { genreMap } from '../constants/genreMap';
 import { Movie } from '../types/Movie';
@@ -71,25 +72,28 @@ const MoviePage: React.FC = () => {
   const itemsPerPage = 12;
   const [recommendations, setRecommendations] = useState<Recommend[]>([]);
 
-useEffect(() => {
-  const load = async () => {
-    const movies = await fetchAllMovies();
-    if (movies) {
-      setAllMovies(movies);
-      setFilteredMovies(movies);
-    }
+  useEffect(() => {
+    const load = async () => {
+      const movies = await fetchAllMovies();
+      if (movies) {
+        setAllMovies(movies);
+        setFilteredMovies(movies);
+      }
 
-    // Benji's Code
-    const recommendationsData = await fetchAllHybridRecommendationsSecure();
-    if (recommendationsData) {
-      setRecommendations(recommendationsData);
-    }
-  };
+      // Benji's Code
+      const recommendationsData = await fetchAllHybridRecommendationsSecure();
+      if (recommendationsData) {
+        setRecommendations(recommendationsData);
+      }
+    };
 
-  load();
-}, []);
+    //      if (movies) {
+    //        setAllMovies(movies);
+    //        setFilteredMovies(movies);
+    //      }
 
-  
+    load();
+  }, []);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -221,9 +225,14 @@ useEffect(() => {
             </div>
           </>
         ) : (
-          Object.entries(genreMap).map(([key, label]) => (
-            <GenreSection key={key} genreKey={key} label={label} />
-          ))
+          <>
+            {/* Add Recommendations at the top */}
+            <RecommendedMovies allMovies={allMovies} />
+
+            {Object.entries(genreMap).map(([key, label]) => (
+              <GenreSection key={key} genreKey={key} label={label} />
+            ))}
+          </>
         )}
       </div>
 
