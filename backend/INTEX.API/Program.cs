@@ -30,6 +30,8 @@ builder.Services.AddDbContext<HybridContext>(options =>
 //builder.Services.AddDbContext<MoviesContext>(options =>
 //    options.UseSqlite(builder.Configuration.GetConnectionString("MovieConnection")));
 
+
+
 builder.Services.AddAuthorization();
 
 builder.Services.AddIdentity<LoginCredentials, IdentityRole>() //THIS WAS ADDED FOR THE RBAC STUFF 
@@ -62,7 +64,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.SameSite = SameSiteMode.None; //change after adding https for production
     options.Cookie.Name = ".AspNetCore.Identity.Application";
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-    
+    // options.Cookie.Domain = "intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net"; 
     options.Events.OnRedirectToLogin = context =>
     {
         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -75,10 +77,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000") // Replace with your frontend URL
-                .AllowCredentials() // Required to allow cookies
+            policy.WithOrigins("https://lively-tree-0dfd49a1e.6.azurestaticapps.net") // Replace with your frontend URL
                 .AllowAnyMethod()
-                .AllowAnyHeader();
+                .AllowAnyHeader()
+                .AllowCredentials(); // Required to allow cookies
         });
 });
 
@@ -89,13 +91,20 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-app.UseCors("AllowFrontend");
+// if (app.Environment.IsDevelopment())
+// {
+//     app.UseSwagger();
+//     app.UseSwaggerUI();
+// }
+
+
 app.UseHttpsRedirection();
+app.UseCors("AllowFrontend");
+app.Use(async (context, next) =>
+{
+    await next();
+    context.Response.Headers["Access-Control-Allow-Credentials"] = "true";
+});
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
