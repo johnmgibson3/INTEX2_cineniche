@@ -34,6 +34,67 @@ public class MoviesController : ControllerBase
         }
     }
 
+    [HttpGet("ByGenre/{genreKey}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetMoviesByGenre(string genreKey)
+    {
+        try
+        {
+            // Normalize key (match your C# property names, which are PascalCase)
+            var genreProperty = genreKey switch
+            {
+                "action" => "Action",
+                "animeSeriesInternationalTvShows" => "AnimeSeriesInternationalTvShows",
+                "britishTvShowsDocuseriesInternationalTvShows" => "BritishTvShowsDocuseriesInternationalTvShows",
+                "children" => "Children",
+                "comedies" => "Comedies",
+                "comediesDramasInternationalMovies" => "ComediesDramasInternationalMovies",
+                "comediesInternationalMovies" => "ComediesInternationalMovies",
+                "comediesRomanticMovies" => "ComediesRomanticMovies",
+                "crimeTvShowsDocuseries" => "CrimeTvShowsDocuseries",
+                "documentaries" => "Documentaries",
+                "documentariesInternationalMovies" => "DocumentariesInternationalMovies",
+                "docuseries" => "Docuseries",
+                "dramas" => "Dramas",
+                "dramasInternationalMovies" => "DramasInternationalMovies",
+                "dramasRomanticMovies" => "DramasRomanticMovies",
+                "familyMovies" => "FamilyMovies",
+                "fantasy" => "Fantasy",
+                "horrorMovies" => "HorrorMovies",
+                "internationalMoviesThrillers" => "InternationalMoviesThrillers",
+                "internationalTvShowsRomanticTvShowsTvDramas" => "InternationalTvShowsRomanticTvShowsTvDramas",
+                "kidsTv" => "KidsTv",
+                "languageTvShows" => "LanguageTvShows",
+                "musicals" => "Musicals",
+                "natureTv" => "NatureTv",
+                "realityTv" => "RealityTv",
+                "spirituality" => "Spirituality",
+                "tvAction" => "TvAction",
+                "tvComedies" => "TvComedies",
+                "tvDramas" => "TvDramas",
+                "talkShowsTvComedies" => "TalkShowsTvComedies",
+                "thrillers" => "Thrillers",
+                _ => null
+            };
+
+            if (genreProperty == null)
+                return BadRequest("Invalid genre key");
+
+            var movies = await _context.MoviesTitles
+                .Where(m => EF.Property<int?>(m, genreProperty) == 1)
+                .AsNoTracking()
+                .ToListAsync();
+
+            return Ok(movies);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Failed to fetch genre: {genreKey}");
+            return StatusCode(500, "Internal server error while fetching genre");
+        }
+    }
+
+
 
 
     [HttpGet("{showId}")]

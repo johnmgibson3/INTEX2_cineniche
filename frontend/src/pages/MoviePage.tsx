@@ -1,6 +1,5 @@
-// MoviePage.tsx
-import React, { useEffect, useState, useMemo } from 'react';
-import { fetchAllMovies } from '../api/MoviesAPI';
+import React, { useEffect, useState } from 'react';
+import { fetchAllMovies, fetchMoviesByGenre } from '../api/MoviesAPI';
 import MovieCarousel from '../components/Movie/MovieCarousel';
 import MovieFilterBar from '../components/Movie/MovieFilterBar';
 import '../css/MoviePage.css';
@@ -10,9 +9,9 @@ import Paginator from '../components/Movie/Paginator';
 
 const useInView = () => {
   const ref = React.useRef<HTMLDivElement | null>(null);
-  const [isVisible, setIsVisible] = React.useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -29,26 +28,57 @@ const useInView = () => {
   return { ref, isVisible };
 };
 
+// ⬇️ Each genre row section
+const GenreSection: React.FC<{
+  genreKey: string;
+  label: string;
+}> = ({ genreKey, label }) => {
+  const { ref, isVisible } = useInView();
+  const [movies, setMovies] = useState<Movie[]>([]);
+
+  useEffect(() => {
+    if (isVisible && movies.length === 0) {
+      fetchMoviesByGenre(genreKey).then((res) => {
+        if (res) setMovies(res);
+      });
+    }
+  }, [isVisible, genreKey]);
+
+  return (
+    <div ref={ref} style={{ minHeight: '200px', marginBottom: '2rem' }}>
+      {isVisible && movies.length > 0 && (
+        <MovieCarousel
+          title={label}
+          filter={(movie) => movies.some((m) => m.showId === movie.showId)}
+        />
+      )}
+    </div>
+  );
+};
+
 const MoviePage: React.FC = () => {
   const [allMovies, setAllMovies] = useState<Movie[]>([]);
   const [filteredMovies, setFilteredMovies] = useState<Movie[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterApplied, setFilterApplied] = useState(false);
+
   const itemsPerPage = 12;
 
   useEffect(() => {
     const load = async () => {
       const movies = await fetchAllMovies();
-      setAllMovies(movies ?? []);
+
+      if (movies) {
+        setAllMovies(movies);
+        setFilteredMovies(movies);
+      }
     };
     load();
   }, []);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filterApplied
-    ? filteredMovies.slice(indexOfFirstItem, indexOfLastItem)
-    : filteredMovies;
+  const currentItems = filteredMovies.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredMovies.length / itemsPerPage);
 
   const handleFilterChange = ({
@@ -134,30 +164,9 @@ const MoviePage: React.FC = () => {
           </>
         ) : (
           <>
-            {Object.entries(genreMap).map(([key, label]) => {
-              const { ref, isVisible } = useInView();
-
-              const genreMovies = useMemo(() => {
-                return allMovies.filter(
-                  (movie) => movie[key as keyof Movie] === 1
-                );
-              }, [allMovies]);
-
-              return (
-                <div
-                  ref={ref}
-                  key={key}
-                  style={{ minHeight: '200px', marginBottom: '2rem' }}
-                >
-                  {isVisible && genreMovies.length > 0 && (
-                    <MovieCarousel
-                      title={label}
-                      filter={(movie) => movie[key as keyof Movie] === 1}
-                    />
-                  )}
-                </div>
-              );
-            })}
+            {Object.entries(genreMap).map(([key, label]) => (
+              <GenreSection key={key} genreKey={key} label={label} />
+            ))}
           </>
         )}
       </div>
