@@ -5,10 +5,14 @@ import { fetchAllHybridRecommendationsSecure } from '../api/HybridAPI.ts';
 import { Recommend } from '../types/HybridRecommender.ts';
 import MovieCarousel from '../components/Movie/MovieCarousel';
 import MovieFilterBar from '../components/Movie/MovieFilterBar';
-import '../css/MoviePage.css';
-import { Movie } from '../types/Movie';
-import { genreMap } from '../constants/genreMap';
+import MoviePoster from '../components/Movie/MoviePoster';
 import Paginator from '../components/Movie/Paginator';
+import { genreMap } from '../constants/genreMap';
+import { Movie } from '../types/Movie';
+import '../css/MoviePage.css';
+import { Button } from 'react-bootstrap';
+import { Search } from 'lucide-react';
+import MovieDetails from '../components/Movie/MovieDetails';
 
 const useInView = () => {
   const ref = React.useRef<HTMLDivElement | null>(null);
@@ -31,19 +35,16 @@ const useInView = () => {
   return { ref, isVisible };
 };
 
-// ⬇️ Each genre row section
-const GenreSection: React.FC<{
-  genreKey: string;
-  label: string;
-}> = ({ genreKey, label }) => {
+const GenreSection: React.FC<{ genreKey: string; label: string }> = ({
+  genreKey,
+  label,
+}) => {
   const { ref, isVisible } = useInView();
   const [movies, setMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
     if (isVisible && movies.length === 0) {
-      fetchMoviesByGenre(genreKey).then((res) => {
-        if (res) setMovies(res);
-      });
+      fetchMoviesByGenre(genreKey).then((res) => res && setMovies(res));
     }
   }, [isVisible, genreKey]);
 
@@ -64,27 +65,29 @@ const MoviePage: React.FC = () => {
   const [filteredMovies, setFilteredMovies] = useState<Movie[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterApplied, setFilterApplied] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+  const [showAllMovies, setShowAllMovies] = useState(false);
 
   const itemsPerPage = 12;
   const [recommendations, setRecommendations] = useState<Recommend[]>([]);
 
-  useEffect(() => {
-    const load = async () => {
-      const movies = await fetchAllMovies();
-      
-      setAllMovies(movies ?? []);
-      //Benji Code
-      const recommendationsData = await fetchAllHybridRecommendationsSecure();
-      if (movies) {
-        setAllMovies(movies);
-        setFilteredMovies(movies);
-      }
-      if (recommendationsData) {
-        setRecommendations(recommendationsData);
-      }
-    };
-    load();
-  }, []);
+useEffect(() => {
+  const load = async () => {
+    const movies = await fetchAllMovies();
+    if (movies) {
+      setAllMovies(movies);
+      setFilteredMovies(movies);
+    }
+
+    // Benji's Code
+    const recommendationsData = await fetchAllHybridRecommendationsSecure();
+    if (recommendationsData) {
+      setRecommendations(recommendationsData);
+    }
+  };
+
+  load();
+}, []);
 
   
 
@@ -114,9 +117,8 @@ const MoviePage: React.FC = () => {
       const genreKey = Object.entries(genreMap).find(
         ([, label]) => label === genre
       )?.[0];
-      if (genreKey) {
+      if (genreKey)
         result = result.filter((m) => m[genreKey as keyof Movie] === 1);
-      }
     }
 
     switch (sortBy) {
@@ -141,24 +143,68 @@ const MoviePage: React.FC = () => {
     setFilteredMovies(result);
     setCurrentPage(1);
     setFilterApplied(true);
+    setShowAllMovies(false); // ensure we’re not in show-all mode
   };
 
   const handleClear = () => {
     setFilteredMovies(allMovies);
     setCurrentPage(1);
     setFilterApplied(false);
+    setShowAllMovies(false);
   };
+
+  const handleShowAllToggle = async () => {
+    if (showAllMovies) {
+      setShowAllMovies(false);
+    } else {
+      const all = await fetchAllMovies();
+      if (Array.isArray(all)) {
+        setAllMovies(all);
+        setShowAllMovies(true);
+      }
+    }
+  };
+
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+  //const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   return (
     <div className="page-wrapper bg-dark text-white">
-      <div className="container py-4">
-        <MovieFilterBar
-          genres={Object.values(genreMap)}
-          onFilterChange={handleFilterChange}
-          onClear={handleClear}
-        />
+      <div className="d-flex align-items-center gap-3 mt-3 px-4">
+        <Button onClick={handleShowAllToggle}>
+          {showAllMovies ? 'Show Genres' : 'Show All'}
+        </Button>
 
-        {filterApplied ? (
+        <Button
+          variant="outline-light"
+          onClick={() => setShowFilter((prev) => !prev)}
+        >
+          <Search className="w-4 h-4" />
+        </Button>
+      </div>
+
+      <div className="py-4">
+        {showFilter && (
+          <div className="mb-4">
+            <MovieFilterBar
+              genres={Object.values(genreMap)}
+              onFilterChange={handleFilterChange}
+              onClear={handleClear}
+            />
+          </div>
+        )}
+
+        {showAllMovies ? (
+          <div className="movie-grid">
+            {allMovies.map((movie) => (
+              <MoviePoster
+                key={movie.showId}
+                movie={movie}
+                onClick={() => setSelectedMovie(movie)}
+              />
+            ))}
+          </div>
+        ) : filterApplied ? (
           <>
             <MovieCarousel
               title="Filtered Movies"
@@ -175,13 +221,19 @@ const MoviePage: React.FC = () => {
             </div>
           </>
         ) : (
-          <>
-            {Object.entries(genreMap).map(([key, label]) => (
-              <GenreSection key={key} genreKey={key} label={label} />
-            ))}
-          </>
+          Object.entries(genreMap).map(([key, label]) => (
+            <GenreSection key={key} genreKey={key} label={label} />
+          ))
         )}
       </div>
+
+      {/* ✅ Show Movie Details Modal */}
+      {selectedMovie && (
+        <MovieDetails
+          movie={selectedMovie}
+          onClose={() => setSelectedMovie(null)}
+        />
+      )}
     </div>
   );
 };

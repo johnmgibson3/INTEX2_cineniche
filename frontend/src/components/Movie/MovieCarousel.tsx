@@ -84,9 +84,9 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, filter }) => {
     <div
       className="movie-section my-4"
       style={{
-        width: '75vw',
-        paddingLeft: '.2rem',
-        paddingRight: '.2rem',
+        maxWidth: '100vw',
+        paddingLeft: '4rem', // More left margin
+        paddingRight: '2rem', // Optional: shrink right margin
       }}
     >
       <h5
@@ -122,7 +122,8 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, filter }) => {
               display: 'flex',
               flexWrap: 'nowrap',
               gap: '1rem',
-              overflowX: 'auto',
+              height: '100%',
+              overflow: 'hidden',
               scrollBehavior: 'smooth',
               paddingBottom: '0.5rem',
             }}
@@ -132,6 +133,7 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, filter }) => {
                 key={`${movie.showId ?? 'no-id'}-${movie.title ?? 'untitled'}-${i}`}
                 movie={movie}
                 onClick={() => setSelectedMovie(movie)}
+                style={{ minWidth: '140px', maxWidth: '140px' }} // ← tighter width
               />
             ))}
           </div>

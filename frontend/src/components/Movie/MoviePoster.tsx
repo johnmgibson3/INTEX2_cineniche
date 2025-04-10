@@ -6,10 +6,12 @@ import '../../css/MoviePage.css';
 interface MoviePosterProps {
   movie: Movie;
   onClick: () => void;
+
   style?: React.CSSProperties; // <-- This line allows me to change the size in other places, like the movie details page
   titleSize?: string;  // <-- New prop for title size
   titleColor?: string;  // New prop for title color
   hoverTitleSize?: string; //New prop for hoverTitleSize
+
 }
 
 const sanitizeFilename = (title: string): string =>
