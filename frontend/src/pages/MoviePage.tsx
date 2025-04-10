@@ -68,6 +68,7 @@ const MoviePage: React.FC = () => {
   const [filterApplied, setFilterApplied] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [showAllMovies, setShowAllMovies] = useState(false);
+  const [pageSize, setPageSize] = useState(10); // or whatever default
 
   const itemsPerPage = 12;
   const [recommendations, setRecommendations] = useState<Recommend[]>([]);
@@ -220,7 +221,9 @@ const MoviePage: React.FC = () => {
               <Paginator
                 currentPage={currentPage}
                 totalPages={totalPages}
+                pageSize={pageSize} // ← Add this
                 onPageChange={setCurrentPage}
+                onPageSizeChange={setPageSize} // ← And this
               />
             </div>
           </>
