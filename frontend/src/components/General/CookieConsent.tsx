@@ -7,13 +7,19 @@ const CookieConsent: React.FC = () => {
 
   useEffect(() => {
     const accepted = localStorage.getItem('cookieAccepted');
-    if (!accepted) {
+    const denied = localStorage.getItem('cookieDenied');
+    if (!accepted && !denied) {
       setVisible(true);
     }
   }, []);
 
   const handleAccept = () => {
     localStorage.setItem('cookieAccepted', 'true');
+    setVisible(false);
+  };
+
+  const handleDeny = () => {
+    localStorage.setItem('cookieDenied', 'true');
     setVisible(false);
   };
 
@@ -25,7 +31,14 @@ const CookieConsent: React.FC = () => {
         We use cookies to enhance your experience. By continuing to visit this
         site you agree to our use of cookies.
       </p>
-      <button onClick={handleAccept}>Accept</button>
+      <div className="cookie-actions">
+        <button className="cookie-accept" onClick={handleAccept}>
+          Accept
+        </button>
+        <button className="cookie-deny" onClick={handleDeny}>
+          Deny
+        </button>
+      </div>
     </div>
   );
 };

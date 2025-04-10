@@ -52,3 +52,17 @@
     transform: translate(-50%, 0);
   }
 }
+
+/* Add to CookieConsent.css */
+.cookie-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.cookie-deny {
+  background-color: #dc2626; /* Tailwind red-600 */
+}
+
+.cookie-deny:hover {
+  background-color: #b91c1c; /* Tailwind red-700 */
+}
