@@ -8,12 +8,8 @@ interface MoviePosterProps {
   onClick: () => void;
 }
 
-// Remove punctuation but keep original spacing
-const sanitizeFilename = (title: string): string => {
-  return (title ?? '')
-    .replace(/[^\w\s]/g, '') // Remove all special characters but keep spaces
-    .trim();
-};
+const sanitizeFilename = (title: string): string =>
+  (title ?? '').replace(/[^\w\s]/g, '').trim();
 
 const toTitleCase = (str: string): string =>
   str
@@ -35,13 +31,11 @@ const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick }) => {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            observer.disconnect();
-          }
-        });
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
       },
       { threshold: 0.1 }
     );
@@ -61,7 +55,7 @@ const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick }) => {
         return `https://moviepostersintex11.blob.core.windows.net/intex/Movie%20Posters/${encodeURIComponent(fallbackTitle)}.jpg`;
       case 'default':
       default:
-        return '/img/apple-touch-icon.png';
+        return '/img/apple-touch-icon.png'; // fallback icon in public/
     }
   };
 
@@ -71,7 +65,7 @@ const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick }) => {
     } else if (srcAttempted === 'fallback') {
       setSrcAttempted('default');
       setHasError(true);
-      setLoaded(true); // <- THIS is the missing piece!
+      setLoaded(true);
     }
   };
 
@@ -99,7 +93,7 @@ const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick }) => {
           position: 'relative',
         }}
       >
-        {!loaded && isVisible && srcAttempted !== 'default' && (
+        {isVisible && !loaded && srcAttempted !== 'default' && (
           <div
             style={{
               position: 'absolute',
@@ -116,10 +110,11 @@ const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick }) => {
 
         {isVisible && (
           <img
+            key={srcAttempted} // ⬅️ force re-render on src change
             src={getPosterSrc()}
             alt={movie.title ?? 'Movie poster'}
-            onError={handleImageError}
             onLoad={() => setLoaded(true)}
+            onError={handleImageError}
             loading="lazy"
             style={{
               width: '100%',
@@ -129,14 +124,15 @@ const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick }) => {
               transition: 'opacity 0.5s ease-in-out',
               opacity: loaded ? 1 : 0,
               zIndex: 2,
+              position: 'relative',
             }}
           />
         )}
+
         <div className="poster-gradient" />
         <div className="poster-title">{movie.title}</div>
       </div>
 
-      {/* TITLE BELOW */}
       <div
         className="poster-default-title"
         style={{

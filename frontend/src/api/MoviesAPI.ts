@@ -94,6 +94,22 @@ export const fetchAllMovies = async (): Promise<Movie[] | null> => {
   }
 };
 
+export async function fetchMoviesByGenre(genreKey: string) {
+  try {
+    const res = await fetch(
+      `https://localhost:5000/api/Movies/ByGenre/${genreKey}`,
+      {
+        credentials: 'include',
+      }
+    );
+    if (!res.ok) throw new Error('Failed to fetch genre');
+    return await res.json();
+  } catch (err) {
+    console.error(`❌ fetchMoviesByGenre (${genreKey}):`, err);
+    return [];
+  }
+}
+
 export const fetchSecureData = async () => {
   const res = await fetch(
     'https://localhost:5000/api/YourController/SecureEndpoint',

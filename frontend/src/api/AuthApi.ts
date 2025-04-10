@@ -1,4 +1,5 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/Auth';
+const API_URL =
+  import.meta.env.VITE_API_URL || 'http://localhost:5000/api/Auth';
 
 export const registerUser = async (
   username: string,
@@ -20,10 +21,7 @@ export const registerUser = async (
     console.error('registerUser error:', err);
     return { success: false, message: 'Network or server error.' };
   }
-
-  
 };
-
 
 export async function fetchUser() {
   const res = await fetch('https://localhost:5000/api/Auth/me', {
@@ -38,4 +36,11 @@ export async function logoutUser() {
     method: 'POST',
     credentials: 'include',
   });
+}
+
+export async function getUserIdFromHeader(): Promise<string | null> {
+  const res = await fetch('/api/Auth/me');
+  if (!res.ok) return null;
+  const data = await res.json();
+  return data?.userId ?? null;
 }
