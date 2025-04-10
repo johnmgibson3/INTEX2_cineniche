@@ -9,6 +9,37 @@ type Props = {
   onPageSizeChange: (size: number) => void;
 };
 
+const getVisiblePages = (
+  currentPage: number,
+  totalPages: number,
+  windowSize: number = 2
+): (number | '...')[] => {
+  const pages: (number | '...')[] = [];
+
+  const start = Math.max(currentPage - windowSize, 2);
+  const end = Math.min(currentPage + windowSize, totalPages - 1);
+
+  pages.push(1); // Always show first page
+
+  if (start > 2) {
+    pages.push('...');
+  }
+
+  for (let i = start; i <= end; i++) {
+    pages.push(i);
+  }
+
+  if (end < totalPages - 1) {
+    pages.push('...');
+  }
+
+  if (totalPages > 1) {
+    pages.push(totalPages); // Always show last page
+  }
+
+  return pages;
+};
+
 const Paginator: React.FC<Props> = ({
   currentPage,
   totalPages,
@@ -16,24 +47,7 @@ const Paginator: React.FC<Props> = ({
   pageSize,
   onPageSizeChange,
 }) => {
-  const pageWindow = 2; // how many pages on either side of current page
-
-  const pages: number[] = [];
-
-  const startPage = Math.max(2, currentPage - pageWindow);
-  const endPage = Math.min(totalPages - 1, currentPage + pageWindow);
-
-  if (totalPages > 1) pages.push(1); // always show first page
-
-  if (startPage > 2) pages.push(-1); // -1 will be the "..." before current
-
-  for (let i = startPage; i <= endPage; i++) {
-    pages.push(i);
-  }
-
-  if (endPage < totalPages - 1) pages.push(-2); // -2 will be "..." after current
-
-  if (totalPages > 1) pages.push(totalPages); // always show last page
+  const pages = getVisiblePages(currentPage, totalPages);
 
   return (
     <div className="d-flex align-items-center gap-3 flex-wrap justify-content-center">
@@ -43,8 +57,8 @@ const Paginator: React.FC<Props> = ({
           disabled={currentPage === 1}
         />
         {pages.map((page, index) =>
-          page === -1 || page === -2 ? (
-            <Pagination.Ellipsis key={index} disabled />
+          page === '...' ? (
+            <Pagination.Ellipsis key={`ellipsis-${index}`} disabled />
           ) : (
             <Pagination.Item
               key={page}
