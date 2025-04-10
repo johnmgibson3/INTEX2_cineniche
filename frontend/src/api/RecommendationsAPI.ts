@@ -1,7 +1,7 @@
 import { Movie } from '../types/Movie';
 
 // Use our proxy endpoint to avoid CORS issues
-const RECOMMENDATION_URL = 'https://localhost:5000/api/Proxy/recommendations';
+const RECOMMENDATION_URL = 'https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api/Proxy/recommendations';
 
 /**
  * Fetches movie recommendations for a user

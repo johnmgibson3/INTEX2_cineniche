@@ -60,9 +60,9 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose, onSelectMov
 
   const posterUrls = getMoviePosterUrl(movie.title ?? '');
   //Benji Code
-  const [recommendations, setRecommendations] = useState<Recommend | null>(null);
+  const [, setRecommendations] = useState<Recommend | null>(null);
   const [recommendationMovies, setRecommendationMovies] = useState<Movie[]>([]);
-  const [selectedRecMovie, setSelectedRecMovie] = useState<Movie | null>(null);
+  const [, ] = useState<Movie | null>(null);
 
 
   // Fetch recommendations when the component mounts
@@ -107,7 +107,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose, onSelectMov
   }, [movie.showId]);
   
 
-  const posterUrl = `https://moviepostersintex11.blob.core.windows.net/intex/Movie%20Posters/${encodeURIComponent(movie.title ?? 'default')}.jpg`;
+  
 
 
   const genres = Object.entries(movie)
