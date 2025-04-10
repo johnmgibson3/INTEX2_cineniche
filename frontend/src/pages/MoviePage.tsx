@@ -72,27 +72,26 @@ const MoviePage: React.FC = () => {
   const itemsPerPage = 12;
   const [recommendations, setRecommendations] = useState<Recommend[]>([]);
 
-useEffect(() => {
-  const load = async () => {
-    const movies = await fetchAllMovies();
-    if (movies) {
-      setAllMovies(movies);
-      setFilteredMovies(movies);
-    }
+  useEffect(() => {
+    const load = async () => {
+      const movies = await fetchAllMovies();
+      if (movies) {
+        setAllMovies(movies);
+        setFilteredMovies(movies);
+      }
 
-    // Benji's Code
-    const recommendationsData = await fetchAllHybridRecommendationsSecure();
-    if (recommendationsData) {
-      setRecommendations(recommendationsData);
-    }
-  };
-
-
-//      if (movies) {
-//        setAllMovies(movies);
-//        setFilteredMovies(movies);
-//      }
+      // Benji's Code
+      const recommendationsData = await fetchAllHybridRecommendationsSecure();
+      if (recommendationsData) {
+        setRecommendations(recommendationsData);
+      }
     };
+
+    //      if (movies) {
+    //        setAllMovies(movies);
+    //        setFilteredMovies(movies);
+    //      }
+
     load();
   }, []);
 
