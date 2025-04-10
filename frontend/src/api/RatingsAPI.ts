@@ -15,6 +15,22 @@ export const getRatings = async (): Promise<Rating[] | null> => {
   }
 };
 
+export async function submitRating(
+  showId: string,
+  userId: string,
+  rating: number
+): Promise<boolean> {
+  const res = await fetch('/api/Ratings/Add', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ showId, userId, rating }),
+  });
+
+  return res.ok; // ✅ Return true if successful
+}
+
 export async function getAverageRating(showId: string): Promise<number | null> {
   try {
     const response = await fetch(
@@ -33,23 +49,19 @@ export async function getAverageRating(showId: string): Promise<number | null> {
   }
 }
 
-export const getRating = async (
-  userId: number,
+export async function getRating(
+  userId: string,
   showId: string
-): Promise<Rating | null> => {
-  try {
-    const res = await fetch(`${API_URL}/${userId}/${showId}`);
-    if (!res.ok) throw new Error(`Rating not found: ${res.status}`);
-    return await res.json();
-  } catch (error) {
-    console.error('getRating error:', error);
-    return null;
-  }
-};
+): Promise<number | null> {
+  const res = await fetch(`/api/Ratings/user/${userId}/movie/${showId}`);
+  if (!res.ok) return null;
+  const data = await res.json();
+  return data.rating ?? null;
+}
 
 export const addRating = async (rating: Rating): Promise<boolean> => {
   try {
-    const res = await fetch(`${API_URL}/add`, {
+    const res = await fetch(`${API_URL}/Add`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(rating),
@@ -68,7 +80,7 @@ export const updateRating = async (
   rating: Rating
 ): Promise<boolean> => {
   try {
-    const res = await fetch(`${API_URL}/update/${userId}/${showId}`, {
+    const res = await fetch(`${API_URL}/Update/${userId}/${showId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(rating),
@@ -86,7 +98,7 @@ export const deleteRating = async (
   showId: string
 ): Promise<boolean> => {
   try {
-    const res = await fetch(`${API_URL}/delete/${userId}/${showId}`, {
+    const res = await fetch(`${API_URL}/Delete/${userId}/${showId}`, {
       method: 'DELETE',
     });
 

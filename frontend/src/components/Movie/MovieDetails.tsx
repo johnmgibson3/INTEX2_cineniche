@@ -7,6 +7,7 @@ import '../../css/MoviePage.css';
 import { getMoviePosterUrl } from '../../constants/movieImage';
 import { Recommend } from '../../types/HybridRecommender.ts'
 import MoviePoster from './MoviePoster';
+import MovieRating from './MovieRating';
 
 
 interface MovieDetailsProps {
@@ -53,8 +54,10 @@ const genreLabels: Record<string, string> = {
 const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose, onSelectMovie }) => {
 
   const [averageRating, setAverageRating] = useState<number | null>(null);
-  //const [srcAttempted, setSrcAttempted] = useState(0);
+
   const [srcAttempted] = useState(0);
+  //const [srcAttempted, setSrcAttempted] = useState(0);
+
   const posterUrls = getMoviePosterUrl(movie.title ?? '');
   //Benji Code
   const [recommendations, setRecommendations] = useState<Recommend | null>(null);
@@ -188,7 +191,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose, onSelectMov
             </p>
           )}
           {averageRating === null ? (
-            <p className="mt-2" style={{ color: '#ccc' }}>
+            <p className="mt-2" style={{ color: '#b8860b' }}>
               Be the first to rate this movie!
             </p>
           ) : (
@@ -232,6 +235,11 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose, onSelectMov
               </span>
             </div>
           )}
+
+          {/* Inject MovieRating component here */}
+          <div className="mt-3">
+            {movie.showId && <MovieRating showId={movie.showId} />}
+          </div>
         </div>
         
       </Modal.Body>

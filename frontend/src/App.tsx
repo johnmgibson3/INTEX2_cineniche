@@ -32,7 +32,14 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="admin" element={<AdminMovieTable />} />
+          <Route 
+            path="admin" 
+            element={
+              <AdminRoute>
+                <AdminMovieTable />
+              </AdminRoute>
+            } 
+          />
           <Route path="privacy" element={<PrivacyPolicy />} />
           <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NoPage404 />} />

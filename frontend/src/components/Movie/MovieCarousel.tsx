@@ -114,25 +114,27 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, filter }) => {
         )}
 
         {/* Movie Row */}
-        <div
-          ref={containerRef}
-          className="movie-row"
-          style={{
-            display: 'flex',
-            flexWrap: 'nowrap',
-            gap: '1rem',
-            overflowX: 'auto',
-            scrollBehavior: 'smooth',
-            paddingBottom: '0.5rem',
-          }}
-        >
-          {allMovies.map((movie, i) => (
-            <MoviePoster
-              key={`${movie.showId ?? 'no-id'}-${movie.title ?? 'untitled'}-${i}`}
-              movie={movie}
-              onClick={() => setSelectedMovie(movie)}
-            />
-          ))}
+        <div className="movie-row-wrapper">
+          <div
+            ref={containerRef}
+            className="movie-row"
+            style={{
+              display: 'flex',
+              flexWrap: 'nowrap',
+              gap: '1rem',
+              overflowX: 'auto',
+              scrollBehavior: 'smooth',
+              paddingBottom: '0.5rem',
+            }}
+          >
+            {allMovies.map((movie, i) => (
+              <MoviePoster
+                key={`${movie.showId ?? 'no-id'}-${movie.title ?? 'untitled'}-${i}`}
+                movie={movie}
+                onClick={() => setSelectedMovie(movie)}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Right Arrow */}
