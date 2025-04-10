@@ -69,9 +69,9 @@ const Contact: React.FC = () => {
               </div>
               <h3>Our Address</h3>
               <p>
-                123 Cinema Street
+                295 W Center St
                 <br />
-                Los Angeles, CA 90210
+                Provo, UT 84601
               </p>
             </div>
 
@@ -101,7 +101,7 @@ const Contact: React.FC = () => {
               </div>
               <h3>Call Us</h3>
               <p>
-                +1 (310) 555-7890
+                +1 (385) 200-1011
                 <br />
                 +1 (888) CINE-HELP
               </p>
@@ -111,113 +111,19 @@ const Contact: React.FC = () => {
       </section>
 
       {/* Contact Form Section */}
+      {/* FAQ Section Only */}
       <section className="contact-form-section section">
         <div className="container">
-          <div className="row">
-            <div className="col-lg-6">
-              <div className="section-title" data-aos="fade-up">
-                <h2>Send Us a Message</h2>
-                <p>
-                  Have a question about our streaming service, content, or
-                  technical support? Fill out the form and our team will get
-                  back to you within 24 hours.
-                </p>
-              </div>
-
-              {submitted ? (
-                <div className="success-message" data-aos="fade-up">
-                  <i className="bi bi-check-circle"></i>
-                  <h3>Thank you for contacting us!</h3>
-                  <p>Your message has been received. We'll respond shortly.</p>
-                </div>
-              ) : (
-                <form
-                  className="contact-form"
-                  onSubmit={handleSubmit}
-                  data-aos="fade-up"
-                >
-                  <div className="row">
-                    <div className="col-md-6 form-group">
-                      <input
-                        type="text"
-                        name="name"
-                        className="form-control"
-                        id="name"
-                        placeholder="Your Name"
-                        required
-                        value={formData.name}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="col-md-6 form-group mt-3 mt-md-0">
-                      <input
-                        type="email"
-                        className="form-control"
-                        name="email"
-                        id="email"
-                        placeholder="Your Email"
-                        required
-                        value={formData.email}
-                        onChange={handleChange}
-                      />
-                    </div>
-                  </div>
-                  <div className="form-group mt-3">
-                    <select
-                      className="form-control"
-                      name="subject"
-                      id="subject"
-                      required
-                      value={formData.subject}
-                      onChange={handleChange}
-                    >
-                      <option value="">Select a Topic</option>
-                      <option value="Technical Support">
-                        Technical Support
-                      </option>
-                      <option value="Account Issues">Account Issues</option>
-                      <option value="Content Request">Content Request</option>
-                      <option value="Billing Questions">
-                        Billing Questions
-                      </option>
-                      <option value="Partnership Inquiry">
-                        Partnership Inquiry
-                      </option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-                  <div className="form-group mt-3">
-                    <textarea
-                      className="form-control"
-                      name="message"
-                      rows={5}
-                      placeholder="Message"
-                      required
-                      value={formData.message}
-                      onChange={handleChange}
-                    ></textarea>
-                  </div>
-                  <div className="text-center mt-4">
-                    <button type="submit" className="btn-submit">
-                      Send Message
-                    </button>
-                  </div>
-                </form>
-              )}
-            </div>
-
-            <div className="col-lg-6 d-flex align-items-center">
-              <div
-                className="contact-image"
-                data-aos="fade-up"
-                data-aos-delay="100"
-              >
+          <div className="row justify-content-center">
+            <div className="col-lg-8">
+              <div data-aos="fade-up" data-aos-delay="100">
                 <img
-                  src="/img/contact-image.jpg"
+                  src="/img/contact-us.png"
                   alt="Contact CineNiche"
                   className="img-fluid"
+                  style={{ width: '120px', height: 'auto' }}
                 />
-                <div className="contact-faq">
+                <div className="contact-faq mt-4">
                   <h3>Frequently Asked Questions</h3>
                   <div className="accordion" id="faqAccordion">
                     <div className="accordion-item">
@@ -238,9 +144,7 @@ const Contact: React.FC = () => {
                       >
                         <div className="accordion-body">
                           You can reset your password by clicking the "Forgot
-                          Password" link on the login page. Follow the
-                          instructions sent to your email to create a new
-                          password.
+                          Password" link on the login page.
                         </div>
                       </div>
                     </div>
@@ -262,9 +166,8 @@ const Contact: React.FC = () => {
                         data-bs-parent="#faqAccordion"
                       >
                         <div className="accordion-body">
-                          CineNiche is available on web browsers, iOS and
-                          Android devices, smart TVs, gaming consoles, and
-                          streaming devices like Roku and Amazon Fire TV.
+                          CineNiche is available on browsers, mobile apps, smart
+                          TVs, and streaming devices.
                         </div>
                       </div>
                     </div>
@@ -277,7 +180,7 @@ const Contact: React.FC = () => {
                           data-bs-toggle="collapse"
                           data-bs-target="#faq3"
                         >
-                          How do I suggest a movie?
+                          How do I search for the movie I want?
                         </button>
                       </h2>
                       <div
@@ -286,9 +189,8 @@ const Contact: React.FC = () => {
                         data-bs-parent="#faqAccordion"
                       >
                         <div className="accordion-body">
-                          You can suggest content by selecting "Content Request"
-                          in our contact form or by using the "Suggest" feature
-                          in your account dashboard.
+                          In the movie dashboard, you can click the magnifying
+                          class and use the filters that appear there.
                         </div>
                       </div>
                     </div>
@@ -301,7 +203,7 @@ const Contact: React.FC = () => {
       </section>
 
       {/* Business Hours Section */}
-      <section className="business-hours section dark-background">
+      <section className="business-hours section ">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-8 text-center">
@@ -310,11 +212,11 @@ const Contact: React.FC = () => {
                 <div className="row">
                   <div className="col-md-6">
                     <h4>Weekdays</h4>
-                    <p>Monday - Friday: 8:00 AM - 10:00 PM EST</p>
+                    <p>Monday - Friday: 8:00 AM - 7:00 PM EST</p>
                   </div>
                   <div className="col-md-6">
                     <h4>Weekends</h4>
-                    <p>Saturday - Sunday: 9:00 AM - 8:00 PM EST</p>
+                    <p>Saturday - Sunday: 9:00 AM - 5:00 PM EST</p>
                   </div>
                 </div>
                 <p className="note">
@@ -326,15 +228,25 @@ const Contact: React.FC = () => {
         </div>
       </section>
 
-      {/* Map Section - Could be replaced with actual map integration */}
-      <section className="map-section">
-        <div className="map-placeholder">
-          <div className="map-content">
-            <h3>Our Headquarters</h3>
-            <p>123 Cinema Street, Los Angeles, CA 90210</p>
-            <span className="map-note">
-              Interactive map would be displayed here
-            </span>
+      {/* Map Section */}
+      <section
+        className="map-section dark-background"
+        style={{ paddingBottom: '3rem', paddingTop: '1rem' }}
+      >
+        <div className="container text-center text-light">
+          <h3>Our Headquarters</h3>
+          <p>295 W Center St, Provo, UT 84601</p>
+          <div className="google-map-container mt-4">
+            <iframe
+              title="CineNiche Location"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3045.9050567907498!2d-111.66627842360474!3d40.23341316677554!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x874d975519999033%3A0x73db4b245d120e45!2s295%20W%20Center%20St%2C%20Provo%2C%20UT%2084601!5e0!3m2!1sen!2sus!4v1744308077069!5m2!1sen!2sus"
+              width="90%"
+              height="400"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
         </div>
       </section>

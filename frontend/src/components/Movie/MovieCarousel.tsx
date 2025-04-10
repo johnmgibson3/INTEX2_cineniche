@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import MoviePoster from './MoviePoster';
 import MovieDetails from './MovieDetails';
-import { Movie } from '../../types/Movie';
+import { Movie } from '../../types/Movie.ts';
 import { fetchAllMovies } from '../../api/MoviesAPI';
 import '../../css/MoviePage.css';
 
@@ -72,13 +72,21 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, filter }) => {
     });
   };
 
+  // Handle selecting a movie (with a delay to reset modal)
+  const handleSelectMovie = (movie: Movie) => {
+    setSelectedMovie(null); // Close current modal
+    setTimeout(() => {
+      setSelectedMovie(movie); // Reopen with new movie
+    }, 100); // Small delay ensures clean remount
+  };
+
   return (
     <div
       className="movie-section my-4"
       style={{
-        width: '75vw',
-        paddingLeft: '.2rem',
-        paddingRight: '.2rem',
+        maxWidth: '100vw',
+        paddingLeft: '4rem', // More left margin
+        paddingRight: '2rem', // Optional: shrink right margin
       }}
     >
       <h5
@@ -114,7 +122,8 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, filter }) => {
               display: 'flex',
               flexWrap: 'nowrap',
               gap: '1rem',
-              overflowX: 'auto',
+              height: '100%',
+              overflow: 'hidden',
               scrollBehavior: 'smooth',
               paddingBottom: '0.5rem',
             }}
@@ -124,6 +133,7 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, filter }) => {
                 key={`${movie.showId ?? 'no-id'}-${movie.title ?? 'untitled'}-${i}`}
                 movie={movie}
                 onClick={() => setSelectedMovie(movie)}
+                style={{ minWidth: '250px', maxWidth: '275px' }} // ← tighter width
               />
             ))}
           </div>
@@ -149,8 +159,10 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, filter }) => {
       {/* Movie Modal */}
       {selectedMovie && (
         <MovieDetails
+          key={selectedMovie.showId} // 👈 This forces full remount
           movie={selectedMovie}
           onClose={() => setSelectedMovie(null)}
+          onSelectMovie={handleSelectMovie} // 👈 use the delayed handler
         />
       )}
     </div>
