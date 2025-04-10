@@ -90,6 +90,13 @@ const Header: React.FC = () => {
                 Contact
               </Link>
             </li>
+            {user && user.isAdmin && (
+      <li>
+        <Link to="/admin" className={location.pathname === '/admin' ? 'active' : ''}>
+          Admin
+        </Link>
+      </li>
+    )}
           </ul>
           <i className="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
