@@ -6,6 +6,7 @@ import '../../css/MoviePage.css';
 interface MoviePosterProps {
   movie: Movie;
   onClick: () => void;
+  style?: React.CSSProperties; // <-- ADD THIS
 }
 
 const sanitizeFilename = (title: string): string =>
