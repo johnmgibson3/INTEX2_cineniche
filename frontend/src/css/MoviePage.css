@@ -151,6 +151,7 @@
   white-space: normal;
   overflow: hidden;
   display: -webkit-box;
+  line-clamp: 6; /* Standard property */
   -webkit-line-clamp: 6; /* allows up to 3 lines */
   -webkit-box-orient: vertical;
 }

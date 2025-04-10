@@ -48,7 +48,8 @@ const genreLabels: Record<string, string> = {
 
 const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose }) => {
   const [averageRating, setAverageRating] = useState<number | null>(null);
-  const [srcAttempted, setSrcAttempted] = useState(0);
+  const [srcAttempted] = useState(0);
+  //const [srcAttempted, setSrcAttempted] = useState(0);
   const posterUrls = getMoviePosterUrl(movie.title ?? '');
 
   const genres = Object.entries(movie)

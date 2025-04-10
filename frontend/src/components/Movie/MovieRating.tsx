@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { submitRating, getUserRating } from '../../api/RatingsAPI';
+import { submitRating, getRating } from '../../api/RatingsAPI';
 import { getUserIdFromHeader } from '../../api/AuthApi';
 
 interface MovieRatingProps {
@@ -24,7 +24,7 @@ const MovieRating: React.FC<MovieRatingProps> = ({ showId }) => {
   useEffect(() => {
     const fetchRating = async () => {
       if (!userId || !showId) return;
-      const rating = await getUserRating(userId, showId);
+      const rating = await getRating(userId, showId);
       if (rating) {
         setUserRating(rating);
         setHasRated(true);
@@ -36,7 +36,7 @@ const MovieRating: React.FC<MovieRatingProps> = ({ showId }) => {
   const handleSubmit = async () => {
     if (!userId || userRating == null) return;
     setSubmitting(true);
-    const success = await submitRating(showId, userRating, userId);
+    const success = await submitRating(showId, userId, userRating);
     if (success) {
       setHasRated(true);
       setRatingSubmitted(true);

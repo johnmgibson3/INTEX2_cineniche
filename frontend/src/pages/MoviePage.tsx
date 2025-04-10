@@ -67,8 +67,10 @@ const MoviePage: React.FC = () => {
   useEffect(() => {
     const load = async () => {
       const movies = await fetchAllMovies();
-      setAllMovies(movies);
-      setFilteredMovies(movies);
+      if (movies) {
+        setAllMovies(movies);
+        setFilteredMovies(movies);
+      }
     };
     load();
   }, []);
