@@ -232,6 +232,7 @@ useEffect(() => {
         <MovieDetails
           movie={selectedMovie}
           onClose={() => setSelectedMovie(null)}
+          onSelectMovie={() => {}}
         />
       )}
     </div>

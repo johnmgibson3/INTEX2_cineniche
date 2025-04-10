@@ -11,7 +11,7 @@ import MoviePage from './pages/MoviePage';
 import AdminMovieTable from './pages/AdminMovieTable';
 import ProtectedRoute from './components/RouteProtection/ProtectedRoute';
 // admin is ready to be enforced simply slap this around admin path
-//import AdminRoute from './components/RouteProtection/AdminRoute';
+import AdminRoute from './components/RouteProtection/AdminRoute';
 
 function App() {
   return (
