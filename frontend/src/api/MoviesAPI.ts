@@ -17,7 +17,10 @@ export const getMovies = async (): Promise<Movie[] | null> => {
 
 export const getMovie = async (showId: string): Promise<Movie | null> => {
   try {
-    const res = await fetch(`${API_URL}/Movies/${showId}`);
+    const res = await fetch(`${API_URL}/Movies/${showId}`, {
+      method: 'GET',
+      credentials: 'include', // ✅ THIS FIXES THE 401
+    });
     if (!res.ok) throw new Error(`Movie not found: ${res.status}`);
     return await res.json();
   } catch (error) {

@@ -72,6 +72,14 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, filter }) => {
     });
   };
 
+    // Handle selecting a movie (with a delay to reset modal)
+  const handleSelectMovie = (movie: Movie) => {
+    setSelectedMovie(null); // Close current modal
+    setTimeout(() => {
+      setSelectedMovie(movie); // Reopen with new movie
+    }, 100); // Small delay ensures clean remount
+  };
+
   return (
     <div
       className="movie-section my-4"
@@ -147,8 +155,10 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, filter }) => {
       {/* Movie Modal */}
       {selectedMovie && (
         <MovieDetails
+          key={selectedMovie.showId} // 👈 This forces full remount
           movie={selectedMovie}
           onClose={() => setSelectedMovie(null)}
+          onSelectMovie={handleSelectMovie} // 👈 use the delayed handler
         />
       )}
     </div>

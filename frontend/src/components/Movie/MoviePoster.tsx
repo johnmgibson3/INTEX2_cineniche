@@ -6,6 +6,10 @@ import '../../css/MoviePage.css';
 interface MoviePosterProps {
   movie: Movie;
   onClick: () => void;
+  style?: React.CSSProperties; // <-- This line allows me to change the size in other places, like the movie details page
+  titleSize?: string;  // <-- New prop for title size
+  titleColor?: string;  // New prop for title color
+  hoverTitleSize?: string; //New prop for hoverTitleSize
 }
 
 // Remove punctuation but keep original spacing
@@ -22,7 +26,7 @@ const toTitleCase = (str: string): string =>
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 
-const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick }) => {
+const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick, style, titleSize = '1.5rem', titleColor = '#fff', hoverTitleSize = '2.65rem', }) => {  // Default to white
   const [isVisible, setIsVisible] = useState(false);
   const [, setHasError] = useState(false);
   //const [hasError, setHasError] = useState(false);
@@ -76,18 +80,19 @@ const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick }) => {
   };
 
   return (
-    <div
-      onClick={onClick}
-      className="movie-poster"
-      style={{
-        flex: '0 0 auto',
-        width: '250px',
-        cursor: 'pointer',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-    >
+<div
+  onClick={onClick}
+  className="movie-poster"
+  style={{
+    flex: '0 0 auto',
+    width: '250px',
+    cursor: 'pointer',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    ...style, // <-- Allow external override
+  }}
+>
       <div
         ref={imgRef}
         style={{
@@ -133,19 +138,21 @@ const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick }) => {
           />
         )}
         <div className="poster-gradient" />
-        <div className="poster-title">{movie.title}</div>
+        <div className="poster-title" style={{fontSize: hoverTitleSize,}} > 
+        {movie.title}
+        </div>
       </div>
 
       {/* TITLE BELOW */}
       <div
         className="poster-default-title"
         style={{
-          color: '#fff',
-          fontSize: '1.5rem',
+          color: titleColor,
+          fontSize: titleSize || '1.5rem', // Default size is 1.5rem, but can be overridden
           fontWeight: 'bold',
           textAlign: 'center',
           marginTop: '0.5rem',
-          overflow: 'hidden',
+          overflow: 'clip',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
           maxWidth: '100%',
