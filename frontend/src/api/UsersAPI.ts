@@ -45,7 +45,6 @@ export const addUser = async (user: User): Promise<boolean> => {
 };
 
 export const updateUser = async (
-  credentials: "include",
   userId: number,
   user: User
 ): Promise<boolean> => {
