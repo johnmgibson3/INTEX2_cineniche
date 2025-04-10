@@ -72,7 +72,7 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, filter }) => {
     });
   };
 
-    // Handle selecting a movie (with a delay to reset modal)
+  // Handle selecting a movie (with a delay to reset modal)
   const handleSelectMovie = (movie: Movie) => {
     setSelectedMovie(null); // Close current modal
     setTimeout(() => {
@@ -133,7 +133,7 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, filter }) => {
                 key={`${movie.showId ?? 'no-id'}-${movie.title ?? 'untitled'}-${i}`}
                 movie={movie}
                 onClick={() => setSelectedMovie(movie)}
-                style={{ minWidth: '140px', maxWidth: '140px' }} // ← tighter width
+                style={{ minWidth: '250px', maxWidth: '275px' }} // ← tighter width
               />
             ))}
           </div>
