@@ -17,7 +17,7 @@ export const getRatings = async (): Promise<Rating[] | null> => {
 
 export async function submitRating(
   showId: string,
-  userId: string,
+  userId: number,
   rating: number
 ): Promise<boolean> {
   const res = await fetch('/api/Ratings/Add', {
@@ -50,7 +50,7 @@ export async function getAverageRating(showId: string): Promise<number | null> {
 }
 
 export async function getRating(
-  userId: string,
+  userId: number,
   showId: string
 ): Promise<number | null> {
   const res = await fetch(`/api/Ratings/user/${userId}/movie/${showId}`);

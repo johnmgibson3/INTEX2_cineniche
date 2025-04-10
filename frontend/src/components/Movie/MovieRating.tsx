@@ -24,7 +24,7 @@ const MovieRating: React.FC<MovieRatingProps> = ({ showId }) => {
   useEffect(() => {
     const fetchRating = async () => {
       if (!userId || !showId) return;
-      const rating = await getRating(userId, showId);
+      const rating = await getRating(Number(userId), showId);
       if (rating) {
         setUserRating(rating);
         setHasRated(true);
@@ -34,9 +34,15 @@ const MovieRating: React.FC<MovieRatingProps> = ({ showId }) => {
   }, [userId, showId]);
 
   const handleSubmit = async () => {
+
+    console.log("🚨 Submit clicked");
+    console.log("➡️ userId:", userId);
+    console.log("➡️ userRating:", userRating);
+
+
     if (!userId || userRating == null) return;
     setSubmitting(true);
-    const success = await submitRating(showId, userId, userRating);
+    const success = await submitRating(showId, Number(userId), userRating);
     if (success) {
       setHasRated(true);
       setRatingSubmitted(true);
