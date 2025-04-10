@@ -164,3 +164,10 @@
 .movie-poster:hover .poster-default-title {
   opacity: 0;
 }
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 columns */
+  gap: 2rem; /* Less space between posters */
+  padding: 2rem 18rem 2rem 14rem; /* More padding on the left */
+}

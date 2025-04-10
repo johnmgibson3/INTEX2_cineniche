@@ -24,6 +24,8 @@ builder.Services.AddHttpClient();
 builder.Services.AddDbContext<MoviesContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
 
+builder.Services.AddDbContext<HybridContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("HybridConnection")));
 
 //builder.Services.AddDbContext<MoviesContext>(options =>
 //    options.UseSqlite(builder.Configuration.GetConnectionString("MovieConnection")));
