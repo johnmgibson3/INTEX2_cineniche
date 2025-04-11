@@ -20,7 +20,9 @@ export async function submitRating(
   userId: string,
   rating: number
 ): Promise<boolean> {
-  const res = await fetch('/api/Ratings/Add', {
+  
+
+  const res = await fetch('https://localhost:5000/api/Ratings/Add', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -53,7 +55,7 @@ export async function getRating(
   userId: string,
   showId: string
 ): Promise<number | null> {
-  const res = await fetch(`/api/Ratings/user/${userId}/movie/${showId}`);
+  const res = await fetch(`https://localhost:5000/api/Ratings/${userId}/${showId}`);
   if (!res.ok) return null;
   const data = await res.json();
   return data.rating ?? null;
@@ -75,7 +77,7 @@ export const addRating = async (rating: Rating): Promise<boolean> => {
 };
 
 export const updateRating = async (
-  userId: number,
+  userId: string,
   showId: string,
   rating: Rating
 ): Promise<boolean> => {
@@ -94,7 +96,7 @@ export const updateRating = async (
 };
 
 export const deleteRating = async (
-  userId: number,
+  userId: string,
   showId: string
 ): Promise<boolean> => {
   try {

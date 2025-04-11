@@ -112,7 +112,9 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
     fetchRecommendations();
   }, [movie.showId]);
 
+
   const posterUrl = `https://moviepostersintex11.blob.core.windows.net/intex/Movie%20Posters/${encodeURIComponent(movie.title ?? 'default')}.jpg`;
+
 
   const genres = Object.entries(movie)
     .filter(([key, value]) => genreLabels[key] && value === 1)
