@@ -1,16 +1,16 @@
-// MoviePage.tsx
 import React, { useEffect, useState } from 'react';
 import { fetchAllMovies, fetchMoviesByGenre } from '../api/MoviesAPI';
-import { fetchAllHybridRecommendationsSecure } from '../api/HybridAPI.ts';
-import { Recommend } from '../types/HybridRecommender.ts';
+import { fetchAllHybridRecommendationsSecure } from '../api/HybridAPI';
+import { Recommend } from '../types/HybridRecommender';
 import MovieCarousel from '../components/Movie/MovieCarousel';
 import MovieFilterBar from '../components/Movie/MovieFilterBar';
 import RecommendedMovies from '../components/Movie/RecommendedMovies';
+import TopGenresSection from '../components/Movie/TopGenresSection';
 import Paginator from '../components/Movie/Paginator';
 import { genreMap } from '../constants/genreMap';
 import { Movie } from '../types/Movie';
 import '../css/MoviePage.css';
-import { Button } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import { Search } from 'lucide-react';
 import { getMovie } from '../api/MoviesAPI'; // Make sure this is already imported
 import MovieDetails from '../components/Movie/MovieDetails.tsx';
@@ -49,7 +49,7 @@ const GenreSection: React.FC<{ genreKey: string; label: string }> = ({
     if (isVisible && movies.length === 0) {
       fetchMoviesByGenre(genreKey).then((res) => res && setMovies(res));
     }
-  }, [isVisible, genreKey]);
+  }, [isVisible, genreKey, movies.length]);
 
   return (
     <div ref={ref} style={{ minHeight: '200px', marginBottom: '2rem' }}>
@@ -71,10 +71,15 @@ const MoviePage: React.FC = () => {
   const [filterApplied, setFilterApplied] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [showAllMovies, setShowAllMovies] = useState(false);
-  const [pageSize, setPageSize] = useState(10); // or whatever default
+  const [showTopGenres, setShowTopGenres] = useState(true);
+  const [pageSize, setPageSize] = useState(10);
+  const [recommendations, setRecommendations] = useState<Recommend[]>([]);
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   const itemsPerPage = 12;
+
   const [, setRecommendations] = useState<Recommend[]>([]);
+
 
   useEffect(() => {
     const load = async () => {
@@ -84,17 +89,12 @@ const MoviePage: React.FC = () => {
         setFilteredMovies(movies);
       }
 
-      // Benji's Code
+      // Hybrid recommendations
       const recommendationsData = await fetchAllHybridRecommendationsSecure();
       if (recommendationsData) {
         setRecommendations(recommendationsData);
       }
     };
-
-    //      if (movies) {
-    //        setAllMovies(movies);
-    //        setFilteredMovies(movies);
-    //      }
 
     load();
   }, []);
@@ -151,7 +151,8 @@ const MoviePage: React.FC = () => {
     setFilteredMovies(result);
     setCurrentPage(1);
     setFilterApplied(true);
-    setShowAllMovies(false); // ensure we’re not in show-all mode
+    setShowAllMovies(false);
+    setShowTopGenres(false); // Hide top genres when filter is applied
   };
 
   const handleClear = () => {
@@ -159,19 +160,23 @@ const MoviePage: React.FC = () => {
     setCurrentPage(1);
     setFilterApplied(false);
     setShowAllMovies(false);
+    setShowTopGenres(true); // Show top genres when filter is cleared
   };
 
   const handleShowAllToggle = async () => {
     if (showAllMovies) {
       setShowAllMovies(false);
+      setShowTopGenres(true); // Show top genres when toggled back to genres view
     } else {
       const all = await fetchAllMovies();
       if (Array.isArray(all)) {
         setAllMovies(all);
         setShowAllMovies(true);
+        setShowTopGenres(false); // Hide top genres when showing all movies
       }
     }
   };
+
 
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [, setLibraryMovies] = useState<Movie[]>([]);
@@ -191,28 +196,40 @@ const MoviePage: React.FC = () => {
 
   return (
     <div className="page-wrapper bg-dark text-white">
-      <div className="d-flex align-items-center gap-3 mt-3 px-4">
-        <Button onClick={handleShowAllToggle}>
-          {showAllMovies ? 'Show Genres' : 'Show All'}
-        </Button>
+      {/* Improved navigation bar with better spacing */}
+      <Container fluid>
+        <div className="d-flex justify-content-between align-items-center py-3 px-2">
+          <Button
+            variant="primary"
+            onClick={handleShowAllToggle}
+            className="me-2"
+          >
+            {showAllMovies ? 'Show Genres' : 'Show All'}
+          </Button>
 
-        <Button
-          variant="outline-light"
-          onClick={() => setShowFilter((prev) => !prev)}
-        >
-          <Search className="w-4 h-4" />
-        </Button>
-      </div>
+          <Button
+            variant="outline-light"
+            onClick={() => setShowFilter((prev) => !prev)}
+          >
+            <Search size={18} /> Search & Filter
+          </Button>
+        </div>
+      </Container>
 
-      <div className="py-4">
+      <div className="py-3">
         {showFilter && (
-          <div className="mb-4">
+          <div className="mb-4 px-4">
             <MovieFilterBar
               genres={Object.values(genreMap)}
               onFilterChange={handleFilterChange}
               onClear={handleClear}
             />
           </div>
+        )}
+
+        {/* Show Top Genres Section only when not filtering or showing all movies */}
+        {showTopGenres && !filterApplied && !showAllMovies && (
+          <TopGenresSection />
         )}
 
         {showAllMovies ? (
@@ -233,9 +250,9 @@ const MoviePage: React.FC = () => {
               <Paginator
                 currentPage={currentPage}
                 totalPages={totalPages}
-                pageSize={pageSize} // ← Add this
+                pageSize={pageSize}
                 onPageChange={setCurrentPage}
-                onPageSizeChange={setPageSize} // ← And this
+                onPageSizeChange={setPageSize}
               />
             </div>
           </>
@@ -252,12 +269,18 @@ const MoviePage: React.FC = () => {
         )}
       </div>
 
-      {/* ✅ Show Movie Details Modal */}
+      {/* Show Movie Details Modal */}
       {selectedMovie && (
         <MovieDetails
           movie={selectedMovie}
           onClose={() => setSelectedMovie(null)}
-          onSelectMovie={() => {}}
+          onSelectMovie={(movie) => {
+            setSelectedMovie(null);
+            // Add a small delay to ensure smooth transition between modals
+            setTimeout(() => {
+              setSelectedMovie(movie);
+            }, 100);
+          }}
         />
       )}
     </div>
