@@ -9,9 +9,18 @@ interface MovieCarouselProps {
   title: string;
   filter?: (movie: Movie) => boolean;
   chunkSize?: number;
+  movies?: Movie[]; // ← ✅ Add this line
+  showEmptyPoster?: boolean;
+  onPosterClick?: (movie: Movie) => void;
+  placeholderMessage?: string;
+  showLibraryControls?: boolean;
 }
 
-const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, filter }) => {
+const MovieCarousel: React.FC<MovieCarouselProps> = ({
+  title,
+  filter,
+  movies = [],
+}) => {
   const [allMovies, setAllMovies] = useState<Movie[]>([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -21,22 +30,22 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, filter }) => {
 
   // Load movies
   useEffect(() => {
-    const loadMovies = async () => {
-      try {
-        const movies = await fetchAllMovies();
-        const filtered = movies
-          ? filter
-            ? movies.filter(filter)
-            : movies
-          : [];
+    const load = async () => {
+      if (movies && movies.length > 0) {
+        const filtered = filter ? movies.filter(filter) : movies;
         setAllMovies(filtered);
-      } catch (err) {
-        console.error('Failed to load movies:', err);
+      } else {
+        try {
+          const fetched = await fetchAllMovies();
+          const filtered = filter ? fetched?.filter(filter) : fetched;
+          setAllMovies(filtered ?? []); // ⬅ fallback for undefined
+        } catch (err) {
+          console.error('Failed to load movies:', err);
+        }
       }
     };
-
-    loadMovies();
-  }, [filter]);
+    load();
+  }, [filter, movies]);
 
   // Update scroll arrows
   useEffect(() => {
@@ -132,8 +141,9 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ title, filter }) => {
               <MoviePoster
                 key={`${movie.showId ?? 'no-id'}-${movie.title ?? 'untitled'}-${i}`}
                 movie={movie}
-                onClick={() => setSelectedMovie(movie)}
-                style={{ minWidth: '250px', maxWidth: '275px' }} // ← tighter width
+                onClick={() => handleSelectMovie?.(movie)}
+                style={{ minWidth: '250px', maxWidth: '275px' }}
+                showLibraryButton={title === 'My Library'} // ✅ Add this
               />
             ))}
           </div>

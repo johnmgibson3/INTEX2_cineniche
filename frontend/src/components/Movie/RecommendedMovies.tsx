@@ -80,10 +80,7 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({ allMovies }) => {
   return (
     <MovieCarousel
       title="Recommended For You"
-      filter={(movie) =>
-        recommendedMovies.some((m) => m.showId === movie.showId)
-      }
-    />
+      filter={(movie) => recommendedMovies.some((m) => m.showId === movie.showId)} movies={[]}    />
   );
 };
 
