@@ -6,6 +6,7 @@ using INTEX.API.Services;
 using INTEX.API.Models;
 using INTEX.API.Data;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -116,12 +117,14 @@ app.MapPost("/logout", async (HttpContext context, SignInManager<LoginCredential
 {
     await signInManager.SignOutAsync();
     // Ensure authentication cookie is removed
-    context.Response.Cookies.Delete(key: ".AspNetCore.Identity.Application", new CookieOptions
-    {
-        HttpOnly = true,
-        Secure = true,
-        SameSite = SameSiteMode.None
-    });
+        context.Response.Cookies.Delete(".AspNetCore.Identity.Application", new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.None,
+            Domain = "intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net",
+            Path = "/"
+        });
     return Results.Ok(new { message = "Logout successful" });
 }).RequireAuthorization();
 app.MapGet("/api/Hybrid/debug", () => "Hybrid controller test response.");
