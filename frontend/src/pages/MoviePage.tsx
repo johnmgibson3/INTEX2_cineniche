@@ -1,11 +1,10 @@
 // MoviePage.tsx
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { fetchAllMovies, fetchMoviesByGenre } from '../api/MoviesAPI';
 import { fetchAllHybridRecommendationsSecure } from '../api/HybridAPI.ts';
 import { Recommend } from '../types/HybridRecommender.ts';
 import MovieCarousel from '../components/Movie/MovieCarousel';
 import MovieFilterBar from '../components/Movie/MovieFilterBar';
-import MoviePoster from '../components/Movie/MoviePoster';
 import RecommendedMovies from '../components/Movie/RecommendedMovies';
 import Paginator from '../components/Movie/Paginator';
 import { genreMap } from '../constants/genreMap';
@@ -14,7 +13,7 @@ import '../css/MoviePage.css';
 import { Button } from 'react-bootstrap';
 import { Search } from 'lucide-react';
 import { getMovie } from '../api/MoviesAPI'; // Make sure this is already imported
-import MovieDetails from '../components/Movie/MovieDetails';
+import MovieDetails from '../components/Movie/MovieDetails.tsx';
 import LibraryRow from '../components/Movie/LibraryRow.tsx';
 import AllMoviesGrid from '../components/Movie/AllMoviesGrid.tsx';
 
@@ -76,16 +75,6 @@ const MoviePage: React.FC = () => {
 
   const itemsPerPage = 12;
   const [, setRecommendations] = useState<Recommend[]>([]);
-  const [library, setLibrary] = useState<Movie[]>([]);
-
-  const toggleLibrary = (movie: Movie) => {
-    setLibrary((prev) => {
-      const isInLibrary = prev.some((m) => m.showId === movie.showId);
-      return isInLibrary
-        ? prev.filter((m) => m.showId !== movie.showId)
-        : [...prev, movie];
-    });
-  };
 
   useEffect(() => {
     const load = async () => {
@@ -185,7 +174,7 @@ const MoviePage: React.FC = () => {
   };
 
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-  const [libraryMovies, setLibraryMovies] = useState<Movie[]>([]);
+  const [, setLibraryMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
     const loadLibraryMovies = async () => {

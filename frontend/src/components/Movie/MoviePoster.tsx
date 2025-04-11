@@ -88,10 +88,6 @@ const MoviePoster: React.FC<MoviePosterProps> = ({
     }
   };
 
-  function onToggleLibrary(movie: Movie): void {
-    throw new Error('Function not implemented.');
-  }
-
   return (
     <div
       onClick={onClick}
@@ -134,7 +130,7 @@ const MoviePoster: React.FC<MoviePosterProps> = ({
 
         {isVisible && (
           <img
-            key={srcAttempted}
+            key={`${movie.showId}-${srcAttempted}`}
             src={getPosterSrc()}
             alt={movie.title ?? 'Movie poster'}
             onLoad={() => setLoaded(true)}

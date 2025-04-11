@@ -8,7 +8,6 @@ import { getMoviePosterUrl } from '../../constants/movieImage';
 import { Recommend } from '../../types/HybridRecommender.ts';
 import MoviePoster from './MoviePoster';
 import MovieRating from './MovieRating';
-import LibraryButton from './LibraryButton.tsx';
 
 interface MovieDetailsProps {
   movie: Movie;
@@ -63,11 +62,8 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
 
   const posterUrls = getMoviePosterUrl(movie.title ?? '');
   //Benji Code
-  const [recommendations, setRecommendations] = useState<Recommend | null>(
-    null
-  );
+  const [, setRecommendations] = useState<Recommend | null>(null);
   const [recommendationMovies, setRecommendationMovies] = useState<Movie[]>([]);
-  const [selectedRecMovie, setSelectedRecMovie] = useState<Movie | null>(null);
 
   // Fetch recommendations when the component mounts
   useEffect(() => {
@@ -112,10 +108,6 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
     fetchRecommendations();
   }, [movie.showId]);
 
-
-  const posterUrl = `https://moviepostersintex11.blob.core.windows.net/intex/Movie%20Posters/${encodeURIComponent(movie.title ?? 'default')}.jpg`;
-
-
   const genres = Object.entries(movie)
     .filter(([key, value]) => genreLabels[key] && value === 1)
     .map(([key]) => genreLabels[key]);
@@ -135,14 +127,6 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
 
     fetchAverageRating();
   }, [movie.showId]);
-
-  function isMovieInLibrary(movie: Movie): boolean {
-    throw new Error('Function not implemented.');
-  }
-
-  function handleToggleLibrary(movie: Movie): void {
-    throw new Error('Function not implemented.');
-  }
 
   return (
     <Modal show onHide={onClose} centered size="lg">
