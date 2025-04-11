@@ -153,7 +153,7 @@ const Header: React.FC = () => {
               onMouseOver={e => (e.currentTarget.style.color = "#ba1d2b")}
               onMouseOut={e => (e.currentTarget.style.color = "#fff")}
             >
-              Welcome, {user.username}
+              {user.username}
               <span
                 style={{
                   display: "inline-block",
