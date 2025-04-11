@@ -5,15 +5,15 @@ import { getAverageRating } from '../../api/RatingsAPI';
 import { getMovie } from '../../api/MoviesAPI';
 import '../../css/MoviePage.css';
 import { getMoviePosterUrl } from '../../constants/movieImage';
-import { Recommend } from '../../types/HybridRecommender.ts'
+import { Recommend } from '../../types/HybridRecommender.ts';
 import MoviePoster from './MoviePoster';
 import MovieRating from './MovieRating';
-
+import LibraryButton from './LibraryButton.tsx';
 
 interface MovieDetailsProps {
   movie: Movie;
   onClose: () => void;
-  onSelectMovie: (movie: Movie) => void; // <-- NEW PROP. This makes it so if you click on another movie, it'll close the popup and open a new one. 
+  onSelectMovie: (movie: Movie) => void; // <-- NEW PROP. This makes it so if you click on another movie, it'll close the popup and open a new one.
 }
 
 const genreLabels: Record<string, string> = {
@@ -51,8 +51,11 @@ const genreLabels: Record<string, string> = {
   thrillers: 'Thrillers',
 };
 
-const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose, onSelectMovie }) => {
-
+const MovieDetails: React.FC<MovieDetailsProps> = ({
+  movie,
+  onClose,
+  onSelectMovie,
+}) => {
   const [averageRating, setAverageRating] = useState<number | null>(null);
 
   const [srcAttempted] = useState(0);
@@ -60,34 +63,37 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose, onSelectMov
 
   const posterUrls = getMoviePosterUrl(movie.title ?? '');
   //Benji Code
-  const [recommendations, setRecommendations] = useState<Recommend | null>(null);
+  const [recommendations, setRecommendations] = useState<Recommend | null>(
+    null
+  );
   const [recommendationMovies, setRecommendationMovies] = useState<Movie[]>([]);
   const [selectedRecMovie, setSelectedRecMovie] = useState<Movie | null>(null);
-
 
   // Fetch recommendations when the component mounts
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
-        const res = await fetch(`https://localhost:5000/api/Hybrid/${movie.showId}`);
+        const res = await fetch(
+          `https://localhost:5000/api/Hybrid/${movie.showId}`
+        );
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
-  
+
         const data = await res.json();
         setRecommendations(data);
-  
+
         // Convert recommendation titles to Movie objects for the MoviePoster component
         if (data) {
           const recMovies: Movie[] = [];
-  
+
           for (let i = 1; i <= 5; i++) {
             const titleKey = `rec${i}Title` as keyof Recommend;
             const idKey = `rec${i}Id` as keyof Recommend;
-          
+
             const title = data[titleKey] as string;
             const showId = data[idKey] as string;
-          
+
             if (title && showId) {
               recMovies.push({
                 title,
@@ -95,23 +101,26 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose, onSelectMov
               });
             }
           }
-  
+
           setRecommendationMovies(recMovies);
         }
       } catch (error) {
         console.error('Error fetching recommendations:', error);
       }
     };
-  
+
     fetchRecommendations();
   }, [movie.showId]);
+
+
+  const posterUrl = `https://moviepostersintex11.blob.core.windows.net/intex/Movie%20Posters/${encodeURIComponent(movie.title ?? 'default')}.jpg`;
 
 
   const genres = Object.entries(movie)
     .filter(([key, value]) => genreLabels[key] && value === 1)
     .map(([key]) => genreLabels[key]);
 
-   //Regular code
+  //Regular code
   useEffect(() => {
     const fetchAverageRating = async () => {
       try {
@@ -126,6 +135,14 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose, onSelectMov
 
     fetchAverageRating();
   }, [movie.showId]);
+
+  function isMovieInLibrary(movie: Movie): boolean {
+    throw new Error('Function not implemented.');
+  }
+
+  function handleToggleLibrary(movie: Movie): void {
+    throw new Error('Function not implemented.');
+  }
 
   return (
     <Modal show onHide={onClose} centered size="lg">
@@ -238,7 +255,6 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose, onSelectMov
             {movie.showId && <MovieRating showId={movie.showId} />}
           </div>
         </div>
-        
       </Modal.Body>
       <Modal.Footer
         style={{
@@ -247,13 +263,22 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose, onSelectMov
         }}
       >
         <div className="d-flex flex-column justify-content-center w-100">
-          <h6 className="text-center mb-3" style={{ color: '#000' }}> {/* Text color set to black */}
+          <h6 className="text-center mb-3" style={{ color: '#000' }}>
+            {' '}
+            {/* Text color set to black */}
             If you enjoy this movie, you may enjoy:
           </h6>
           <div className="d-flex justify-content-center gap-3">
             {recommendationMovies.length > 0 ? (
               recommendationMovies.map((recMovie, index) => (
-                <div key={index} style={{ marginLeft: '8px', marginRight: '8px', marginBottom: '20px'}}>
+                <div
+                  key={index}
+                  style={{
+                    marginLeft: '8px',
+                    marginRight: '8px',
+                    marginBottom: '20px',
+                  }}
+                >
                   <MoviePoster
                     movie={recMovie}
                     onClick={async () => {
@@ -265,10 +290,13 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose, onSelectMov
                             onSelectMovie(fullMovie); // Open new one with full info
                           }, 100);
                         } else {
-                          console.warn("Could not load full movie data");
+                          console.warn('Could not load full movie data');
                         }
                       } catch (err) {
-                        console.error("Error loading movie from recommendation:", err);
+                        console.error(
+                          'Error loading movie from recommendation:',
+                          err
+                        );
                       }
                     }}
                     style={{ height: '260px', width: '130px' }}
@@ -284,7 +312,6 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose, onSelectMov
               </div>
             )}
           </div>
-
         </div>
       </Modal.Footer>
 

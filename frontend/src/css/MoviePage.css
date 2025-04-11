@@ -167,7 +167,72 @@
 
 .movie-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr); /* 7 columns */
-  gap: 2rem; /* Less space between posters */
-  padding: 2rem 18rem 2rem 14rem; /* More padding on the left */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem;
+  padding-left: 1rem;
+  padding: 2rem 4rem 2rem 1rem; /* ✅ Less left padding */
+  justify-content: start; /* ✅ Align items to the left */
+}
+
+.library-button {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border-radius: 6px;
+  z-index: 5;
+  cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.movie-poster:hover .library-button {
+  transform: scale(1.15);
+}
+
+.library-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.empty-poster {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #333;
+  color: #fff;
+  font-size: 4rem;
+  font-weight: bold;
+  border: 2px dashed #aaa;
+  cursor: pointer;
+  position: relative;
+}
+
+.library-help-popup {
+  position: absolute;
+  bottom: -2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #222;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  animation: fadeOut 4s forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
 }
