@@ -20,7 +20,9 @@ export async function submitRating(
   userId: string,
   rating: number
 ): Promise<boolean> {
+
   const res = await fetch('https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api/Ratings/Add', {
+
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -53,7 +55,9 @@ export async function getRating(
   userId: string,
   showId: string
 ): Promise<number | null> {
+
   const res = await fetch(`${API_URL}/Ratings/${userId}/${showId}`);
+
   if (!res.ok) return null;
   const data = await res.json();
   return data.rating ?? null;
@@ -75,7 +79,7 @@ export const addRating = async (rating: Rating): Promise<boolean> => {
 };
 
 export const updateRating = async (
-  userId: number,
+  userId: string,
   showId: string,
   rating: Rating
 ): Promise<boolean> => {
@@ -94,7 +98,7 @@ export const updateRating = async (
 };
 
 export const deleteRating = async (
-  userId: number,
+  userId: string,
   showId: string
 ): Promise<boolean> => {
   try {

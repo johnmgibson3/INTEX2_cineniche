@@ -2,16 +2,22 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Movie } from '../../types/Movie';
 import Shimmer from './Shimmer';
 import '../../css/MoviePage.css';
+import LibraryButton from './LibraryButton';
 
 interface MoviePosterProps {
   movie: Movie;
   onClick: () => void;
 
-  style?: React.CSSProperties; // <-- This line allows me to change the size in other places, like the movie details page
-  titleSize?: string;  // <-- New prop for title size
-  titleColor?: string;  // New prop for title color
-  hoverTitleSize?: string; //New prop for hoverTitleSize
+  style?: React.CSSProperties;
+  titleSize?: string;
+  titleColor?: string;
+  hoverTitleSize?: string;
+  showLibraryControls?: boolean;
 
+  // ✅ Add these two optional props for "My Library"
+  isInLibrary?: boolean;
+  onToggleLibrary?: (movie: Movie) => void;
+  showLibraryButton?: boolean;
 }
 
 const sanitizeFilename = (title: string): string =>
@@ -24,10 +30,17 @@ const toTitleCase = (str: string): string =>
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 
-const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick, style, titleSize = '1.5rem', titleColor = '#fff', hoverTitleSize = '2.65rem', }) => {  // Default to white
+const MoviePoster: React.FC<MoviePosterProps> = ({
+  movie,
+  onClick,
+  style,
+  titleSize = '1.5rem',
+  titleColor = '#fff',
+  hoverTitleSize = '2.65rem',
+  isInLibrary,
+}) => {
   const [isVisible, setIsVisible] = useState(false);
   const [, setHasError] = useState(false);
-  //const [hasError, setHasError] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [srcAttempted, setSrcAttempted] = useState<
     'original' | 'fallback' | 'default'
@@ -61,7 +74,7 @@ const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick, style, titleS
         return `https://moviepostersintex11.blob.core.windows.net/intex/Movie%20Posters/${encodeURIComponent(fallbackTitle)}.jpg`;
       case 'default':
       default:
-        return '/img/apple-touch-icon.png'; // fallback icon in public/
+        return '/img/apple-touch-icon.png';
     }
   };
 
@@ -76,19 +89,19 @@ const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick, style, titleS
   };
 
   return (
-<div
-  onClick={onClick}
-  className="movie-poster"
-  style={{
-    flex: '0 0 auto',
-    width: '250px',
-    cursor: 'pointer',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    ...style, // <-- Allow external override
-  }}
->
+    <div
+      onClick={onClick}
+      className="movie-poster"
+      style={{
+        flex: '0 0 auto',
+        width: '250px',
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        ...style,
+      }}
+    >
       <div
         ref={imgRef}
         style={{
@@ -117,7 +130,7 @@ const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick, style, titleS
 
         {isVisible && (
           <img
-            key={srcAttempted} // ⬅️ force re-render on src change
+            key={`${movie.showId}-${srcAttempted}`}
             src={getPosterSrc()}
             alt={movie.title ?? 'Movie poster'}
             onLoad={() => setLoaded(true)}
@@ -137,16 +150,36 @@ const MoviePoster: React.FC<MoviePosterProps> = ({ movie, onClick, style, titleS
         )}
 
         <div className="poster-gradient" />
-        <div className="poster-title" style={{fontSize: hoverTitleSize,}} > 
-        {movie.title}
+        <div className="poster-title" style={{ fontSize: hoverTitleSize }}>
+          {movie.title}
         </div>
+
+        {/* Library Button (overlayed in top-right corner) */}
+        {/* Cosmetic Only Button */}
+        {LibraryButton && (
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '0.5rem',
+              left: '.5rem',
+              zIndex: 5,
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <LibraryButton
+              movie={movie}
+              isInLibrary={isInLibrary ?? false}
+              onToggle={() => {}}
+            />
+          </div>
+        )}
       </div>
 
       <div
         className="poster-default-title"
         style={{
           color: titleColor,
-          fontSize: titleSize || '1.5rem', // Default size is 1.5rem, but can be overridden
+          fontSize: titleSize,
           fontWeight: 'bold',
           textAlign: 'center',
           marginTop: '0.5rem',

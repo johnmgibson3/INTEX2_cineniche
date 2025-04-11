@@ -14,6 +14,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 /* Modify the a tag styling to not affect buttons */
 a {
   font-weight: 500;
@@ -53,6 +59,8 @@ body {
   display: flex;
   place-items: center;
   min-width: 320px;
+  overflow-x: hidden;
+  width: 100%;
   min-height: 100vh;
 }
 

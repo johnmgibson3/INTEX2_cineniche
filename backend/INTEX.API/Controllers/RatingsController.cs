@@ -81,10 +81,41 @@ public class RatingsController : ControllerBase
     [HttpPost("Add")]
     public IActionResult AddRating([FromBody] MoviesRating newRating)
     {
-        _context.MoviesRatings.Add(newRating);
-        _context.SaveChanges();
-        return Ok(newRating);
+        Console.WriteLine("🚀 AddRating endpoint hit.");
+
+        if (newRating == null)
+        {
+            Console.WriteLine("⚠️ newRating is null!");
+            return BadRequest("Invalid rating payload.");
+        }
+
+        try
+        {
+            var existing = _context.MoviesRatings.Find(newRating.UserId, newRating.ShowId);
+
+            if (existing != null)
+            {
+                Console.WriteLine("🔁 Updating existing rating.");
+                existing.Rating = newRating.Rating;
+                _context.Entry(existing).State = EntityState.Modified; // 🔥 This line makes the update work
+            }
+            else
+            {
+                Console.WriteLine("✨ Adding new rating.");
+                _context.MoviesRatings.Add(newRating);
+            }
+
+            _context.SaveChanges();
+            Console.WriteLine("✅ SaveChanges successful.");
+            return Ok(newRating);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("❌ Error in AddRating: " + ex.Message);
+            return StatusCode(500, new { message = "Server error", error = ex.Message });
+        }
     }
+
 
     // PUT: api/Ratings/abc123/s123
     [HttpPut("Update/{userId}/{showId}")]
