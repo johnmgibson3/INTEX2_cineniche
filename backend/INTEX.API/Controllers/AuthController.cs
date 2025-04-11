@@ -98,27 +98,16 @@ namespace INTEX.API.Controllers
             return Ok(new { message = "Login successful." });
 
         }
-    [HttpPost("logout")]
-    public async Task<IActionResult> Logout()
-    {
-        await _signInManager.SignOutAsync();
 
-        var cookieOptions = new CookieOptions
+
+         [HttpPost("logout")]
+         public async Task<IActionResult> Logout()
+
         {
-            HttpOnly = true,
-            Secure = true,
-            SameSite = SameSiteMode.None,
-            Domain = "intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net",
-            Path = "/" // Explicitly set path to match the cookie's path
-        };
-
-        // Delete the primary auth cookie and any related cookies
-        Response.Cookies.Delete(".AspNetCore.Identity.Application", cookieOptions);
-        Response.Cookies.Delete("Identity.External", cookieOptions);
-        Response.Cookies.Delete("Identity.TwoFactorUserId", cookieOptions);
-
-        return Ok(new { message = "Logout successful." });
-    }
+             await _signInManager.SignOutAsync();
+             Response.Cookies.Delete(".AspNetCore.Identity.Application");
+             return Ok(new { message = "Logout successful." });
+         }
 
 
         //[Authorize]
