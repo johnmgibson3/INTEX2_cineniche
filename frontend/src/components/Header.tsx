@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '../css/Header.css';
 import { fetchUser, logoutUser } from '../api/AuthApi';
+const [dropdownOpen, setDropdownOpen] = useState(false);
 
 
 const Header: React.FC = () => {
@@ -107,9 +108,8 @@ const Header: React.FC = () => {
         style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '1rem', marginLeft: '1rem' }}
       >
         <button
-          onClick={() =>
-            document.querySelector('.dropdown-menu')?.classList.toggle('show')
-          }
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+
           style={{
             background: 'none',
             border: 'none',
@@ -134,7 +134,7 @@ const Header: React.FC = () => {
             padding: '0.5rem 0',
             margin: 0,
             minWidth: '100px',
-            display: 'none',
+            display: dropdownOpen ? 'block' : 'none',
             zIndex: 9999,
           }}
         >
