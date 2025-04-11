@@ -16,9 +16,9 @@ const AdminMovieTable: React.FC = () => {
   const [showFormModal, setShowFormModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [itemsPerPage, setItemsPerPage] = useState(10); // ← make this state
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -33,7 +33,6 @@ const AdminMovieTable: React.FC = () => {
         setAllMovies(response);
         setFilteredMovies(response);
       }
-
     } catch (error) {
       console.error('Error loading movies:', error);
     }
@@ -125,7 +124,7 @@ const AdminMovieTable: React.FC = () => {
   }, []);
 
   return (
-    <div className="p-4">
+    <div className="p-4 admin-movie-table">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h3>Manage Movies</h3>
         <Button variant="success" onClick={openAddModal}>
@@ -197,6 +196,11 @@ const AdminMovieTable: React.FC = () => {
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
+          pageSize={itemsPerPage}
+          onPageSizeChange={(size) => {
+            setItemsPerPage(size);
+            setCurrentPage(1); // reset to page 1
+          }}
         />
       </div>
 
@@ -245,6 +249,7 @@ const AdminMovieTable: React.FC = () => {
           <MovieDetails
             movie={selectedMovie}
             onClose={() => setShowDetailsModal(false)}
+            onSelectMovie={setSelectedMovie} // ← add this
           />
         )}
       </Modal>

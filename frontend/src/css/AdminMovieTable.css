@@ -1,9 +1,17 @@
 /* AdminMovieTable.css */
 
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .admin-movie-table {
-  background-color: #f0f2f5;
-  padding: 2rem;
-  font-family: 'Segoe UI', sans-serif;
+  background-color: #121212; /* or whatever dark bg you want */
+  min-height: 100vh; /* ensures it stretches full height */
+  display: flex;
+  flex-direction: column;
 }
 
 .admin-movie-table h3 {
