@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '../css/Header.css';
 import { fetchUser, logoutUser } from '../api/AuthApi';
-const [dropdownOpen, setDropdownOpen] = useState(false);
 
 
 const Header: React.FC = () => {
@@ -103,69 +102,36 @@ const Header: React.FC = () => {
         </nav>
 
         {user ? (
-      <div
-        className="user-dropdown"
-        style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '1rem', marginLeft: '1rem' }}
-      >
-        <button
-          onClick={() => setDropdownOpen(!dropdownOpen)}
+             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginLeft: '1rem' }}>
 
-          style={{
-            background: 'none',
-            border: 'none',
-            color: '#0dcaf0',
-            cursor: 'pointer',
-            fontWeight: 500,
-            padding: 0,
-          }}
-        >
-          {user.username}
-        </button>
-        <ul
-          className="dropdown-menu"
-          style={{
-            position: 'absolute',
-            top: '2.2rem',
-            right: 0,
-            backgroundColor: '#fff',
-            borderRadius: '4px',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
-            listStyle: 'none',
-            padding: '0.5rem 0',
-            margin: 0,
-            minWidth: '100px',
-            display: dropdownOpen ? 'block' : 'none',
-            zIndex: 9999,
-          }}
-        >
-          <li>
-            <button
-              onClick={handleLogout}
-              style={{
-                width: '100%',
-                background: 'none',
-                border: 'none',
-                color: '#000',
-                padding: '0.5rem 1rem',
-                textAlign: 'left',
-                cursor: 'pointer',
-              }}
-            >
-              Logout
-            </button>
-          </li>
-        </ul>
-      </div>
-    ) : (
-      <>
-        <Link className="btn-getstarted" to="/register">
-          Create Account
-        </Link>
-        <Link className="btn-getstarted" to="/login">
-          Login
-        </Link>
-      </>
-    )}
+
+              <span style={{ color: '#fff', fontWeight: '500' }}>
+                Welcome, {user.username}
+              </span>
+              <button
+                onClick={handleLogout}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#0dcaf0',
+                  cursor: 'pointer',
+                  fontWeight: '500',
+                  padding: 0
+                }}
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <>
+              <Link className="btn-getstarted" to="/register">
+                Create Account
+              </Link>
+              <Link className="btn-getstarted" to="/login">
+                Login
+              </Link>
+            </>
+          )}
       </div>
     </header>
   );
