@@ -124,6 +124,7 @@ app.MapPost("/logout", async (HttpContext context, SignInManager<LoginCredential
     });
     return Results.Ok(new { message = "Logout successful" });
 }).RequireAuthorization();
+app.MapGet("/api/Hybrid/debug", () => "Hybrid controller test response.");
 
 app.MapGet("/pingauth", (ClaimsPrincipal user) =>
 {

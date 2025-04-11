@@ -90,5 +90,16 @@ namespace INTEX.API.Controllers
 
             return highQualityRecommendations;
         }
+        [HttpGet("ping-db")]
+        public IActionResult PingDb()
+        {
+            var conn = _context.Database.GetDbConnection();
+            return Ok(new {
+                conn.Database,
+                conn.DataSource,
+                conn.ConnectionString
+            });
+        }
+
     }
 }

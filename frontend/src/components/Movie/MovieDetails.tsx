@@ -69,7 +69,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie, onClose, onSelectMov
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
-        const res = await fetch(`https://localhost:5000/api/Hybrid/${movie.showId}`);
+        const res = await fetch(`https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api/Hybrid/${movie.showId}`);
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
