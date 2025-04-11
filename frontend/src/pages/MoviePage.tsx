@@ -73,13 +73,9 @@ const MoviePage: React.FC = () => {
   const [showAllMovies, setShowAllMovies] = useState(false);
   const [showTopGenres, setShowTopGenres] = useState(true);
   const [pageSize, setPageSize] = useState(10);
-  const [recommendations, setRecommendations] = useState<Recommend[]>([]);
-  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-
-  const itemsPerPage = 12;
-
   const [, setRecommendations] = useState<Recommend[]>([]);
 
+  const itemsPerPage = 12;
 
   useEffect(() => {
     const load = async () => {
@@ -176,7 +172,6 @@ const MoviePage: React.FC = () => {
       }
     }
   };
-
 
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [, setLibraryMovies] = useState<Movie[]>([]);
