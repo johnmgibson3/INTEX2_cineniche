@@ -53,7 +53,7 @@ export async function getRating(
   userId: string,
   showId: string
 ): Promise<number | null> {
-  const res = await fetch(`/api/Ratings/${userId}/${showId}`);
+  const res = await fetch(`${API_URL}/Ratings/${userId}/${showId}`);
   if (!res.ok) return null;
   const data = await res.json();
   return data.rating ?? null;
