@@ -1,6 +1,6 @@
 import { Rating } from '../types/Rating';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api';
 
 export const getRatings = async (): Promise<Rating[] | null> => {
   try {
@@ -20,9 +20,9 @@ export async function submitRating(
   userId: string,
   rating: number
 ): Promise<boolean> {
-  
 
-  const res = await fetch('https://localhost:5000/api/Ratings/Add', {
+  const res = await fetch('https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api/Ratings/Add', {
+
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ export async function submitRating(
 export async function getAverageRating(showId: string): Promise<number | null> {
   try {
     const response = await fetch(
-      `https://localhost:5000/api/Ratings/Average/${showId}`
+      `https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api/Ratings/Average/${showId}`
     );
     if (!response.ok) {
       throw new Error('Failed to fetch average rating');
@@ -55,7 +55,9 @@ export async function getRating(
   userId: string,
   showId: string
 ): Promise<number | null> {
-  const res = await fetch(`https://localhost:5000/api/Ratings/${userId}/${showId}`);
+
+  const res = await fetch(`${API_URL}/Ratings/${userId}/${showId}`);
+
   if (!res.ok) return null;
   const data = await res.json();
   return data.rating ?? null;

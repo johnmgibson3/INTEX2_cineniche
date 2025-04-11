@@ -1,5 +1,5 @@
 const API_URL =
-  import.meta.env.VITE_API_URL || 'http://localhost:5000/api/Auth';
+  import.meta.env.VITE_API_URL || 'https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api/Auth';
 
 export const registerUser = async (
   username: string,
@@ -24,7 +24,7 @@ export const registerUser = async (
 };
 
 export async function fetchUser() {
-  const res = await fetch('https://localhost:5000/api/Auth/me', {
+  const res = await fetch('https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api/Auth/me', {
     credentials: 'include',
   });
   if (!res.ok) throw new Error('Not authenticated');
@@ -32,7 +32,7 @@ export async function fetchUser() {
 }
 
 export async function logoutUser() {
-  await fetch('https://localhost:5000/logout', {
+  await fetch('https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api/Auth/logout', {
     method: 'POST',
     credentials: 'include',
   });
@@ -40,9 +40,10 @@ export async function logoutUser() {
 
 // Add this to AuthApi.ts
 export async function getUserIdFromHeader(): Promise<string | null> {
+
   try {
     console.log('🔍 Attempting to fetch user ID');
-    const res = await fetch('https://localhost:5000/api/Auth/me', {
+    const res = await fetch('https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api/Auth/me', {
       credentials: 'include', // Important for including auth cookies
     });
 
@@ -60,4 +61,11 @@ export async function getUserIdFromHeader(): Promise<string | null> {
     console.error('Error fetching user ID:', error);
     return null;
   }
+
+//   const res = await fetch('https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api/Auth/me');
+//   if (!res.ok) return null;
+//   const data = await res.json();
+//   return data?.userId ?? null;
+  
+
 }

@@ -1,7 +1,7 @@
 import { Movie } from '../types/Movie';
 
 // Use our proxy endpoint to avoid CORS issues
-const RECOMMENDATION_URL = 'https://localhost:5000/api/Proxy/recommendations';
+const RECOMMENDATION_URL = 'https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api/Proxy/recommendations';
 
 /**
  * Fetches movie recommendations for a user
@@ -26,8 +26,6 @@ export const fetchRecommendations = async (
       },
     };
 
-    console.log('🔍 Making recommendations request for user:', userId);
-    console.log('🔍 Request data:', JSON.stringify(data));
 
     // Set up headers for the proxy - no need for Authorization as our backend handles it
     const headers = {
@@ -48,7 +46,7 @@ export const fetchRecommendations = async (
     });
 
     // Log response status for debugging
-    console.log('Recommendation API response status:', response.status);
+    
 
     if (!response.ok) {
       // Try to read the error response text
