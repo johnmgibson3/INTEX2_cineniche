@@ -36,6 +36,7 @@ export const addMovie = async (movie: Movie): Promise<boolean> => {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify(movie),
     });
 
@@ -56,6 +57,7 @@ export const updateMovie = async (
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify(movie),
     });
 
@@ -70,7 +72,9 @@ export const deleteMovie = async (showId: string): Promise<boolean> => {
   try {
     const res = await fetch(`${API_URL}/Movies/Delete/${showId}`, {
       method: 'DELETE',
+      credentials: 'include'
     });
+    
 
     return res.ok;
   } catch (error) {

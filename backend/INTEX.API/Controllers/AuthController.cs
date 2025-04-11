@@ -100,14 +100,24 @@ namespace INTEX.API.Controllers
         }
 
 
-         [HttpPost("logout")]
-         public async Task<IActionResult> Logout()
-
+       [HttpPost("logout")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Logout()
         {
-             await _signInManager.SignOutAsync();
-             Response.Cookies.Delete(".AspNetCore.Identity.Application");
-             return Ok(new { message = "Logout successful." });
-         }
+            await _signInManager.SignOutAsync();
+
+            // Delete the authentication cookie with options matching its creation (no Domain specified)
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Path = "/"  // This should match the original cookie's path
+            };
+
+            Response.Cookies.Delete(".AspNetCore.Identity.Application", cookieOptions);
+            return Ok(new { message = "Logout successful." });
+        }
 
 
         //[Authorize]
