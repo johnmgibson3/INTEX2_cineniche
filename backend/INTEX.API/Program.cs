@@ -77,7 +77,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("https://lively-tree-0dfd49a1e.6.azurestaticapps.net") // Replace with your frontend URL
+            policy.WithOrigins("https://lively-tree-0dfd49a1e.6.azurestaticapps.net", "https://www.cineniche.net") // Replace with your frontend URL
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials(); // Required to allow cookies
