@@ -4,9 +4,6 @@ import '../css/Contact.css';
 const Contact: React.FC = () => {
   
 
-  
-
-  
 
   return (
     <main className="main">

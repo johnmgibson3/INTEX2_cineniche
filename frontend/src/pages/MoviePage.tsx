@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+
+// MoviePage.tsx
+import React, { useEffect, useState  } from 'react';
 import { fetchAllMovies, fetchMoviesByGenre } from '../api/MoviesAPI';
 import { fetchAllHybridRecommendationsSecure } from '../api/HybridAPI';
 import { Recommend } from '../types/HybridRecommender';
@@ -76,6 +78,7 @@ const MoviePage: React.FC = () => {
   const [, setRecommendations] = useState<Recommend[]>([]);
 
   const itemsPerPage = 12;
+
 
   useEffect(() => {
     const load = async () => {
