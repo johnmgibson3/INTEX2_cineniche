@@ -4,7 +4,6 @@ import { fetchAllHybridRecommendationsSecure } from '../api/HybridAPI';
 import { Recommend } from '../types/HybridRecommender';
 import MovieCarousel from '../components/Movie/MovieCarousel';
 import MovieFilterBar from '../components/Movie/MovieFilterBar';
-import MoviePoster from '../components/Movie/MoviePoster';
 import RecommendedMovies from '../components/Movie/RecommendedMovies';
 import TopGenresSection from '../components/Movie/TopGenresSection';
 import Paginator from '../components/Movie/Paginator';
@@ -13,7 +12,10 @@ import { Movie } from '../types/Movie';
 import '../css/MoviePage.css';
 import { Button, Container } from 'react-bootstrap';
 import { Search } from 'lucide-react';
-import MovieDetails from '../components/Movie/MovieDetails';
+import { getMovie } from '../api/MoviesAPI'; // Make sure this is already imported
+import MovieDetails from '../components/Movie/MovieDetails.tsx';
+import LibraryRow from '../components/Movie/LibraryRow.tsx';
+import AllMoviesGrid from '../components/Movie/AllMoviesGrid.tsx';
 
 const useInView = () => {
   const ref = React.useRef<HTMLDivElement | null>(null);
@@ -55,6 +57,7 @@ const GenreSection: React.FC<{ genreKey: string; label: string }> = ({
         <MovieCarousel
           title={label}
           filter={(movie) => movies.some((m) => m.showId === movie.showId)}
+          movies={[]}
         />
       )}
     </div>
@@ -74,6 +77,9 @@ const MoviePage: React.FC = () => {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   const itemsPerPage = 12;
+
+  const [, setRecommendations] = useState<Recommend[]>([]);
+
 
   useEffect(() => {
     const load = async () => {
@@ -171,6 +177,23 @@ const MoviePage: React.FC = () => {
     }
   };
 
+
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+  const [, setLibraryMovies] = useState<Movie[]>([]);
+
+  useEffect(() => {
+    const loadLibraryMovies = async () => {
+      const ids = ['s1', 's2', 's3', 's4'];
+      const fetchedMovies = await Promise.all(ids.map((id) => getMovie(id)));
+      const validMovies = fetchedMovies.filter(
+        (movie): movie is Movie => movie !== null
+      );
+      setLibraryMovies(validMovies);
+    };
+
+    loadLibraryMovies();
+  }, []);
+
   return (
     <div className="page-wrapper bg-dark text-white">
       {/* Improved navigation bar with better spacing */}
@@ -210,15 +233,10 @@ const MoviePage: React.FC = () => {
         )}
 
         {showAllMovies ? (
-          <div className="movie-grid">
-            {allMovies.map((movie) => (
-              <MoviePoster
-                key={movie.showId}
-                movie={movie}
-                onClick={() => setSelectedMovie(movie)}
-              />
-            ))}
-          </div>
+          <AllMoviesGrid
+            movies={allMovies}
+            onPosterClick={(movie) => setSelectedMovie(movie)}
+          />
         ) : filterApplied ? (
           <>
             <MovieCarousel
@@ -226,6 +244,7 @@ const MoviePage: React.FC = () => {
               filter={(movie) =>
                 currentItems.some((m) => m.showId === movie.showId)
               }
+              movies={[]}
             />
             <div className="d-flex justify-content-center mt-4">
               <Paginator
@@ -239,6 +258,7 @@ const MoviePage: React.FC = () => {
           </>
         ) : (
           <>
+            <LibraryRow onPosterClick={(movie) => setSelectedMovie(movie)} />
             {/* Add Recommendations at the top */}
             <RecommendedMovies allMovies={allMovies} />
 

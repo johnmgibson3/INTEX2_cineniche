@@ -34,12 +34,32 @@ const MovieRating: React.FC<MovieRatingProps> = ({ showId }) => {
   }, [userId, showId]);
 
   const handleSubmit = async () => {
+
+    console.log("🚨 Submit clicked");
+    console.log("➡️ userId:", userId);
+    console.log("➡️ userRating:", userRating);
+    
+    // ✅ Log the full payload for debugging
+    console.log("📦 Sending payload:", {
+      showId,
+      userId,
+      rating: userRating,
+    });
+
+
     if (!userId || userRating == null) return;
     setSubmitting(true);
     const success = await submitRating(showId, userId, userRating);
     if (success) {
       setHasRated(true);
       setRatingSubmitted(true);
+    
+      // 🔁 Re-fetch updated rating from backend
+      const updatedRating = await getRating(userId, showId);
+      if (updatedRating != null) {
+        setUserRating(updatedRating);
+      }
+    
       setTimeout(() => setRatingSubmitted(false), 3000);
     }
     setSubmitting(false);
@@ -47,7 +67,7 @@ const MovieRating: React.FC<MovieRatingProps> = ({ showId }) => {
 
   return (
     <div className="rating-section mt-3">
-      {hasRated && userRating ? (
+      {hasRated && userRating !== null ? (
         <p>
           <strong>Your Rating:</strong> {userRating} ⭐
         </p>
