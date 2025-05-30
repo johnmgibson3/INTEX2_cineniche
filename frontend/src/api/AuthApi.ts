@@ -1,5 +1,5 @@
 const API_URL =
-  import.meta.env.VITE_API_URL || 'https://cinenicheback-arfmceaefxg5dqb9.westcentralus-01.azurewebsites.net//api/Auth';
+  import.meta.env.VITE_API_URL || 'https://cinenicheback-arfmceaefxg5dqb9.westcentralus-01.azurewebsites.net/api/Auth';
 
 export const registerUser = async (
   username: string,
@@ -24,7 +24,7 @@ export const registerUser = async (
 };
 
 export async function fetchUser() {
-  const res = await fetch('https://cinenicheback-arfmceaefxg5dqb9.westcentralus-01.azurewebsites.net//api/Auth/me', {
+  const res = await fetch('https://cinenicheback-arfmceaefxg5dqb9.westcentralus-01.azurewebsites.net/api/Auth/me', {
     credentials: 'include',
   });
   if (!res.ok) throw new Error('Not authenticated');
@@ -32,7 +32,7 @@ export async function fetchUser() {
 }
 
 export async function logoutUser() {
-  await fetch('https://cinenicheback-arfmceaefxg5dqb9.westcentralus-01.azurewebsites.net//api/Auth/logout', {
+  await fetch('https://cinenicheback-arfmceaefxg5dqb9.westcentralus-01.azurewebsites.net/api/Auth/logout', {
     method: 'POST',
     credentials: 'include',
   });
@@ -43,7 +43,7 @@ export async function getUserIdFromHeader(): Promise<string | null> {
 
   try {
     console.log('🔍 Attempting to fetch user ID');
-    const res = await fetch('https://cinenicheback-arfmceaefxg5dqb9.westcentralus-01.azurewebsites.net//api/Auth/me', {
+    const res = await fetch('https://cinenicheback-arfmceaefxg5dqb9.westcentralus-01.azurewebsites.net/api/Auth/me', {
       credentials: 'include', // Important for including auth cookies
     });
 
