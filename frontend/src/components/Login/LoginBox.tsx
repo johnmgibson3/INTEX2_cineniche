@@ -16,7 +16,7 @@ export default function LoginForm() {
 
     try {
       // Replace with your actual login logic
-      const response = await fetch('https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api/Auth/login', {
+      const response = await fetch('https://cinenicheback-arfmceaefxg5dqb9.westcentralus-01.azurewebsites.net/api/Auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: uid, password }),
