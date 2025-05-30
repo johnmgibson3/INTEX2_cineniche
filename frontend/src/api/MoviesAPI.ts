@@ -1,6 +1,6 @@
 import { Movie } from '../types/Movie';
 
-const API_URL = 'https://cinenicheback-arfmceaefxg5dqb9.westcentralus-01.azurewebsites.net//api';
+const API_URL = 'https://cinenicheback-arfmceaefxg5dqb9.westcentralus-01.azurewebsites.net/api';
 
 export const getMovies = async (): Promise<Movie[] | null> => {
   try {
