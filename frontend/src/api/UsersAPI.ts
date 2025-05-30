@@ -1,7 +1,7 @@
 import { User } from '../types/User';
 
 const API_URL =
-  import.meta.env.VITE_API_URL || 'https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api/users';
+  import.meta.env.VITE_API_URL || 'https://cinenicheback-arfmceaefxg5dqb9.westcentralus-01.azurewebsites.net/api/users';
 
 export const getUsers = async (): Promise<User[] | null> => {
   credentials: "include"
