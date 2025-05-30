@@ -1,6 +1,6 @@
 import { Recommend } from '../types/HybridRecommender';
 
-const API_URL = 'https://intex-backend7-c2cghsf3cbddhdfm.centralus-01.azurewebsites.net/api';
+const API_URL = 'https://cinenicheback-arfmceaefxg5dqb9.westcentralus-01.azurewebsites.net//api';
 
 export const getAllHybridRecommendations = async (): Promise<Recommend[] | null> => {
   try {
