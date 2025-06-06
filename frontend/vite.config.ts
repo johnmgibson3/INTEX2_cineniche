@@ -6,9 +6,16 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  build: {
-    sourcemap: false,
-  },
+  
+    build: {
+      sourcemap: false, // disables .map files
+      rollupOptions: {
+        output: {
+          manualChunks: undefined, // optional: reduce output file count
+        },
+      },
+    },
+  }   
   
   
-});
+);
