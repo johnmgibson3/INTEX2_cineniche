@@ -25,11 +25,9 @@ function App() {
           <Route
             path="movies"
             element={
-              <ProtectedRoute>
-                <div className="page-wrapper bg-dark text-white">
+             
                   <MoviePage />
-                </div>
-              </ProtectedRoute>
+                
             }
           />
           <Route
