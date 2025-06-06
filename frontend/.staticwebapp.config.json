@@ -1,0 +1,16 @@
+{
+    "navigationFallback": {
+      "rewrite": "/index.html"
+    },
+    "mimeTypes": {
+      ".map": "text/plain"
+    },
+    "responseOverrides": {
+      "404": {
+        "rewrite": "/index.html"
+      }
+    },
+    "routes": [],
+    "exclude": [ "**/*.map", "**/*.test.*", "**/docs/**", "**/*.md" ]
+  }
+  

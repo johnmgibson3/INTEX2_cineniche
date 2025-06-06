@@ -6,5 +6,9 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  // Remove the assetsInclude line for .xlsx files
+  build: {
+    sourcemap: false,
+  },
+  
+  
 });

@@ -33,7 +33,9 @@ appsettings.Development.json
 # Secrets & Configuration
 secrets.json
 .env
-
+**/.next
+**/.vite
+**/dist
 # Resharper & Rider files
 *.DotSettings.user
 .idea/
